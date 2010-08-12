@@ -6,6 +6,13 @@ bundles/nerdtree:
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdtree.git
+bundles/surround: 
+  branch: master
+  remote: braid/bundles/surround
+  revision: ad5690f10eb08688b0772045a4795cf7df461c93
+  squashed: true
+  type: git
+  url: git://github.com/tpope/vim-surround.git
 pathogen: 
   branch: master
   remote: braid/pathogen
