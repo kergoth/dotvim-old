@@ -73,9 +73,6 @@ if has('win32')
 endif
 behave xterm
 
-filetype off
-call pathogen#runtime_append_all_bundles()
-
 " Functions {{{
 fun! Print(...)
   let l:colo = g:colors_name
@@ -343,6 +340,9 @@ endif
 " }}}
 
 " Settings {{{
+
+filetype off
+call pathogen#runtime_append_all_bundles()
 filetype plugin indent on
 
 set secure
