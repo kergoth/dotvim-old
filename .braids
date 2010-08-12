@@ -1,4 +1,11 @@
 --- 
+bundles/fugitive: 
+  branch: master
+  remote: braid/bundles/fugitive
+  revision: a8bd148683c060d37e768bd81496437b2715b200
+  squashed: true
+  type: git
+  url: git://github.com/tpope/vim-fugitive.git
 bundles/nerdtree: 
   branch: master
   remote: braid/bundles/nerdtree
