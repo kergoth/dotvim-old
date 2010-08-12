@@ -12,7 +12,7 @@ bundles/securemodelines:
   revision: 91923c696718c3cc03a46a2ee0b39b974d98e0d5
   squashed: true
   type: git
-  url: http://github.com/ciaranm/securemodelines.git
+  url: git://github.com/ciaranm/securemodelines.git
 bundles/snipmate: 
   branch: master
   remote: braid/bundles/snipmate
