@@ -73,10 +73,8 @@ if has('win32')
 endif
 behave xterm
 
-runtime! autoload/pathogen.vim
-if exists('g:loaded_pathogen')
-  call pathogen#runtime_prepend_subdirectories(expand('~/.vim/bundles'))
-end
+filetype off
+call pathogen#runtime_append_all_bundles()
 
 " Functions {{{
 fun! Print(...)

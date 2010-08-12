@@ -1,35 +1,35 @@
 --- 
-bundles/fugitive: 
+bundle/fugitive: 
   branch: master
-  remote: braid/bundles/fugitive
+  remote: braid/bundle/fugitive
   revision: a8bd148683c060d37e768bd81496437b2715b200
   squashed: true
   type: git
   url: git://github.com/tpope/vim-fugitive.git
-bundles/nerdtree: 
+bundle/nerdtree: 
   branch: master
-  remote: braid/bundles/nerdtree
+  remote: braid/bundle/nerdtree
   revision: 88aaba22b504d300b548f000fc425b78cb09adc7
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdtree.git
-bundles/securemodelines: 
+bundle/securemodelines: 
   branch: master
-  remote: braid/bundles/securemodelines
+  remote: braid/bundle/securemodelines
   revision: 91923c696718c3cc03a46a2ee0b39b974d98e0d5
   squashed: true
   type: git
   url: git://github.com/ciaranm/securemodelines.git
-bundles/snipmate: 
+bundle/snipmate: 
   branch: master
-  remote: braid/bundles/snipmate
+  remote: braid/bundle/snipmate
   revision: f5a75d075d3c005ebe69e3f5e56cf99516e8aa3b
   squashed: true
   type: git
   url: git://github.com/msanders/snipmate.vim.git
-bundles/surround: 
+bundle/surround: 
   branch: master
-  remote: braid/bundles/surround
+  remote: braid/bundle/surround
   revision: ad5690f10eb08688b0772045a4795cf7df461c93
   squashed: true
   type: git
