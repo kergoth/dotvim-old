@@ -124,18 +124,13 @@ endfun
 " }}}
 
 " Keymaps and Commands {{{
+let mapleader = ","
+
 map <leader>del :g/^\s*$/d<CR>         ' Delete Empty Lines
 map <leader>ddql :%s/^>\s*>.*//g<CR>   ' Delete Double Quoted Lines
 map <leader>ddr :s/\.\+\s*/. /g<CR>    ' Delete Dot Runs
 map <leader>dsr :s/\s\s\+/ /g<CR>      ' Delete Space Runs
 map <leader>dtw :%s/\s\+$//g<CR>       ' Delete Trailing Whitespace
-
-" Toggle syntax highlighting
-nmap <silent> ,S <Esc>:syn clear<CR>
-nmap <silent> ,s <Esc>:syn enable<CR>
-
-nmap <leader>im :Modeliner<CR>
-nmap <leader>a :A<CR>            ' Switch between .c/cpp and .h (a.vim)
 
 " Reformat paragraph
 noremap <Leader>gp gqap
@@ -164,15 +159,7 @@ if ! exists('$MYVIMRUNTIME')
     let $MYVIMRUNTIME = $HOME . '/.vim'
   endif
 endif
-nmap <leader>s :source $MYVIMRC<CR>
 nmap <silent> <leader>v :e $MYVIMRC<CR>
-
-nnoremap <Leader>s :TlistToggle<Enter>
-nnoremap <Leader>S :TlistShowPrototype<Enter>
-
-nnoremap <Leader>f :NERDTreeToggle<Enter>
-nnoremap <Leader>F :NERDTreeFind<Enter>
-
 
 " quickfix things
 nmap <Leader>cwc :cclose<CR>
@@ -184,6 +171,15 @@ nmap <silent> <Up> :wincmd k<CR>
 nmap <silent> <Down> :wincmd j<CR>
 nmap <silent> <Left> :wincmd h<CR>
 nmap <silent> <Right> :wincmd l<CR>
+
+" Plugins
+nmap <leader>im :Modeliner<CR>
+
+nnoremap <Leader>s :TlistToggle<Enter>
+nnoremap <Leader>S :TlistShowPrototype<Enter>
+
+nnoremap <Leader>f :NERDTreeToggle<Enter>
+nnoremap <Leader>F :NERDTreeFind<Enter>
 
 " Mouse {{{
 if has('mouse')
