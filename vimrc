@@ -713,10 +713,6 @@ endif
 
 " Autocommands {{{
 if has('autocmd')
-  " Make sure we're overriding netrw's browser
-  :runtime plugin/netrw.vim
-  :runtime autoload/netrw.vim
-
   augroup Kergoth
     au!
 
@@ -813,9 +809,6 @@ let g:GetLatestVimScripts_allowautoinstall = 0
 let g:LustyExplorerSuppressRubyWarning = 1
 let g:LargeFile = 10
 let g:git_diff_spawn_mode = 1
-let g:showmarks_enable = 0
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
 let g:secure_modelines_verbose = 1
 let g:secure_modelines_allowed_items = [
             \ "textwidth",    "tw",
@@ -849,9 +842,6 @@ let g:NERD_space_delim_filetype_regexp = '.*'
 let g:HL_HiCurLine = 'StatusLine'
 let g:Modeliner_format = 'fenc= sts= sw= ts= et'
 let b:super_sh_indent_echo = 0
-if has('gui_running') && has('gui_win32')
-  let g:netrw_scp_cmd='"c:\Program Files\PuTTY\pscp.exe" -q'
-endif
 " rcsvers.vim {{{
 let g:rvTempDir = '/tmp'
 " Shared rcs save directory
