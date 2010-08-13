@@ -1,3 +1,4 @@
 *.pyc
 .viminfo
 tmp/
+yankring_history_v2.txt
