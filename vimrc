@@ -490,6 +490,8 @@ set noautowrite
 " Allow editing of all types of files
 if has('unix')
   set fileformats=unix,dos,mac
+elseif has('mac')
+  set fileformats=mac,unix,dos
 else
   set fileformats=dos,unix,mac
 endif
