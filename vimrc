@@ -135,7 +135,6 @@ nmap <silent> ,S <Esc>:syn clear<CR>
 nmap <silent> ,s <Esc>:syn enable<CR>
 
 nmap <leader>im :Modeliner<CR>
-nmap <leader>sh :runtime vimsh/vimsh.vim<CR>
 nmap <leader>a :A<CR>            ' Switch between .c/cpp and .h (a.vim)
 nnoremap <silent> <F8> :TlistToggle<CR>
 
