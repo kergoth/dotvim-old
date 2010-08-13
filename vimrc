@@ -58,6 +58,14 @@
 "   ggqgG - reformat entire file
 "   gwap - reformat paragraph
 "   gg=G - reindent entire file
+
+" Common indentation setups
+"   No hard tabs, 2 space indent: set sw=2 sts=2 et
+"   No hard tabs, 4 space indent: set sw=4 sts=4 et
+"   All hard tabs, 8 space tabstops: set ts=8 sw=8 sts=0 noet
+"   Hard tabs for indentation, 4 space tabstops: set ts=4 sw=4 sts=0 noet
+"   Horrendous, 4 space indent, 8 space tabstops, hard tabs:
+"      set ts=8 sw=4 sts=4 noet
 " }}}
 
 if v:version < 600
@@ -281,14 +289,6 @@ set nosmartindent
 " Set the C indenting the way I like it
 set cinoptions=>s,e0,n0,f0,{0,}0,^0,:s,=s,l0,g0,hs,ps,ts,+s,c3,C0,(0,us,\U0,w0,m0,j0,)20,*30
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e
-
-" Common indentation setups
-"   No hard tabs, 2 space indent: set sw=2 sts=2 et
-"   No hard tabs, 4 space indent: set sw=4 sts=4 et
-"   All hard tabs, 8 space tabstops: set ts=8 sw=8 sts=0 noet
-"   Hard tabs for indentation, 4 space tabstops: set ts=4 sw=4 sts=0 noet
-"   Horrendous, 4 space indent, 8 space tabstops, hard tabs:
-"      set ts=8 sw=4 sts=4 noet
 " }}}
 
 " Settings {{{
