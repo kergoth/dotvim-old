@@ -136,7 +136,6 @@ nmap <silent> ,s <Esc>:syn enable<CR>
 
 nmap <leader>im :Modeliner<CR>
 nmap <leader>a :A<CR>            ' Switch between .c/cpp and .h (a.vim)
-nnoremap <silent> <F8> :TlistToggle<CR>
 
 " Reformat paragraph
 noremap <Leader>gp gqap
@@ -167,6 +166,13 @@ if ! exists('$MYVIMRUNTIME')
 endif
 nmap <leader>s :source $MYVIMRC<CR>
 nmap <silent> <leader>v :e $MYVIMRC<CR>
+
+nnoremap <Leader>s :TlistToggle<Enter>
+nnoremap <Leader>S :TlistShowPrototype<Enter>
+
+nnoremap <Leader>f :NERDTreeToggle<Enter>
+nnoremap <Leader>F :NERDTreeFind<Enter>
+
 
 " quickfix things
 nmap <Leader>cwc :cclose<CR>
