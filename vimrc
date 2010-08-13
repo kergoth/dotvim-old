@@ -585,7 +585,7 @@ if has('autocmd') && v:version >= 700
     " NOTE: we hook these particular events because that's how
     " minibufexpl sets up its autoupdate.
     au BufEnter,BufWinEnter,BufLeave * if &ma == 0 | setlocal nospell | endif
-    au BufEnter,BufWinEnter,BufLeave * if &fenc != '' && &fenc != &encoding | setlocal nospell | endif 
+    au BufEnter,BufWinEnter,BufLeave * if &fenc != '' && &fenc != &encoding | setlocal nospell | endif
 
     " Disable spell checking in all filetypes but text by default
     au FileType * setlocal nospell
@@ -619,12 +619,6 @@ if v:version >= 700
     set spell spelllang=en_us
   else
     set nospell
-  endif
-
-  let path = finddir('spell', &rtp)
-  if path != ''
-    let path = fnamemodify(path, ':h')
-    exe 'set spellfile=' . path . '/spell/' . &enc . '.add'
   endif
 endif
 
