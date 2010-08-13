@@ -1,4 +1,11 @@
 --- 
+bundle/changesplugin: 
+  branch: master
+  remote: braid/bundle/changesplugin
+  revision: 618f9c289f9ffe113f1bb8070b0394b0fe0645df
+  squashed: true
+  type: git
+  url: git://github.com/chrisbra/changesPlugin.git
 bundle/fugitive: 
   branch: master
   remote: braid/bundle/fugitive
