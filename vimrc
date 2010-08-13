@@ -255,19 +255,7 @@ endif
 " }}}
 
 " Indentation {{{
-" BUG:
-"   When using smarttab with sts != 0, <tab> when not at beginning of
-"   line works correctly, obeying sts, however <BS> obeys sw.  The docs
-"   claim that smarttab only affects <tab> and <BS> at beginning of line.
-"
-"   Seen with:
-"     Vim version 6.2 on a RedHat Enterprise Linux release 3 machine.
-"     Vim version 6.3 on an Ubuntu Breezy machine.
-"     Vim version 7.0188 on a Debian Unstable machine.
-"
-" NOTE: Bram claims this was fixed in a VIM 7 snapshot as of 02/02/06 or so,
-"       but I'm still seeing the behavior with Vim 7.0 final.
-set nosmarttab
+set smarttab
 
 " Disable insertion of tabs as compression / indentation
 set expandtab
