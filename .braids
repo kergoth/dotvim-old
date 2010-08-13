@@ -34,6 +34,13 @@ bundle/nerdtree:
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdtree.git
+bundle/repeat: 
+  branch: master
+  remote: braid/bundle/repeat
+  revision: c4101c205ef9e06bdfeff571a7dbba2576f08974
+  squashed: true
+  type: git
+  url: git://github.com/tpope/vim-repeat.git
 bundle/securemodelines: 
   branch: master
   remote: braid/bundle/securemodelines
