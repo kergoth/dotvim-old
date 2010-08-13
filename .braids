@@ -69,6 +69,13 @@ bundle/pyflakes/ftplugin/python:
   squashed: true
   type: git
   url: git://github.com/kevinw/pyflakes-vim.git
+bundle/pyflakes/ftplugin/python/pyflakes: 
+  branch: master
+  remote: braid/bundle/pyflakes/ftplugin/python/pyflakes
+  revision: d7837f67e778659bd00428a1a84160dbbaf40438
+  squashed: true
+  type: git
+  url: git://github.com/kevinw/pyflakes.git
 bundle/repeat: 
   branch: master
   remote: braid/bundle/repeat
