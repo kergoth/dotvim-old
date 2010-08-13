@@ -62,6 +62,13 @@ bundle/nerdtree:
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdtree.git
+bundle/pyflakes/ftplugin/python: 
+  branch: master
+  remote: braid/bundle/pyflakes/ftplugin/python
+  revision: e44bc67c79500a169c9c70db90472cf5f0a462df
+  squashed: true
+  type: git
+  url: git://github.com/kevinw/pyflakes-vim.git
 bundle/repeat: 
   branch: master
   remote: braid/bundle/repeat
