@@ -249,9 +249,6 @@ com! DiffOrig bel new | set bt=nofile | r # | 0d_ | diffthis
 
 " Fonts {{{
 let g:fontsize = "11"
-" let g:fontface = "Envy Code R"
-" let g:fontface = "Andale Mono"
-" let g:fontface = "Bitstream Vera Sans Mono"
 if has("gui_running")
   if has("gui_gtk2")
     let g:fontface = "DejaVu Sans Mono"
