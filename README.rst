@@ -16,6 +16,10 @@ TODO
 
     - http://github.com/ervandew/supertab
 
+      - This seems rather buggy to me, at least the completion out of the box in
+        a python script with omnifunc set doesn't appear to use the omni
+        completion, it's falling back to <c-p>, which is pretty useless
+
 - Find a nice light background color scheme
 
   - http://www.vim.org/scripts/script.php?script_id=2855
@@ -31,11 +35,6 @@ TODO
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
   - lua-inspect: http://peterodding.com/code/vim/lua-inspect/
-  - http://github.com/ervandew/supertab
-
-    - This seems rather buggy to me, at least the completion out of the box in
-      a python script with omnifunc set doesn't appear to use the omni
-      completion, it's falling back to <c-p>, which is pretty useless
 
 - Fix 'K' behavior in python scripts, it should be calling pydoc -- either via
   configuring manpageview to run it, or via pydoc.vim
