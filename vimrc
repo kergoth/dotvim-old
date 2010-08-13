@@ -153,9 +153,16 @@ noremap <Leader>gg ggVG
 " Mappings to edit/reload the .vimrc
 if ! exists('$MYVIMRC')
   if has('win32')
-    let $MYVIMRC = $HOME.'/_vimrc'
+    let $MYVIMRC = $HOME . '/_vimrc'
   else
-    let $MYVIMRC = $HOME.'/.vimrc'
+    let $MYVIMRC = $HOME . '/.vimrc'
+  endif
+endif
+if ! exists('$MYVIMRC')
+  if has('win32')
+    let $MYVIMRUNTIME = $HOME . '/_vim'
+  else
+    let $MYVIMRUNTIME = $HOME . '/.vim'
   endif
 endif
 nmap <leader>s :source $MYVIMRC<CR>
@@ -794,6 +801,7 @@ let g:c_impl_defined = 1
 " }}}
 
 " Plugin options {{{
+let g:yankring_history_dir = $MYVIMRUNTIME
 let g:GetLatestVimScripts_allowautoinstall = 0
 let g:LustyExplorerSuppressRubyWarning = 1
 let g:LargeFile = 10
