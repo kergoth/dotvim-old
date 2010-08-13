@@ -749,14 +749,6 @@ if has('autocmd')
       " give us an error window after running make, grep etc, but
       " only if results are available.
       au QuickFixCmdPost * botright cwindow 5
-
-      au QuickFixCmdPre make
-            \ let g:make_start_time = localtime()
-
-      au QuickFixCmdPost make
-            \ let g:make_total_time = localtime() - g:make_start_time |
-            \ echo printf('Time taken: %dm%2.2ds', g:make_total_time / 60,
-            \     g:make_total_time % 60)
     catch
     endtry
 
