@@ -45,5 +45,3 @@ TODO
 - Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
   (http://peterodding.com/code/vim/shell/)
 - Show the pyflakes error message in the cursor bubble
-- Fix the default filetype to be 'text', the way it used to be in my previous
-  configuration.
