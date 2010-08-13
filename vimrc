@@ -877,7 +877,7 @@ endif
 
 " Explorer/Tags/Windows options {{{
 let g:Tlist_Exit_OnlyWindow = 1
-let g:Tlist_Show_Menu = 1
+let g:Tlist_Show_Menu = 0
 let g:Tlist_Enable_Fold_Column = 0
 let g:Tlist_WinWidth = 28
 let g:Tlist_Compact_Format = 1
