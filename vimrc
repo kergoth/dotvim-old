@@ -158,7 +158,7 @@ if ! exists('$MYVIMRC')
     let $MYVIMRC = $HOME . '/.vimrc'
   endif
 endif
-if ! exists('$MYVIMRC')
+if ! exists('$MYVIMRUNTIME')
   if has('win32')
     let $MYVIMRUNTIME = $HOME . '/_vim'
   else
