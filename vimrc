@@ -130,6 +130,7 @@ nmap <leader>im :Modeliner<CR>
 nmap <leader>Im :ModelinerBefore<CR>
 nmap <leader>sh :runtime vimsh/vimsh.vim<CR>
 nmap <leader>a :A<CR>            ' Switch between .c/cpp and .h (a.vim)
+nnoremap <silent> <F8> :TlistToggle<CR>
 
 " Reformat paragraph
 noremap <Leader>gp gqap
