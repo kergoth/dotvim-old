@@ -223,13 +223,7 @@ endif
 
 " Execute an appropriate interpreter for the current file
 " If there is no #! line at the top of the file, it will
-" fall back to g:interp_<filetype>.
-let g:interp_lua = '/usr/bin/env lua'
-let g:interp_python = '/usr/bin/env python'
-let g:interp_make = '/usr/bin/env make'
-let g:interp_perl = '/usr/bin/env perl'
-let g:interp_m4 = '/usr/bin/env m4'
-let g:interp_sh = '/bin/sh'
+" fall back to g:interp_<filetype>, and further to <filetype>.
 fun! RunInterp()
   let l:interp = ''
   let line = getline(1)
@@ -239,6 +233,8 @@ fun! RunInterp()
   else
     if exists('g:interp_' . &filetype)
       let l:interp = g:interp_{&filetype}
+    else
+      let l_interp = &filetype
     endif
   endif
   if l:interp != ''
