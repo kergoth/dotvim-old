@@ -27,6 +27,13 @@ bundle/git:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-git.git
+bundle/gitolite: 
+  branch: master
+  remote: braid/bundle/gitolite
+  revision: 1e6f9bbb5f5d26eb96242bd999485afbb712055d
+  squashed: true
+  type: git
+  url: git://github.com/tmatilai/gitolite.vim.git
 bundle/gitosis: 
   branch: master
   remote: braid/bundle/gitosis
