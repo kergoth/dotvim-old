@@ -18,4 +18,5 @@ ScriptID SourceID Filename
 2390 10336 CSApprox.vim
 3064 12892 after/syntax/c.vim
 3130 13502 CountJump.vba.gz
+3179 13463 help_movement.vba.gz
 3180 13464 diff_movement.vba.gz
