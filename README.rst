@@ -28,9 +28,9 @@ TODO
 
   - svndiff, gitdiff, etc
   - quiltdiff: http://www.vim.org/scripts/script.php?script_id=2148
-  - http://www.vim.org/scripts/script.php?script_id=2302
-  - http://github.com/taq/vim-git-branch-info
-  - http://www.vim.org/scripts/script.php?script_id=2255
+  - foldsearch: http://www.vim.org/scripts/script.php?script_id=2302
+  - vim-git-branch-info: http://github.com/taq/vim-git-branch-info
+  - buffergrep: http://www.vim.org/scripts/script.php?script_id=2255
   - unimpaired.vim: http://www.vim.org/scripts/script.php?script_id=1590
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
