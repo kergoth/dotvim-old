@@ -802,6 +802,7 @@ let g:c_impl_defined = 1
 
 " Plugin options {{{
 let g:yankring_history_dir = $MYVIMRUNTIME
+let g:yankring_persist = 0
 let g:GetLatestVimScripts_allowautoinstall = 0
 let g:LustyExplorerSuppressRubyWarning = 1
 let g:LargeFile = 10
