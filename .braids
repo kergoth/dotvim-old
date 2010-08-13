@@ -69,6 +69,13 @@ bundle/snipmate:
   squashed: true
   type: git
   url: git://github.com/msanders/snipmate.vim.git
+bundle/speeddating: 
+  branch: master
+  remote: braid/bundle/speeddating
+  revision: 799bcdddca4f8b81dcfffc1f327f0e511d11980c
+  squashed: true
+  type: git
+  url: git://github.com/tpope/vim-speeddating.git
 bundle/surround: 
   branch: master
   remote: braid/bundle/surround
