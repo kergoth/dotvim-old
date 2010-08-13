@@ -472,6 +472,7 @@ set formatoptions=crqn
 
 " Case insensitivity
 set ignorecase
+set smartcase
 set infercase
 
 " No incremental searches or search highlighting
