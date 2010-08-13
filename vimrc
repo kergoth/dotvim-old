@@ -806,6 +806,9 @@ let g:c_impl_defined = 1
 " }}}
 
 " Plugin options {{{
+let g:snips_author = 'Chris Larson <clarson@kergoth.com>'
+let g:debianfullname = 'Chris Larson'
+let g:debianemail = 'clarson@kergoth.com'
 let g:yankring_history_dir = $MYVIMRUNTIME
 let g:yankring_persist = 0
 let g:GetLatestVimScripts_allowautoinstall = 0
@@ -828,8 +831,6 @@ let g:secure_modelines_allowed_items = [
             \ "wrap", "nowrap",
             \ ]
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-let g:debianfullname = 'Chris Larson'
-let g:debianemail = 'clarson@kergoth.com'
 let g:Tb_MinSize = 1
 let g:Tb_MaxSize = 1
 let g:Tb_SplitBelow = 0
