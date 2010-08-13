@@ -816,7 +816,7 @@ let g:c_impl_defined = 1
 " }}}
 
 " Plugin options {{{
-let g:GetLatestVimScripts_allowautoinstall = 1
+let g:GetLatestVimScripts_allowautoinstall = 0
 let g:LustyExplorerSuppressRubyWarning = 1
 let g:LargeFile = 10
 let g:git_diff_spawn_mode = 1
