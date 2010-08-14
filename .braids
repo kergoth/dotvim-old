@@ -6,6 +6,13 @@ bundle/changesplugin:
   squashed: true
   type: git
   url: git://github.com/chrisbra/changesPlugin.git
+bundle/detectindent: 
+  branch: master
+  remote: braid/bundle/detectindent
+  revision: 67dd1e5f386b0fafc9126a583690d3fc56deaabc
+  squashed: true
+  type: git
+  url: git://github.com/ciaranm/detectindent.git
 bundle/endwise: 
   branch: master
   remote: braid/bundle/endwise
