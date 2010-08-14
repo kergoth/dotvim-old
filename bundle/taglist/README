@@ -1,0 +1,17 @@
+Taglist is a simple source code browser plugin for Vim that provides
+an overview of the structure of your source code.
+
+This is a mirror of: http://www.vim.org/scripts/script.php?script_id=273
+
+The upstream project: http://vim-taglist.sourceforge.net/
+
+--------
+
+This mirror was set up by Scott Bronson: http://github.com/bronson
+Message me if it's out of date.
+
+When committing, make sure the author date matches the upstream release date.
+For 6.0 released on 2007-09-21:
+
+    $ GIT_AUTHOR_DATE=2007-09-21T00:00:00 git commit
+    $ GIT_COMMITTER_DATE=2007-09-21T00:00:00 git tag -a 6.0
