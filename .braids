@@ -1,4 +1,11 @@
 --- 
+bundle/bufexplorer: 
+  branch: master
+  remote: braid/bundle/bufexplorer
+  revision: 038c2e060d423fba5d288c13b014d4a9b62735f5
+  squashed: true
+  type: git
+  url: git://github.com/bronson/vim-bufexplorer.git
 bundle/changesplugin: 
   branch: master
   remote: braid/bundle/changesplugin
