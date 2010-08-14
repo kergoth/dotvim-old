@@ -599,6 +599,11 @@ if has('autocmd') && v:version >= 700
     au FileType * setlocal nospell
   augroup END
 endif
+
+augroup KergothIndentation
+  au!
+  au BufReadPost * if exists("loaded_detectindent") | exe "DetectIndent" | endif
+augroup END
 " }}}
 
 " Encoding {{{
