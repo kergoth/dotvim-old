@@ -5,20 +5,32 @@ TODO
 
   - "Project" handling
 
-    - http://www.vim.org/scripts/script.php?script_id=2801
+    - nerdtree_project: http://www.vim.org/scripts/script.php?script_id=2801
+    - workspace: http://www.vim.org/scripts/script.php?script_id=1410
+    - winmanager: http://www.vim.org/scripts/script.php?script_id=95
+    - project: http://www.vim.org/scripts/script.php?script_id=69
 
   - Session management
 
     - http://peterodding.com/code/vim/session/
+    - sessions.vim: http://www.vim.org/scripts/script.php?script_id=2151
+    - sessionman.vim: http://www.vim.org/scripts/script.php?script_id=2010
 
   - Completion - either good use of included functionality, or enhanced to
     show function prototypes, etc
 
     - http://github.com/ervandew/supertab
 
-      - This seems rather buggy to me, at least the completion out of the box in
-        a python script with omnifunc set doesn't appear to use the omni
-        completion, it's falling back to <c-p>, which is pretty useless
+      - The 'context' handling for the completion seems a bit wonky with
+        python -- try modifying it to trigger omni when seeing a '.' in
+        python, not just c.
+
+  - Smart Tabs (always use spaces for alignment, even if using tabs for
+    indentation)
+
+    - My altered c.vim: tabspace.vim
+    - Smart Tabs: http://www.vim.org/scripts/script.php?script_id=231
+    - Clever Tabs: http://www.vim.org/scripts/script.php?script_id=2308
 
 - Find a nice light background color scheme
 

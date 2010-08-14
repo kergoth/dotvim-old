@@ -619,9 +619,6 @@ set printencoding=latin1
 " }}}
 
 if v:version >= 700
-  " Default to omni completion using the syntax highlighting files
-  set ofu=syntaxcomplete#Complete
-
   " Disable spell checking when in console, and enable it when in gui
   if has('gui_running')
     set spell spelllang=en_us
@@ -828,7 +825,6 @@ let g:secure_modelines_allowed_items = [
             \ "rightleft",    "rl",   "norightleft", "norl",
             \ "wrap", "nowrap",
             \ ]
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 let g:Tb_MinSize = 1
 let g:Tb_MaxSize = 1
 let g:Tb_SplitBelow = 0
