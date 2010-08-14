@@ -27,6 +27,13 @@ bundle/fugitive:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-fugitive.git
+bundle/gist: 
+  branch: master
+  remote: braid/bundle/gist
+  revision: 88c488be46395bef86af4ed6655b76381bf1c657
+  squashed: true
+  type: git
+  url: git://github.com/mattn/gist-vim.git
 bundle/git: 
   branch: master
   remote: braid/bundle/git
