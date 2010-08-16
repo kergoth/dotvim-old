@@ -112,6 +112,12 @@ TODO
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
   - lua-inspect: http://peterodding.com/code/vim/lua-inspect/
+  - supertab: http://github.com/ervandew/supertab
+  - conque: http://code.google.com/p/conque/
+  - syntastic: http://github.com/scrooloose/syntastic
+
+    - Think about using this for everything but python (as pyflakes.vim
+      already covers that)
 
 - Fix 'K' behavior in python scripts, it should be calling pydoc -- either via
   configuring manpageview to run it, or via pydoc.vim
