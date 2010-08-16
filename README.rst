@@ -1,3 +1,68 @@
+Included Bundles
+----------------
+
+- align: Help folks to align text, eqns, declarations, tables, etc
+- bitbake: Syntax highlighting, indentation settings, new file skeleton for
+  BitBake recipes and configuration files
+- bufexplorer: Buffer Explorer / Browser
+- changesplugin: indicate changes of a buffer
+- countjump: Create custom motions and text objects via repeated jumps.
+
+  - Used by diff_movement, help_movement
+
+- csapprox: Make gvim-only colorschemes work transparently in terminal vim
+- c-syntax: C Syntax Extensions
+- detectindent: Automatically detect indent (expandtab, shiftwidth, tabstop)
+  settings
+- diff_movement: Movement over diff hunks with ]] etc.
+- endwise: Wisely add "end" in ruby, endfunction/endif/more in vim script, etc
+- fugitive: A Git wrapper so awesome, it should be illegal
+- getscript: Keep your plugins up-to-date! (semi-automatic retrieval)
+
+  - Only used for the bundles which aren't handled with braid
+
+- gist: vimscript for gist.github.com
+- git: Vim Git runtime files
+- github-colors: A gvim colorscheme based on github's syntax highlighting
+- gitolite: Syntax highlight for gitolite configuration
+- gitosis: gitosis-admin.conf syntax highlighting for vim
+- go: Vim syntax highlighting for Go (http://golang.org)
+- help_movement: Movement over Vim help sections with ]] etc.
+- hilinks: A plugin which traces the highlighting linkages; ie. just what
+  highlighting groups associated with the word under the cursor?
+- indentconsistencycop:  Is the buffer's indentation consistent and does it
+  conform to tab settings?
+- kergoth
+- largefile: Edit large files quickly
+- manpageview: Viewer for manpages, gnu info,  perldoc, and php
+  (unix/linux/cygwin)
+- markdown: Vim Markdown runtime files that WON'T leave you sterile
+- matchit: extended % matching for HTML, LaTeX, and many other languages
+- modeliner: Generates modeline according to the current settings.
+- nerdcommenter: Vim plugin for intensely orgasmic commenting
+- nerdtree: hax0r vim script to give you a tree explorer
+- pathogen: manage your runtimepath
+- pyflakes: on the fly Python checking in Vim with PyFlakes
+- pythoncomplete: Python Omni Completion
+
+  - Latest version of the omnicompletion plugin included with Vim 7
+
+- reload: The reload.vim plug-in automatically reloads various types of Vim
+  scripts as they’re being edited in Vim to give you instant feedback on the
+  changes you make
+- repeat: enable repeating supported plugin maps with "."
+- securemodelines: Secure, user-configurable modeline support
+- snipmate: TextMate-style snippets for Vim
+- speeddating: use CTRL-A/CTRL-X to increment dates, times, and more
+- sudo: llows one to edit a file with prevledges from an unprivledged session.
+- surround: quoting/parenthesizing made simple
+- taglist: Source code browser (supports C/C++, java, perl, python, tcl, sql,
+  php, etc)
+- tips: Various snippets of vimscript pulled from the Vim tips site(s)
+- vimorg-runtime: Updated files from the latest upstream vim runtime files
+- vis: Extended Visual Mode Commands, Substitutes, and Searches
+- yankring: Maintains a history of previous yanks, changes and deletes
+
 TODO
 ----
 
