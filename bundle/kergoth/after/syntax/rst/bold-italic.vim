@@ -13,7 +13,7 @@ endfunction
 
 augroup ReST
     au!
-    au ColorScheme * call <SID>SetupBoldItalic
+    au ColorScheme * call <SID>SetupBoldItalic()
 augroup END
 
 call <SID>SetupBoldItalic()
