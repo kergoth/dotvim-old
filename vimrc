@@ -809,6 +809,7 @@ let g:c_impl_defined = 1
 let g:snips_author = 'Chris Larson <clarson@kergoth.com>'
 let g:debianfullname = 'Chris Larson'
 let g:debianemail = 'clarson@kergoth.com'
+let g:pylint_onwrite = 0
 let g:syntastic_disabled_filetypes = ['python']
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
