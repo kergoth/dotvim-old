@@ -43,6 +43,7 @@ Included Bundles
 - nerdtree: hax0r vim script to give you a tree explorer
 - pathogen: manage your runtimepath
 - pyflakes: on the fly Python checking in Vim with PyFlakes
+- pylint: use pylint as the 'compiler' for python files
 - pythoncomplete: Python Omni Completion
 
   - Latest version of the omnicompletion plugin included with Vim 7
@@ -56,6 +57,7 @@ Included Bundles
 - speeddating: use CTRL-A/CTRL-X to increment dates, times, and more
 - sudo: llows one to edit a file with prevledges from an unprivledged session.
 - surround: quoting/parenthesizing made simple
+- syntastic: Automatic syntax checking
 - taglist: Source code browser (supports C/C++, java, perl, python, tcl, sql,
   php, etc)
 - tips: Various snippets of vimscript pulled from the Vim tips site(s)
