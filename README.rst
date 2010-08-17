@@ -68,6 +68,21 @@ Included Bundles
 TODO
 ----
 
+- Fix 'K' behavior in python scripts, it should be calling pydoc -- either via
+  configuring manpageview to run it, or via pydoc.vim
+
+  - let g:manpageview_pgm_py = "pydoc" should work, in theory, but does not
+    appear to in reality at the moment
+
+- Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
+  (http://peterodding.com/code/vim/shell/)
+- Show the pyflakes error message in the cursor bubble
+- Fix gitcommit, it no longer shows the diff of the commit
+- Figure out how to deal with pylint/pyflakes interactions.  The pyflakes
+  plugin sets quickfix items, and it regenerates it automatically on certain
+  events, which means it blows away the pylint messages from :make.  Perhaps
+  we just need a way to disable/re-enable the pyflakes autocmds.
+
 - Find a good vim script / configuration for:
 
   - "Project" handling
@@ -120,14 +135,3 @@ TODO
 
     - Think about using this for everything but python (as pyflakes.vim
       already covers that)
-
-- Fix 'K' behavior in python scripts, it should be calling pydoc -- either via
-  configuring manpageview to run it, or via pydoc.vim
-
-  - let g:manpageview_pgm_py = "pydoc" should work, in theory, but does not
-    appear to in reality at the moment
-
-- Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
-  (http://peterodding.com/code/vim/shell/)
-- Show the pyflakes error message in the cursor bubble
-- Fix gitcommit, it no longer shows the diff of the commit
