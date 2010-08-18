@@ -689,7 +689,11 @@ if &t_Co > 2 || has('gui_running')
   endif
   set background=dark
 
-  colo baycomb
+  if has('gui')
+    colo baycomb
+  else
+    colo zellner
+  endif
 
   " Colors red both trailing whitespace:
   "  foo   
