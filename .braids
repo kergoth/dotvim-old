@@ -125,6 +125,13 @@ bundle/speeddating:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-speeddating.git
+bundle/supertab: 
+  branch: master
+  remote: braid/bundle/supertab
+  revision: 036560f539ab5e218b9615992b27ae4c99c50f02
+  squashed: true
+  type: git
+  url: git://github.com/ervandew/supertab.git
 bundle/surround: 
   branch: master
   remote: braid/bundle/surround
