@@ -13,6 +13,12 @@ bundle/changesplugin:
   squashed: true
   type: git
   url: git://github.com/chrisbra/changesPlugin.git
+bundle/conque: 
+  remote: braid/bundle/conque
+  revision: 282
+  squashed: true
+  type: svn
+  url: http://conque.googlecode.com/svn/trunk
 bundle/detectindent: 
   branch: master
   remote: braid/bundle/detectindent
