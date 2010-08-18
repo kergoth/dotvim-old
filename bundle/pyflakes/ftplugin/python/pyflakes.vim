@@ -11,6 +11,11 @@
 " Maintainer: Kevin Watters <kevin.watters@gmail.com>
 " Version: 0.1
 
+" We need 'matchadd'
+if (v:version == 701 && ! exists('*matchadd')) || (v:version < 702)
+	finish
+endif
+
 if exists("b:did_pyflakes_plugin")
     finish " only load once
 else

@@ -1,3 +1,10 @@
+" We need 'matchadd'
+if exists('g:loaded_tip810') || (v:version == 701 && ! exists('*matchadd'))
+      \ || (v:version < 702)
+	finish
+endif
+let g:loaded_tip810 = 1
+
 " highlight text that exceeds the textwidth limit
 " http://vim.wikia.com/wiki/Highlight_long_lines
 autocmd BufWinEnter * :call ApplyTextwidthOverflowHighlighting()
