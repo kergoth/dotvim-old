@@ -82,6 +82,8 @@ TODO
   plugin sets quickfix items, and it regenerates it automatically on certain
   events, which means it blows away the pylint messages from :make.  Perhaps
   we just need a way to disable/re-enable the pyflakes autocmds.
+- Disable trailing whitespace and beyond textwidth highlighting for
+  conque_term buffers
 
 - Find a good vim script / configuration for:
 
