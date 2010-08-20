@@ -595,14 +595,6 @@ if has('autocmd') && v:version >= 700
 
     au VimEnter,BufWinEnter TreeExplorer let w:numberoverride = 1 | setlocal nonumber
   augroup END
-
-  augroup KergothSpell
-    au!
-    " Don't enable spellchecking in unmodifiable buffers
-    " NOTE: we hook these particular events because that's how
-    " minibufexpl sets up its autoupdate.
-    au BufEnter,BufWinEnter,BufLeave * if &ma == 0 | setlocal nospell | endif
-  augroup END
 endif
 
 augroup KergothIndentation
