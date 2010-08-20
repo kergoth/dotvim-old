@@ -6,6 +6,8 @@ Included Bundles
   BitBake recipes and configuration files
 - bufexplorer: Buffer Explorer / Browser
 - changesplugin: indicate changes of a buffer
+- conque: Conque is a Vim plugin allowing users to execute and interact with
+  programs, typically a shell such as bash, inside a buffer window
 - countjump: Create custom motions and text objects via repeated jumps.
 
   - Used by diff_movement, help_movement
@@ -30,6 +32,7 @@ Included Bundles
 - help_movement: Movement over Vim help sections with ]] etc.
 - hilinks: A plugin which traces the highlighting linkages; ie. just what
   highlighting groups associated with the word under the cursor?
+- histwin: A Vim Plugin for browsing the undo tree
 - indentconsistencycop:  Is the buffer's indentation consistent and does it
   conform to tab settings?
 - kergoth
@@ -55,7 +58,10 @@ Included Bundles
 - securemodelines: Secure, user-configurable modeline support
 - snipmate: TextMate-style snippets for Vim
 - speeddating: use CTRL-A/CTRL-X to increment dates, times, and more
-- sudo: llows one to edit a file with prevledges from an unprivledged session.
+- sudo: allows one to edit a file with prevledges from an unprivledged
+  session.
+- supertab: aims to provide tab completion to satisfy all your insert
+  completion needs
 - surround: quoting/parenthesizing made simple
 - syntastic: Automatic syntax checking
 - taglist: Source code browser (supports C/C++, java, perl, python, tcl, sql,
