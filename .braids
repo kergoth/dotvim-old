@@ -68,6 +68,13 @@ bundle/gitosis:
   squashed: true
   type: git
   url: git://github.com/timcharper/gitosis.vim.git
+bundle/histwin: 
+  branch: master
+  remote: braid/bundle/histwin
+  revision: 930fa0be7c7044d49e50e77f716c93c226d12691
+  squashed: true
+  type: git
+  url: http://github.com/chrisbra/histwin.vim.git
 bundle/markdown: 
   branch: master
   remote: braid/bundle/markdown
