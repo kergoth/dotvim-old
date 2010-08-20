@@ -161,6 +161,9 @@ if ! exists('$MYVIMRUNTIME')
 endif
 nmap <silent> <leader>v :e $MYVIMRC<CR>
 
+" Pressing ,ss will toggle spell checking
+map <leader>ss :set spell!<CR>
+
 " quickfix things
 nmap <Leader>cwc :cclose<CR>
 nmap <Leader>cwo :botright copen 5<CR><C-w>p
@@ -599,10 +602,6 @@ if has('autocmd') && v:version >= 700
     " NOTE: we hook these particular events because that's how
     " minibufexpl sets up its autoupdate.
     au BufEnter,BufWinEnter,BufLeave * if &ma == 0 | setlocal nospell | endif
-    au BufEnter,BufWinEnter,BufLeave * if &fenc != '' && &fenc != &encoding | setlocal nospell | endif
-
-    " Disable spell checking in all filetypes but text by default
-    au FileType * setlocal nospell
   augroup END
 endif
 
@@ -630,12 +629,7 @@ set printencoding=latin1
 " }}}
 
 if v:version >= 700
-  " Disable spell checking when in console, and enable it when in gui
-  if has('gui_running')
-    set spell spelllang=en_us
-  else
-    set nospell
-  endif
+  set spelllang=en_us
 endif
 
 " Show nonprintable characters like hard tabs
