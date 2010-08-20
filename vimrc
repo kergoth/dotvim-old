@@ -713,6 +713,10 @@ if has('autocmd')
   augroup Kergoth
     au!
 
+    if has('persistent_undo')
+      au BufReadPre .netrwhist setlocal noundofile
+    endif
+
     " Smart cursor positioning for emails, courtesy tip#1240
     au BufReadPost mutt* :Fip
 
