@@ -423,6 +423,12 @@ else
 endif
 let &directory = &backupdir
 
+" Persistent undo
+if has('persistent_undo')
+  set undofile
+  let &undodir = &backupdir
+endif
+
 set isk+=_,$,@,%,#,-
 set shortmess=atItToO
 
