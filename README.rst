@@ -137,9 +137,3 @@ TODO
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
   - lua-inspect: http://peterodding.com/code/vim/lua-inspect/
-  - supertab: http://github.com/ervandew/supertab
-  - conque: http://code.google.com/p/conque/
-  - syntastic: http://github.com/scrooloose/syntastic
-
-    - Think about using this for everything but python (as pyflakes.vim
-      already covers that)
