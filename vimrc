@@ -463,13 +463,6 @@ endif
 
 " Viminfo file behavior
 if has('viminfo')
-  if ! exists('$VIMINFO')
-    if has("win32")
-      let $VIMINFO = $HOME . '/_viminfo'
-    else
-      let $VIMINFO = $HOME . '/.viminfo'
-    endif
-  endif
   " f1  store file marks
   " '   # of previously edited files to remember marks for
   " :   # of lines of command history
@@ -477,7 +470,14 @@ if has('viminfo')
   " <   max # of lines for each register to be saved
   " s   max # of Kb for each register to be saved
   " h   don't restore hlsearch behavior
-  set viminfo=f1,'1000,:1000,/1000,<1000,s100,h,n$VIMINFO
+  set viminfo=f1,'1000,:1000,/1000,<1000,s100,h
+  if has('win32')
+    set viminfo+=rc:/tmp/
+  elseif has('macunix')
+    set viminfo+=r/private/tmp/
+  else
+    set viminfo+=r/tmp/
+  endif
 endif
 
 set backspace=indent,eol,start
@@ -738,10 +738,16 @@ if has('autocmd')
     " When editing a file, always jump to the last known cursor position.
     " Don't do it when the position is invalid or when inside an event handler
     " (happens when dropping a file on GVim).
-    au BufReadPost *
-          \ if line("'\"") > 0 && line ("'\"") <= line('$') |
-          \   exe "normal g'\"" |
-          \ endif
+    func! <SID>RestorePosition()
+      if &ft == 'gitcommit'
+        return
+      endif
+
+      if line("'\"") > 0 && line ("'\"") <= line('$')
+        exe "normal g'\""
+      endif
+    endfun
+    au BufReadPost * call <SID>RestorePosition()
 
     " Set the compiler to the filetype by default
     au FileType * try | exe 'compiler ' . &filetype | catch | endtry
