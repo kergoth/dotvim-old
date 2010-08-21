@@ -74,12 +74,6 @@ Included Bundles
 TODO
 ----
 
-- Fix 'K' behavior in python scripts, it should be calling pydoc -- either via
-  configuring manpageview to run it, or via pydoc.vim
-
-  - let g:manpageview_pgm_py = "pydoc" should work, in theory, but does not
-    appear to in reality at the moment
-
 - Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
   (http://peterodding.com/code/vim/shell/)
 - Show the pyflakes error message in the cursor bubble
@@ -90,6 +84,7 @@ TODO
   we just need a way to disable/re-enable the pyflakes autocmds.
 - Disable trailing whitespace and beyond textwidth highlighting for
   conque_term buffers
+- Figure out why let g:manpageview_pgm_py = "pydoc" doesn't work
 
 - Find a good vim script / configuration for:
 
