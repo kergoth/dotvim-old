@@ -77,7 +77,6 @@ TODO
 - Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
   (http://peterodding.com/code/vim/shell/)
 - Show the pyflakes error message in the cursor bubble
-- Fix gitcommit, it no longer shows the diff of the commit
 - Figure out how to deal with pylint/pyflakes interactions.  The pyflakes
   plugin sets quickfix items, and it regenerates it automatically on certain
   events, which means it blows away the pylint messages from :make.  Perhaps
