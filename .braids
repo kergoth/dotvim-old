@@ -96,6 +96,13 @@ bundle/nerdtree:
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdtree.git
+bundle/pydoc/ftplugin/python: 
+  branch: master
+  remote: braid/bundle/pydoc/ftplugin/python
+  revision: 5d89c81eca68144539e98dab57f82f7b20845712
+  squashed: true
+  type: git
+  url: git://github.com/fs111/pydoc.vim.git
 bundle/pyflakes/ftplugin/python: 
   branch: master
   remote: braid/bundle/pyflakes/ftplugin/python
