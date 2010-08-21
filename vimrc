@@ -254,18 +254,23 @@ com! DiffOrig bel new | set bt=nofile | r # | 0d_ | diffthis
 " }}}
 
 " Fonts {{{
-let g:fontsize = "11"
+let fontsize = "13"
+" In order of preference, best to worst
+let fonts = ['Consolas', 'Inconsolata', 'DejaVu Sans Mono', 'Monaco',
+          \  'Andale Mono', 'Courier']
+
 if has("gui_running")
-  if has("gui_gtk2")
-    let g:fontface = "DejaVu Sans Mono"
-    let &guifont = g:fontface." ".g:fontsize
-  elseif has('macunix') && has('gui')
-    let g:fontface = "Monaco"
-    let &guifont = g:fontface." ".g:fontsize
-  elseif has('gui_win32')
-    let g:fontface = "Consolas"
-    let &guifont = g:fontface.":h".g:fontsize."cANSI"
-  endif
+  let fontstrings = []
+  for font in fonts
+    if has('gui_gtk2')
+      let fontstrings += [font . ' ' . fontsize]
+    elseif has('macunix') && has('gui')
+      let fontstrings += [font . ':h' . fontsize]
+    elseif has('gui_win32')
+      let fontstrings += [font . ':h' . fontsize . 'cANSI']
+    endif
+  endfor
+  let &guifont = join(fontstrings, ',')
 endif
 " }}}
 
