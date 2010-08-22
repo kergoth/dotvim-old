@@ -820,6 +820,7 @@ let g:c_impl_defined = 1
 let g:snips_author = 'Chris Larson <clarson@kergoth.com>'
 let g:debianfullname = 'Chris Larson'
 let g:debianemail = 'clarson@kergoth.com'
+let g:SuperTabDefaultCompletionType = 'context'
 let g:rope_enable_shortcuts = 1
 let g:Tlist_Ctags_Cmd = 'ctags'
 let g:CSApprox_verbose_level = 0
