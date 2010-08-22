@@ -74,6 +74,7 @@ Included Bundles
 TODO
 ----
 
+- Make detectindent obey 'comments' for non-C files.
 - Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
   (http://peterodding.com/code/vim/shell/)
 - Show the pyflakes error message in the cursor bubble
