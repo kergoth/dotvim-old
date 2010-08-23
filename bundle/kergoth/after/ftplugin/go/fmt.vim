@@ -1,6 +1,6 @@
 function! Goformat()
     let regel=line(".")
-    silent %!~/bin/gofmt
+    silent %!gofmt
     call cursor(regel, 1)
 endfunction
 
