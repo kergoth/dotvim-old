@@ -15,7 +15,7 @@ bundle/changesplugin:
   url: git://github.com/chrisbra/changesPlugin.git
 bundle/conque: 
   remote: braid/bundle/conque
-  revision: 282
+  revision: 310
   squashed: true
   type: svn
   url: http://conque.googlecode.com/svn/trunk
