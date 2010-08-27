@@ -57,6 +57,7 @@ Included Bundles
 - repeat: enable repeating supported plugin maps with "."
 - securemodelines: Secure, user-configurable modeline support
 - snipmate: TextMate-style snippets for Vim
+- smarttabs: Use tabs for indent, spaces for alignment
 - speeddating: use CTRL-A/CTRL-X to increment dates, times, and more
 - sudo: allows one to edit a file with prevledges from an unprivledged
   session.
@@ -74,16 +75,25 @@ Included Bundles
 TODO
 ----
 
-- Make detectindent obey 'comments' for non-C files.
-- Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
-  (http://peterodding.com/code/vim/shell/)
-- Show the pyflakes error message in the cursor bubble
 - Figure out how to deal with pylint/pyflakes interactions.  The pyflakes
   plugin sets quickfix items, and it regenerates it automatically on certain
   events, which means it blows away the pylint messages from :make.  Perhaps
   we just need a way to disable/re-enable the pyflakes autocmds.
 - Disable trailing whitespace and beyond textwidth highlighting for
   conque_term buffers
+- Make detectindent obey 'comments' for non-C files.
+- Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
+  (http://peterodding.com/code/vim/shell/)
+- Show the pyflakes error message in the cursor bubble
+
+  - Note: the pyflakes error message uses the quickfix stuff.  There's a vim
+    signs in the signs column, and to show the message in the cursor balloon
+    when mousing over the sign.  Unfortunately, there are two issues:
+
+    - balloon does not show up when mousing over the sign
+    - have to manually run QuickfixsignsSet rather than it doing so
+      automatically
+
 - Figure out why let g:manpageview_pgm_py = "pydoc" doesn't work
 
 - Find a good vim script / configuration for:
@@ -100,17 +110,6 @@ TODO
     - http://peterodding.com/code/vim/session/
     - sessions.vim: http://www.vim.org/scripts/script.php?script_id=2151
     - sessionman.vim: http://www.vim.org/scripts/script.php?script_id=2010
-
-  - Smart Tabs (always use spaces for alignment, even if using tabs for
-    indentation)
-
-    - My altered c.vim: tabspace.vim
-    - Smart Tabs: http://www.vim.org/scripts/script.php?script_id=231
-    - Clever Tabs: http://www.vim.org/scripts/script.php?script_id=2308
-
-- Find a nice light background color scheme
-
-  - http://www.vim.org/scripts/script.php?script_id=2855
 
 - Test these out
 
