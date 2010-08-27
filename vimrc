@@ -132,6 +132,9 @@ map <leader>ddr :s/\.\+\s*/. /g<CR>    ' Delete Dot Runs
 map <leader>dsr :s/\s\s\+/ /g<CR>      ' Delete Space Runs
 map <leader>dtw :%s/\s\+$//g<CR>       ' Delete Trailing Whitespace
 
+" Make <leader>' switch between ' and "
+nnoremap <leader>' ""yls<c-r>={'"': "'", "'": '"'}[@"]<cr><esc>
+
 " Reformat paragraph
 noremap <Leader>gp gqap
 
