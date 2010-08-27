@@ -122,3 +122,4 @@ TODO
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
   - lua-inspect: http://peterodding.com/code/vim/lua-inspect/
+  - Super Parentheses: http://www.vim.org/scripts/script.php?script_id=3210
