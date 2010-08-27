@@ -836,6 +836,15 @@ let g:c_impl_defined = 1
 let g:snips_author = 'Chris Larson <clarson@kergoth.com>'
 let g:debianfullname = 'Chris Larson'
 let g:debianemail = 'clarson@kergoth.com'
+if has('file_in_path')
+  let miscdir = finddir("misc", &rtp)
+  if miscdir
+    let g:lua_inspect_path = miscdir
+  endif
+endif
+if !has('lua') && !executable('lua')
+  let g:loaded_luainspect = 1
+endif
 let g:quickfixsigns_classes = ['qfl']
 let g:SuperTabDefaultCompletionType = 'context'
 let g:rope_enable_shortcuts = 1
