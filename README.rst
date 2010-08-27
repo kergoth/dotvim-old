@@ -84,6 +84,9 @@ TODO
 - Make detectindent obey 'comments' for non-C files.
 - Integrate MacVim's 'fullscreen' and 'fuoptions' into shell.vim
   (http://peterodding.com/code/vim/shell/)
+- May want to try to implement the green/red bar for unit testing that exists
+  in the vimrc at http://bitbucket.org/garybernhardt/dotfiles.
+- Figure out why let g:manpageview_pgm_py = "pydoc" doesn't work
 - Show the pyflakes error message in the cursor bubble
 
   - Note: the pyflakes error message uses the quickfix stuff.  There's a vim
@@ -93,8 +96,6 @@ TODO
     - balloon does not show up when mousing over the sign
     - have to manually run QuickfixsignsSet rather than it doing so
       automatically
-
-- Figure out why let g:manpageview_pgm_py = "pydoc" doesn't work
 
 - Find a good vim script / configuration for:
 

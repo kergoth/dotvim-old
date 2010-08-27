@@ -337,6 +337,14 @@ set sidescrolloff=2
 set hidden
 " set path=.
 
+" Don't use old weak encryption for Vim 7.3
+if has('cryptv')
+  try
+    set cryptmethod=blowfish
+  catch
+  endtry
+endif
+
 " Allow setting window title for screen
 if &term =~ '^screen'
   set t_ts=k
