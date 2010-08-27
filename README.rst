@@ -101,15 +101,6 @@ TODO
     - sessions.vim: http://www.vim.org/scripts/script.php?script_id=2151
     - sessionman.vim: http://www.vim.org/scripts/script.php?script_id=2010
 
-  - Completion - either good use of included functionality, or enhanced to
-    show function prototypes, etc
-
-    - http://github.com/ervandew/supertab
-
-      - The 'context' handling for the completion seems a bit wonky with
-        python -- try modifying it to trigger omni when seeing a '.' in
-        python, not just c.
-
   - Smart Tabs (always use spaces for alignment, even if using tabs for
     indentation)
 
