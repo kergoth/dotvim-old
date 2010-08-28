@@ -1,0 +1,22 @@
+#!/bin/sh
+tmpname=`basename $0`
+
+infile=`mktemp -q /tmp/$tmpname.XXXXXX || exit 1`
+trap "rm -f $infile" EXIT
+cat >>$infile
+
+outfile=`mktemp -q /tmp/$tmpname.XXXXXX || exit 1`
+trap "rm -f $outfile $infile" EXIT
+
+{
+    if ! grep -q "^package " "$infile"; then
+        echo "package gofmt"
+    fi
+    cat $infile
+} | gofmt "$@" | sed -n -e '/^package gofmt/{n; n;}; p' >>$outfile
+
+if [ $? -ne 0 ]; then
+    cat $infile
+else
+    cat $outfile
+fi
