@@ -57,7 +57,7 @@ bundle/git:
 bundle/gitolite: 
   branch: master
   remote: braid/bundle/gitolite
-  revision: 1e6f9bbb5f5d26eb96242bd999485afbb712055d
+  revision: 9061b5a4a73fec5ca594ca0788c82c4624303ffc
   squashed: true
   type: git
   url: git://github.com/tmatilai/gitolite.vim.git
