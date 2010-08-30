@@ -418,8 +418,7 @@ function! s:WillComplete()
   let cnum = col('.')
 
   " Start of line.
-  let prev_char = strpart(line, cnum - 2, 1)
-  if prev_char =~ '^\s*$'
+  if line =~ '^\s*\%' . cnum . 'c'
     return 0
   endif
 
@@ -588,7 +587,12 @@ endfunction " }}}
   inoremap <c-p> <c-r>=<SID>SuperTab('p')<cr>
 
   if g:SuperTabCrMapping
-    inoremap <expr> <cr> pumvisible() ? "\<space>\<bs>" : "\<cr>"
+    " using a <c-r> mapping instead of <expr>, seems to prevent evaluating
+    " other functions mapped to <cr> etc. (like endwise.vim)
+    inoremap <cr> <c-r>=<SID>SelectCompletion()<cr>
+    function s:SelectCompletion()
+      return pumvisible() ? "\<space>\<bs>" : "\<cr>"
+    endfunction
   endif
 " }}}
 
