@@ -4,3 +4,4 @@
 .rope_project
 tmp/
 yankring_history_v2.txt
+/sessions/*.vim
