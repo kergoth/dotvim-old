@@ -104,12 +104,6 @@ TODO
     - winmanager: http://www.vim.org/scripts/script.php?script_id=95
     - project: http://www.vim.org/scripts/script.php?script_id=69
 
-  - Session management
-
-    - http://peterodding.com/code/vim/session/
-    - sessions.vim: http://www.vim.org/scripts/script.php?script_id=2151
-    - sessionman.vim: http://www.vim.org/scripts/script.php?script_id=2010
-
 - Test these out
 
   - svndiff, gitdiff, etc
