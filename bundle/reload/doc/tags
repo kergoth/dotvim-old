@@ -1,3 +1,0 @@
-:ReloadScript	reload.txt	/*:ReloadScript*
-g:reload_on_write	reload.txt	/*g:reload_on_write*
-reload.txt	reload.txt	/*reload.txt*

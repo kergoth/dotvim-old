@@ -308,8 +308,8 @@ set cinkeys=0{,0},0),:,0#,!^F,o,O,e
 " Settings {{{
 
 filetype off
-call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
 filetype plugin indent on
 
 set secure
