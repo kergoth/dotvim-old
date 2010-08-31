@@ -491,6 +491,12 @@ if has('viminfo')
   endif
 endif
 
+" Only save the current tab page
+set sessionoptions-=tabpages
+
+" Don't save help windows
+set sessionoptions-=help
+
 set backspace=indent,eol,start
 set noshowmatch
 set formatoptions=crqn
