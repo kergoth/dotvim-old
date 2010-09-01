@@ -586,7 +586,7 @@ if has('statusline')
   set statusline+=%-3.3n\                      " buffer number
   set statusline+=%(%{StatusLine_FileName()}\ %) " filename
   set statusline+=%h%m%r%w                     " status flags
-
+  set statusline+=%{fugitive#statusline()}     " current git branch
   " let Tlist_Process_File_Always = 1
   set statusline+=%((%{StatusLine_Tlist_Info()})\ %) " tag name
 
