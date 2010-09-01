@@ -1,0 +1,6 @@
+:LuaInspect	luainspect.txt	/*:LuaInspect*
+g:loaded_luainspect	luainspect.txt	/*g:loaded_luainspect*
+g:lua_inspect_events	luainspect.txt	/*g:lua_inspect_events*
+g:lua_inspect_internal	luainspect.txt	/*g:lua_inspect_internal*
+g:lua_inspect_warnings	luainspect.txt	/*g:lua_inspect_warnings*
+luainspect.txt	luainspect.txt	/*luainspect.txt*
