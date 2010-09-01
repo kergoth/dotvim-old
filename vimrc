@@ -842,6 +842,8 @@ let g:c_impl_defined = 1
 let g:snips_author = 'Chris Larson <clarson@kergoth.com>'
 let g:debianfullname = 'Chris Larson'
 let g:debianemail = 'clarson@kergoth.com'
+let g:session_autosave = 1
+let g:session_autoload = 0
 if has('file_in_path')
   let miscdir = finddir("misc", &rtp)
   if miscdir
