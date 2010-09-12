@@ -75,10 +75,17 @@ Included Bundles
 TODO
 ----
 
+- Determine how to make the spell checking a bit smarter.  Specifically, I'd
+  like to disable all checking in regular python strings, but have checking in
+  *docstrings* and in comments.  Alternatively, don't consider "%s" a spelling
+  error.
 - Figure out how to deal with pylint/pyflakes interactions.  The pyflakes
   plugin sets quickfix items, and it regenerates it automatically on certain
   events, which means it blows away the pylint messages from :make.  Perhaps
   we just need a way to disable/re-enable the pyflakes autocmds.
+
+  - Additional note: :Glog conflicts with pyflakes in quickfix usage as well.
+
 - Disable trailing whitespace and beyond textwidth highlighting for
   conque_term buffers
 - Make detectindent obey 'comments' for non-C files.
