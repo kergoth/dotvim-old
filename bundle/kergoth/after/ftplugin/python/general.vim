@@ -5,3 +5,5 @@ if exists('+omnifunc')
   set ofu=pythoncomplete#Complete
 endif
 set isk+=.
+setlocal fdm=syntax
+setlocal fdl=1

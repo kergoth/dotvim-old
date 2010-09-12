@@ -7,6 +7,7 @@
 "		Dmitry Vasiliev
 "
 "		This version is a major rewrite by Zvezdan Petkovic.
+"		Folding support added based on Samual Hoffstaetter's work.
 "
 "		- introduced highlighting of doctests
 "		- updated keywords, built-ins, and exceptions
@@ -69,12 +70,16 @@ endif
 syn keyword pythonStatement	False, None, True
 syn keyword pythonStatement	as assert break continue del exec global
 syn keyword pythonStatement	lambda nonlocal pass print return with yield
-syn keyword pythonStatement	class def nextgroup=pythonFunction skipwhite
 syn keyword pythonConditional	elif else if
 syn keyword pythonRepeat	for while
 syn keyword pythonOperator	and in is not or
 syn keyword pythonException	except finally raise try
 syn keyword pythonInclude	from import
+
+syn match   pythonDefStatement	/^\s*\%(def\|class\)/
+  \ nextgroup=pythonFunction skipwhite
+syn region  pythonFunctionFold	start="^\z(\s*\)\%(def\|class\)\>"
+  \ end="\ze\%(\s*\n\)\+\%(\z1\s\)\@!." fold transparent
 
 " Decorators (new in Python 2.4)
 syn match   pythonDecorator	"@" display nextgroup=pythonFunction skipwhite
@@ -86,7 +91,10 @@ syn match   pythonDecorator	"@" display nextgroup=pythonFunction skipwhite
 syn match   pythonFunction
       \ "\%(\%(def\s\|class\s\|@\)\s*\)\@<=\h\%(\w\|\.\)*" contained
 
-syn match   pythonComment	"#.*$" contains=pythonTodo,@Spell
+syn match   pythonComment	/#\%(.\%({{{\|}}}\)\@!\)*$/
+  \ contains=pythonTodo,@Spell
+syn region  pythonFold matchgroup=pythonComment
+  \ start='#.*{{{.*$' end='#.*}}}.*$' fold transparent
 syn keyword pythonTodo		FIXME NOTE NOTES TODO XXX contained
 
 " Triple-quoted strings can contain doctests.
@@ -258,6 +266,7 @@ if version >= 508 || !exists("did_python_syn_inits")
 
   " The default highlight links.  Can be overridden later.
   HiLink pythonStatement	Statement
+  HiLink pythonDefStatement	Statement
   HiLink pythonConditional	Conditional
   HiLink pythonRepeat		Repeat
   HiLink pythonOperator		Operator
