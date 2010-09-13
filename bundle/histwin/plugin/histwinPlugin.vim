@@ -18,7 +18,6 @@ if exists("g:loaded_undo_browse") || &cp || &ul == -1
 endif
 
 if v:version < 703
-	call histwin#WarningMsg("This plugin requires Vim 7.3 or higher")
 	finish
 endif
 
