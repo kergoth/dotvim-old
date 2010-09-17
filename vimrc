@@ -299,6 +299,9 @@ set shiftwidth=4
 " When 0, it is disabled.
 set softtabstop=4
 
+" Round indent to a multiple of 'shiftwidth'
+set shiftround
+
 set autoindent
 set copyindent
 set preserveindent
