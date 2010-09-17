@@ -426,7 +426,8 @@ set tags=./tags,tags,$PWD/tags
 
 " Nifty completion menu
 set wildmenu
-set wildignore+=*.o,*~
+set wildignore+=*.o,*~,*.swp,*.bak,*.pyc,*.pyo
+
 set wildmode=list:longest
 
 set suffixes+=.in,.a,.lo,.o,.moc,.la,.closure
