@@ -456,6 +456,8 @@ if has('persistent_undo')
   let &undodir = &backupdir
 endif
 
+set pastetoggle=<F2>
+
 set isk+=_,$,@,%,#,-
 set shortmess=atItToO
 
