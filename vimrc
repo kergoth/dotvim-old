@@ -79,21 +79,18 @@ if has('win32')
   " other windows applications, rather than like Vim.
   source $VIMRUNTIME/mswin.vim
 
-  if !exists('$MYVIMRC')
-    let $MYVIMRC = $HOME . '/_vimrc'
-  endif
-  if !exists('$MYVIMRUNTIME')
-    let $MYVIMRUNTIME = $HOME . '/_vim'
-  endif
+  let s:prefix = "_"
 else
-  if !exists('$MYVIMRC')
-    let $MYVIMRC = $HOME . '/.vimrc'
-  endif
-  if !exists('$MYVIMRUNTIME')
-    let $MYVIMRUNTIME = $HOME . '/.vim'
-  endif
+  let s:prefix = "."
 endif
 behave xterm
+
+if !exists('$MYVIMRC')
+  let $MYVIMRC = $HOME . '/' . s:prefix . 'vimrc'
+endif
+if !exists('$MYVIMRUNTIME')
+  let $MYVIMRUNTIME = $HOME . '/' . s:prefix . 'vim'
+endif
 
 
 " Functions {{{
