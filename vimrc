@@ -74,12 +74,27 @@ if v:version < 600
 endif
 
 
-" Ugh, behave mswin makes GVim act like other windows applications, not like
-" Vim.  This behavior is not what I expect.
 if has('win32')
+  " We use this rather than 'behave mswin', as the latter makes GVim act like
+  " other windows applications, rather than like Vim.
   source $VIMRUNTIME/mswin.vim
+
+  if !exists('$MYVIMRC')
+    let $MYVIMRC = $HOME . '/_vimrc'
+  endif
+  if !exists('$MYVIMRUNTIME')
+    let $MYVIMRUNTIME = $HOME . '/_vim'
+  endif
+else
+  if !exists('$MYVIMRC')
+    let $MYVIMRC = $HOME . '/.vimrc'
+  endif
+  if !exists('$MYVIMRUNTIME')
+    let $MYVIMRUNTIME = $HOME . '/.vim'
+  endif
 endif
 behave xterm
+
 
 " Functions {{{
 fun! Print(...)
@@ -147,22 +162,9 @@ noremap <Leader>= gg=G
 " Select everything
 noremap <Leader>gg ggVG
 
-" Mappings to edit/reload the .vimrc
-if ! exists('$MYVIMRC')
-  if has('win32')
-    let $MYVIMRC = $HOME . '/_vimrc'
-  else
-    let $MYVIMRC = $HOME . '/.vimrc'
-  endif
-endif
-if ! exists('$MYVIMRUNTIME')
-  if has('win32')
-    let $MYVIMRUNTIME = $HOME . '/_vim'
-  else
-    let $MYVIMRUNTIME = $HOME . '/.vim'
-  endif
-endif
-nmap <silent> <leader>v :e $MYVIMRC<CR>
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " Pressing ,ss will toggle spell checking
 map <leader>ss :set spell!<CR>
