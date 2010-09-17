@@ -477,10 +477,13 @@ set display+=lastline
 set switchbuf+=useopen
 " set switchbuf+=split
 
-" Longer commandline history
+" Longer commandline and search history
 if has('cmdline_hist')
   set history=500
 endif
+
+" Many levels of undo
+set undolevels=500
 
 " Viminfo file behavior
 if has('viminfo')
