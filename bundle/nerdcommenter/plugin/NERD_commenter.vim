@@ -3,7 +3,7 @@
 " Description: vim global plugin that provides easy code commenting
 " Maintainer:  Martin Grenfell <martin_grenfell at msn dot com>
 " Version:     2.2.2
-" Last Change: 30th March, 2008
+" Last Change: 09th October, 2010
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -702,7 +702,7 @@ function s:CommentLinesMinimal(firstLine, lastLine)
     "if we need to use place holders for the comment, make sure they are
     "enabled for this filetype
     if !g:NERDUsePlaceHolders && s:DoesBlockHaveMultipartDelim(a:firstLine, a:lastLine)
-        throw 'NERDCommenter.Settings exception: Placeoholders are required but disabled.'
+        throw 'NERDCommenter.Settings exception: Place holders are required but disabled.'
     endif
 
     "get the left and right delims to smack on
@@ -976,7 +976,7 @@ function s:InvertComment(firstLine, lastLine)
 
             "move to the line after last line of the sexy comment
             let numLinesAfterSexyComRemoved = s:NumLinesInBuf()
-            let currentLine = bottomBound - (numLinesBeforeSexyComRemoved - numLinesAfterSexyComRemoved) + 1
+            let currentLine = sexyComBounds[1] - (numLinesBeforeSexyComRemoved - numLinesAfterSexyComRemoved) + 1
 
         " the line isnt commented
         else
