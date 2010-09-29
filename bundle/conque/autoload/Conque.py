@@ -138,12 +138,12 @@ CONQUE_FONT = {
 # }}}
 
 # regular expression matching (almost) all control sequences
-CONQUE_SEQ_REGEX       = re.compile(ur"(\u001b\[?\??#?[0-9;]*[a-zA-Z@]|\u001b\][0-9];.*?\u0007|[\u0001-\u000f])", re.UNICODE)
+CONQUE_SEQ_REGEX       = re.compile(ur"(\u001b\[?\??#?[0-9;]*[a-zA-Z0-9@=>]|\u001b\][0-9];.*?\u0007|[\u0001-\u000f])", re.UNICODE)
 CONQUE_SEQ_REGEX_CTL   = re.compile(ur"^[\u0001-\u000f]$", re.UNICODE)
 CONQUE_SEQ_REGEX_CSI   = re.compile(ur"^\u001b\[", re.UNICODE)
 CONQUE_SEQ_REGEX_TITLE = re.compile(ur"^\u001b\]", re.UNICODE)
 CONQUE_SEQ_REGEX_HASH  = re.compile(ur"^\u001b#", re.UNICODE)
-CONQUE_SEQ_REGEX_ESC   = re.compile(ur"^\u001b", re.UNICODE)
+CONQUE_SEQ_REGEX_ESC   = re.compile(ur"^\u001b.$", re.UNICODE)
 
 # match table output
 CONQUE_TABLE_OUTPUT   = re.compile("^\s*\|\s.*\s\|\s*$|^\s*\+[=+-]+\+\s*$")
@@ -228,10 +228,13 @@ class Conque:
         # open command
         self.proc = ConqueSubprocess()
         self.proc.open(command, { 'TERM' : options['TERM'], 'CONQUE' : '1', 'LINES' : str(self.lines), 'COLUMNS' : str(self.columns)})
+
+        # send window size signal, in case LINES/COLUMNS is ignored
+        self.update_window_size(True)
         # }}}
 
     # write to pty
-    def write(self, input, set_cursor = True): # {{{
+    def write(self, input, set_cursor = True, read = True): # {{{
         logging.debug('writing input ' + str(input))
 
         # check if window size has changed
@@ -239,11 +242,14 @@ class Conque:
 
         # write and read
         self.proc.write(input)
-        self.read(1, set_cursor)
+
+        # read output immediately
+        if read:
+            self.read(1, set_cursor)
         # }}}
 
     # read from pty, and update buffer
-    def read(self, timeout = 1, set_cursor = True): # {{{
+    def read(self, timeout = 1, set_cursor = True, return_output = False, update_buffer = True): # {{{
         # read from subprocess
         output = self.proc.read(timeout)
         # and strip null chars
@@ -251,6 +257,10 @@ class Conque:
 
         if output == '':
             return
+
+        # for bufferless terminals
+        if not update_buffer:
+            return output
 
         logging.debug('read *********************************************************************')
         logging.debug(str(output))
@@ -341,6 +351,9 @@ class Conque:
         vim.command('redraw')
 
         logging.info('::: read took ' + str((time.time() - debug_profile_start) * 1000) + ' ms')
+
+        if return_output:
+            return output
     # }}}
 
     # for polling
@@ -841,9 +854,9 @@ class Conque:
     def paste_selection(self):
         self.write(vim.eval('@@'))
 
-    def update_window_size(self):
+    def update_window_size(self, force = False):
         # resize if needed
-        if vim.current.window.width != self.columns or vim.current.window.height != self.lines:
+        if force or vim.current.window.width != self.columns or vim.current.window.height != self.lines:
 
             # reset all window size attributes to default
             self.columns = vim.current.window.width
