@@ -1,9 +1,9 @@
 " Vim plug-in
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: August 30, 2010
+" Last Change: September 19, 2010
 " URL: http://peterodding.com/code/vim/shell/
 " License: MIT
-" Version: 0.7.3
+" Version: 0.8.2
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3123 1 :AutoInstall: shell.zip
@@ -18,11 +18,6 @@ endif
 if !exists('g:shell_fullscreen_items')
   " Change this if :Fullscreen shouldn't hide the menu/toolbar/tabline.
   let g:shell_fullscreen_items = 'mTe'
-endif
-
-if !exists('g:shell_open_cmds')
-  " This is only needed on UNIX, should already support most platforms.
-  let g:shell_open_cmds = ['gnome-open', 'kde-open', 'exo-open', 'xdg-open']
 endif
 
 if !exists('g:shell_hl_exclude')
