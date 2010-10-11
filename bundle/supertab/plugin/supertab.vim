@@ -2,7 +2,7 @@
 "   Original: Gergely Kontra <kgergely@mcl.hu>
 "   Current:  Eric Van Dewoestine <ervandew@gmail.com> (as of version 0.4)
 "   Please direct all correspondence to Eric.
-" Version: 1.1
+" Version: 1.2
 " GetLatestVimScripts: 1643 1 :AutoInstall: supertab.vim
 "
 " Description: {{{
@@ -84,6 +84,10 @@ set cpo&vim
 
   if !exists("g:SuperTabMidWordCompletion")
     let g:SuperTabMidWordCompletion = 1
+  endif
+
+  if !exists("g:SuperTabLeadingSpaceCompletion")
+    let g:SuperTabLeadingSpaceCompletion = 1
   endif
 
   if !exists("g:SuperTabMappingForward")
@@ -426,6 +430,14 @@ function! s:WillComplete()
     return 0
   endif
 
+  " Leading space.
+  if !g:SuperTabLeadingSpaceCompletion
+    let prev_char = strpart(line, cnum - 2, 1)
+    if prev_char =~ '^\s*$'
+      return 0
+    endif
+  endif
+
   " Within a word, but user does not have mid word completion enabled.
   let next_char = strpart(line, cnum - 1, 1)
   if !g:SuperTabMidWordCompletion && next_char =~ '\k'
@@ -594,7 +606,7 @@ endfunction " }}}
     " using a <c-r> mapping instead of <expr>, seems to prevent evaluating
     " other functions mapped to <cr> etc. (like endwise.vim)
     inoremap <cr> <c-r>=<SID>SelectCompletion()<cr>
-    function s:SelectCompletion()
+    function! s:SelectCompletion()
       return pumvisible() ? "\<space>\<bs>" : "\<cr>"
     endfunction
   endif
