@@ -27,9 +27,25 @@
 " THE SOFTWARE.
 " }}}
 
+" **********************************************************************************************************
+" **** CROSS-TERMINAL SETTINGS *****************************************************************************
+" **********************************************************************************************************
+
 " Extra key codes
-let s:input_extra = {}
-let s:input_extra_num = {}
+let s:input_extra = []
+
+let s:term_obj = { 'idx' : 1, 'var' : '', 'is_buffer' : 1, 'active' : 1, 'buffer_name' : '' }
+let s:terminals = {}
+
+let s:save_updatetime = &updatetime
+
+augroup ConqueTerm
+autocmd ConqueTerm VimLeave * call conque_term#close_all()
+
+" read more output when this isn't the current buffer
+if g:ConqueTerm_ReadUnfocused == 1
+    autocmd ConqueTerm CursorHold * call conque_term#read_all(0)
+endif
 
 " **********************************************************************************************************
 " **** VIM FUNCTIONS ***************************************************************************************
@@ -40,10 +56,10 @@ function! conque_term#open(...) "{{{
     let command = get(a:000, 0, '')
     let hooks   = get(a:000, 1, [])
     let return_to_current  = get(a:000, 2, 0)
-    let use_buffer  = get(a:000, 3, 1)
+    let is_buffer  = get(a:000, 3, 1)
 
     " switch to buffer if needed
-    if return_to_current == 1
+    if is_buffer && return_to_current
       let save_sb = &switchbuf
 
       "use an agressive sb option
@@ -54,7 +70,7 @@ function! conque_term#open(...) "{{{
     endif
 
     " bare minimum validation
-    if has('python') != 1
+    if !has('python')
         echohl WarningMsg | echomsg "Conque requires the Python interface to be installed" | echohl None
         return 0
     endif
@@ -69,42 +85,59 @@ function! conque_term#open(...) "{{{
         endif
     endif
 
-    " set buffer window options
-    let g:ConqueTerm_BufName = substitute(command, ' ', '\\ ', 'g') . "\\ -\\ " . g:ConqueTerm_Idx
-    if use_buffer == 1
-        call conque_term#set_buffer_settings(command, hooks)
-    endif
-    let b:ConqueTerm_Idx = g:ConqueTerm_Idx
-    let b:ConqueTerm_Var = 'ConqueTerm_' . g:ConqueTerm_Idx
-    let g:ConqueTerm_Var = 'ConqueTerm_' . g:ConqueTerm_Idx
     let g:ConqueTerm_Idx += 1
+    let g:ConqueTerm_Var = 'ConqueTerm_' . g:ConqueTerm_Idx
+    let g:ConqueTerm_BufName = substitute(command, ' ', '\\ ', 'g') . "\\ -\\ " . g:ConqueTerm_Idx
+
+    " set buffer window options
+    if is_buffer
+        call conque_term#set_buffer_settings(command, hooks)
+
+        let b:ConqueTerm_Idx = g:ConqueTerm_Idx
+        let b:ConqueTerm_Var = g:ConqueTerm_Var
+    endif
+
+    " save handle
+    let t_obj = conque_term#create_terminal_object(g:ConqueTerm_Idx, is_buffer, g:ConqueTerm_BufName)
+    let s:terminals[g:ConqueTerm_Idx] = t_obj
 
     " open command
     try
         let l:config = '{"color":' . string(g:ConqueTerm_Color) . ',"TERM":"' . g:ConqueTerm_TERM . '"}'
-        execute 'python ' . b:ConqueTerm_Var . ' = Conque()'
-        execute "python " . b:ConqueTerm_Var . ".open('" . conque_term#python_escape(command) . "', " . l:config . ")"
+        execute 'python ' . g:ConqueTerm_Var . ' = Conque()'
+        execute "python " . g:ConqueTerm_Var . ".open('" . conque_term#python_escape(command) . "', " . l:config . ")"
     catch 
         echohl WarningMsg | echomsg "Unable to open command: " . command | echohl None
         return 0
     endtry
 
     " set buffer mappings and auto commands 
-    if use_buffer == 1
+    if is_buffer
         call conque_term#set_mappings('start')
     endif
 
     " switch to buffer if needed
-    if return_to_current == 1
+    if is_buffer && return_to_current
         " jump back to code buffer
         sil exe ":sb " . current_buffer
         sil exe ":set switchbuf=" . save_sb
-    elseif use_buffer == 1
+    elseif is_buffer
         startinsert!
     endif
 
-    return g:ConqueTerm_Idx - 1
+    return t_obj
 endfunction "}}}
+
+" open(), but no buffer
+function! conque_term#subprocess(command) " {{{
+    
+    let t_obj = conque_term#open(a:command, [], 0, 0)
+    if !exists('b:ConqueTerm_Var')
+        call conque_term#on_blur()
+    endif
+    return t_obj
+
+endfunction " }}}
 
 " set buffer options
 function! conque_term#set_buffer_settings(command, pre_hooks) "{{{
@@ -191,11 +224,6 @@ function! conque_term#set_mappings(action) "{{{
 
         " reposition cursor when going into insert mode
         execute 'autocmd ' . b:ConqueTerm_Var . ' InsertEnter <buffer> python ' . b:ConqueTerm_Var . '.insert_enter()'
-
-        " read more output when this isn't the current buffer
-        if g:ConqueTerm_ReadUnfocused == 1
-            execute 'autocmd ' . b:ConqueTerm_Var . ' CursorHold * call conque_term#read_all()'
-        endif
 
         " poll for more output
         sil execute 'autocmd ' . b:ConqueTerm_Var . ' CursorHoldI <buffer> python ' .  b:ConqueTerm_Var . '.auto_read()'
@@ -313,10 +341,22 @@ function! conque_term#set_mappings(action) "{{{
     if has('gui_running')
         if l:action == 'start'
             sil exe 'i' . map_modifier . 'map <buffer> <S-Insert> <Esc>:<C-u>python ' . b:ConqueTerm_Var . ".write(vim.eval('@+'))<CR>a"
+            sil exe 'i' . map_modifier . 'map <buffer> <S-Help> <Esc>:<C-u>python ' . b:ConqueTerm_Var . ".write(vim.eval('@+'))<CR>a"
         else
             sil exe 'i' . map_modifier . 'map <buffer> <S-Insert>'
+            sil exe 'i' . map_modifier . 'map <buffer> <S-Help>'
         endif
     endif
+
+    " attempt to map scroll wheel
+    map  <buffer> <M-Esc>[62~ <MouseDown>
+    map! <buffer> <M-Esc>[62~ <MouseDown>
+    map  <buffer> <M-Esc>[63~ <MouseUp>
+    map! <buffer> <M-Esc>[63~ <MouseUp>
+    map  <buffer> <M-Esc>[64~ <S-MouseDown>
+    map! <buffer> <M-Esc>[64~ <S-MouseDown>
+    map  <buffer> <M-Esc>[65~ <S-MouseUp>
+    map! <buffer> <M-Esc>[65~ <S-MouseUp>
 
     " disable other normal mode keys which insert text
     if l:action == 'start'
@@ -336,19 +376,11 @@ function! conque_term#set_mappings(action) "{{{
     endif
 
     " user defined mappings
-    for user_key in keys(s:input_extra)
+    for [map_from, map_to] in s:input_extra
         if l:action == 'start'
-            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . user_key . ' <C-o>:python ' . b:ConqueTerm_Var . ".write('" . s:input_extra[user_key] . "')<CR>"
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . map_from . ' <C-o>:python ' . b:ConqueTerm_Var . ".write('" . conque_term#python_escape(map_to) . "')<CR>"
         else
-            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . user_key
-        endif
-    endfor
-
-    for user_key in keys(s:input_extra_num)
-        if l:action == 'start'
-            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . user_key . ' <C-o>:python ' . b:ConqueTerm_Var . ".write(unichr(" . s:input_extra_num[user_key] . "))<CR>"
-        else
-            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . user_key
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . map_from
         endif
     endfor
 
@@ -395,22 +427,44 @@ function! conque_term#send_selected(type) "{{{
 endfunction "}}}
 
 " read from all known conque buffers
-function! conque_term#read_all() "{{{
-    " don't run this if we're in a conque buffer
-    if exists('b:ConqueTerm_Var')
-        return
-    endif
+function! conque_term#read_all(insert_mode) "{{{
 
-    try
-        for i in range(1, g:ConqueTerm_Idx - 1)
-            execute 'python ConqueTerm_' . string(i) . '.read(1, False)'
-        endfor
-    catch
-        " probably a deleted buffer
-    endtry
+    for i in range(1, g:ConqueTerm_Idx)
+        try
+            if !s:terminals[i].active
+                continue
+            endif
+
+            let output = s:terminals[i].read(1)
+
+            if !s:terminals[i].is_buffer && exists('*s:terminals[i].callback')
+                call s:terminals[i].callback(output)
+            endif
+        catch
+            " probably a deleted buffer
+        endtry
+    endfor
 
     " restart updatetime
-    call feedkeys("f\e")
+    if a:insert_mode
+        call feedkeys("\<C-o>f\e", "n")
+    else
+        call feedkeys("f\e", "n")
+    endif
+
+endfunction "}}}
+
+" close all subprocesses
+function! conque_term#close_all() "{{{
+
+    for i in range(1, g:ConqueTerm_Idx)
+        try
+            call s:terminals[i].close()
+        catch
+            " probably a deleted buffer
+        endtry
+    endfor
+
 endfunction "}}}
 
 " util function to add enough \s to pass a string to python
@@ -432,8 +486,12 @@ function! conque_term#on_focus() " {{{
         NeoComplCacheLock
     endif
  
-    " set poll interval to 50ms   
-    let s:save_updatetime = &updatetime
+    if g:ConqueTerm_ReadUnfocused == 1
+        autocmd! ConqueTerm CursorHoldI *
+        autocmd! ConqueTerm CursorHold *
+    endif
+
+    " set poll interval to 50ms
     set updatetime=50
 
     " if configured, go into insert mode
@@ -454,6 +512,8 @@ function! conque_term#on_blur() " {{{
     " reset poll interval
     if g:ConqueTerm_ReadUnfocused == 1
         set updatetime=1000
+        autocmd ConqueTerm CursorHoldI * call conque_term#read_all(1)
+        autocmd ConqueTerm CursorHold * call conque_term#read_all(0)
     elseif exists('s:save_updatetime')
         exe 'set updatetime=' . s:save_updatetime
     else
@@ -469,58 +529,30 @@ endfunction " }}}
 " **** "API" functions *************************************************************************************
 " **********************************************************************************************************
 
-" Conque handle "class" definition
-let s:t_handle = { 'idx' : 1, 'read_time' : 1, 'var' : '', 'has_buffer' : 1 }
+" See doc/conque_term.txt for full documentation
 
 " Write to a conque terminal buffer
-"
-" Use this function to send text to ConqueTerm. If you are updating a remote
-" buffer you may want to set the config option g:ConqueTerm_ReadUnfocused so
-" the terminal will continue updating.
-"
-" Example usage:
-"
-"   let conque_buff = conque_term#open('mysql -u joe LunchBucket', ['belowright split', 'resize 20'], 1)
-"   call conque_term#write('SELECT NOW() AS "Lunch time";' . "\n", conque_buff, 500)
-"
-" Or with minimal options:
-"
-"   call conque_term#open('bash')
-"   call conque_term#writeln('cd ' . make_path)
-"   call conque_term#writeln('make')
-"
-" @param text String The text to write.
-" @param buffer_number Int (Optional) The terminal number to use. Default is the most recently opened terminal.
-function! s:t_handle.write(text) dict " {{{
+function! s:term_obj.write(text) dict " {{{
 
     " if we're not in terminal buffer, pass flag to not position the cursor
     sil exe 'python ' . self.var . '.write(vim.eval("a:text"), False, False)'
 
 endfunction " }}}
 
-" Write to a conque terminal buffer, add a new line to end of input
-"
-" See conque_term#write() for details
-function! s:t_handle.writeln(text) dict " {{{
+" same as write() but adds a newline
+function! s:term_obj.writeln(text) dict " {{{
 
     call self.write(a:text . "\n")
 
 endfunction " }}}
 
+" read from terminal buffer and return string
+function! s:term_obj.read(...) dict " {{{
 
-" Read data from conque terminal buffer
-"
-" Retrieve an array of lines of text from the terminal. This really doesn't 
-" provide any special functionality other than locating the correct buffer.
-" 
-" @param read_time Integer (Optional) The number of milliseconds to wait for output before returning to your code buffer.
-" @param has_buffer Bool (Optional) If set to 0 then the text read will never be displayed in the terminal buffer.
-function! s:t_handle.read(...) dict " {{{
+    let read_time = get(a:000, 0, 1)
+    let update_buffer = get(a:000, 1, self.is_buffer)
 
-    let read_time = get(a:000, 0, self.read_time)
-    let has_buffer = get(a:000, 1, self.has_buffer)
-
-    if has_buffer 
+    if update_buffer 
         let up_py = 'True'
     else
         let up_py = 'False'
@@ -533,19 +565,9 @@ function! s:t_handle.read(...) dict " {{{
         let in_buffer = 0
     endif
 
-    " switch to buffer if needed
-    if has_buffer && !in_buffer
-        let save_sb = &switchbuf
-
-        "use an agressive sb option
-        sil set switchbuf=usetab
-
-        " current buffer name
-        let current_buffer = bufname("%")
-    endif
-
     let output = ''
 
+    " read!
     sil exec ":python conque_tmp = " . self.var . ".read(timeout = " . read_time . ", set_cursor = False, return_output = True, update_buffer = " . up_py . ")"
 
     " ftw!
@@ -556,18 +578,34 @@ if conque_tmp:
     vim.command('let output = "' + conque_tmp + '"')
 EOF
 
-    " switch to buffer if needed
-    if has_buffer && !in_buffer
-        " jump back to code buffer
-        sil exe ":sb " . current_buffer
-        sil exe ":set switchbuf=" . save_sb
-    endif
-
     return output
 
 endfunction " }}}
 
-function! conque_term#get_instance(...) " {{{
+" set output callback
+function! s:term_obj.set_callback(callback_func) dict " {{{
+
+    let s:terminals[self.idx].callback = function(a:callback_func)
+
+endfunction " }}}
+
+" close subprocess with ABORT signal
+function! s:term_obj.close() dict " {{{
+
+    sil exe 'python ' . self.var . '.proc.signal(1)'
+
+    if self.is_buffer
+        call conque_term#set_mappings('stop')
+        if exists('g:ConqueTerm_CloseOnEnd') && g:ConqueTerm_CloseOnEnd
+            sil exe 'bwipeout! ' . self.buffer_name
+            stopinsert!
+        endif
+    endif
+
+endfunction " }}}
+
+" create a new terminal object
+function! conque_term#create_terminal_object(...) " {{{
 
     " find conque buffer to update
     let buf_num = get(a:000, 0, 0)
@@ -578,45 +616,51 @@ function! conque_term#get_instance(...) " {{{
         let buf_num = b:ConqueTerm_Idx
     else
         let pvar = g:ConqueTerm_Var
-        let buf_num = g:ConqueTerm_Idx - 1
+        let buf_num = g:ConqueTerm_Idx
     endif
 
     " is ther a buffer?
-    let has_buffer = get(a:000, 1, 1)
+    let is_buffer = get(a:000, 1, 1)
 
-    " sleep time before reading
-    let read_time = get(a:000, 2, 1)
-    if read_time == 0
-        let read_time = 1
+    " the buffer name
+    let bname = get(a:000, 2, '')
+
+    let l:t_obj = copy(s:term_obj)
+    let l:t_obj.is_buffer = is_buffer
+    let l:t_obj.idx = buf_num
+    let l:t_obj.buffer_name = bname
+    let l:t_obj.var = pvar
+
+    return l:t_obj
+
+endfunction " }}}
+
+" get an existing terminal instance
+function! conque_term#get_instance(...) " {{{
+
+    " find conque buffer to update
+    let buf_num = get(a:000, 0, 0)
+
+    if exists('s:terminals[buf_num]')
+        
+    elseif exists('b:ConqueTerm_Var')
+        let buf_num = b:ConqueTerm_Idx
+    else
+        let buf_num = g:ConqueTerm_Idx
     endif
 
-    let l:handle = copy(s:t_handle)
-    let l:handle.read_time = read_time
-    let l:handle.has_buffer = has_buffer
-    let l:handle.idx = buf_num
-    let l:handle.var = pvar
-
-    return l:handle
+    return s:terminals[buf_num]
 
 endfunction " }}}
 
-function! conque_term#new_terminal(...) " {{{
-    let command = get(a:000, 0, '')
-    let hooks   = get(a:000, 1, [])
-    let return_to_current  = get(a:000, 2, 0)
-    
-    let bnum = conque_term#open(command, hooks, return_to_current)
-    let handle = conque_term#get_instance(bnum, 1, 1)
-
-    return handle
+" add a new default mapping
+function! conque_term#imap(map_from, map_to) " {{{
+    call add(s:input_extra, [a:map_from, a:map_to])
 endfunction " }}}
 
-function! conque_term#new_subprocess(command) " {{{
-    
-    let bnum = conque_term#open(a:command, [], 0, 0)
-    let handle = conque_term#get_instance(bnum, 0, 1)
-
-    return handle
+" add a list of new default mappings
+function! conque_term#imap_list(map_list) " {{{
+    call extend(s:input_extra, a:map_list)
 endfunction " }}}
 
 " **********************************************************************************************************

@@ -202,6 +202,9 @@ class Conque:
     # do we need to move the cursor?
     cursor_set = False
 
+    # used for auto_read actions
+    read_count = 0
+
     # }}}
 
     # constructor
@@ -238,7 +241,8 @@ class Conque:
         logging.debug('writing input ' + str(input))
 
         # check if window size has changed
-        self.update_window_size()
+        if read:
+            self.update_window_size()
 
         # write and read
         self.proc.write(input)
@@ -358,6 +362,16 @@ class Conque:
 
     # for polling
     def auto_read(self): # {{{
+
+        # check subprocess status, but not every time since it's CPU expensive
+        if self.read_count == 10:
+            if not self.proc.is_alive():
+                vim.command('call conque_term#get_instance().close()')
+                return
+            else:
+                self.read_count = 0
+        self.read_count += 1
+
         # read output
         self.read(1)
 

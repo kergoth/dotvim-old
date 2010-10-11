@@ -77,12 +77,17 @@ endif " }}}
 
 " Keep on updating the shell window after you've switched to another buffer {{{
 if !exists('g:ConqueTerm_ReadUnfocused')
-    let g:ConqueTerm_ReadUnfocused = 1
+    let g:ConqueTerm_ReadUnfocused = 0
 endif " }}}
 
 " Use this regular expression to highlight prompt {{{
 if !exists('g:ConqueTerm_PromptRegex')
     let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
+endif " }}}
+
+" Automatically close buffer when program exits {{{
+if !exists('g:ConqueTerm_CloseOnEnd')
+    let g:ConqueTerm_CloseOnEnd = 0
 endif " }}}
 
 " **********************************************************************************************************
@@ -92,7 +97,8 @@ endif " }}}
 " Startup {{{
 
 let g:ConqueTerm_Loaded = 1
-let g:ConqueTerm_Idx = 1
+let g:ConqueTerm_Idx = 0
+let g:ConqueTerm_Version = 120
 
 command! -nargs=+ -complete=shellcmd ConqueTerm call conque_term#open(<q-args>)
 command! -nargs=+ -complete=shellcmd ConqueTermSplit call conque_term#open(<q-args>, ['belowright split'])

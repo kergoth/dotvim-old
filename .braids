@@ -22,7 +22,7 @@ bundle/command-t:
   url: git://git.wincent.com/command-t.git
 bundle/conque: 
   remote: braid/bundle/conque
-  revision: 341
+  revision: 350
   squashed: true
   type: svn
   url: http://conque.googlecode.com/svn/trunk
