@@ -1,8 +1,8 @@
 " histwin.vim - Vim global plugin for browsing the undo tree
 " -------------------------------------------------------------
-" Last Change: Sun, 10 Oct 2010 13:54:13 +0200
+" Last Change: Mon, 18 Oct 2010 21:03:21 +0200
 " Maintainer:  Christian Brabandt <cb@256bit.org>
-" Version:     0.17
+" Version:     0.19
 " Copyright:   (c) 2009, 2010 by Christian Brabandt
 "              The VIM LICENSE applies to histwin.vim 
 "              (see |copyright|) except use "histwin.vim" 
@@ -72,6 +72,12 @@ fun! s:Init()"{{{1
 
 	" Move to the buffer, we are monitoring
 	exe bufwinnr(s:orig_buffer) . 'wincmd w'
+
+	" initialize the modifiable variable
+	if !exists("b:modifiable")
+		let b:modifiable=&l:ma
+	endif
+
 	if !exists("b:undo_customtags")
     " TODO: Activate, when viminfo patch has been incorporated into vim
 	"
@@ -134,25 +140,26 @@ fun! s:ReturnHistList()"{{{1
 		" (it's hard to get the right branches, so we parse the :undolist
 		" command and only take these entries (plus the first and last entry)
 		let ut=s:GetUndotreeEntries(undotree().entries)
+		call sort(ut, 's:SortValues')
 		let templist=map(templist, 'split(v:val)[0]')
 		let re = '^\%(' . join(templist, '\|') . '\)$'
 		let first = ut[0]
 		let first.tag='Start Editing'
 		if s:undo_tree_dtl
-			call filter(ut, 'v:val.seq =~ re')
+			call filter(ut, 'v:val.change =~ re')
 		else
-			call filter(ut, 'v:val.seq =~ re || v:val.save > 0')
+			call filter(ut, 'v:val.change =~ re || v:val.save > 0')
 		endif
 		let ut= [first] + ut
 			
 		for item in ut
-			if has_key(customtags, item.seq)
-				let tag=customtags[item.seq].tag
-				call remove(customtags,item.seq)
+			if has_key(customtags, item.change)
+				let tag=customtags[item.change].tag
+				call remove(customtags,item.change)
 			else
 				let tag=(has_key(item, 'tag') ? item.tag : '')
 			endif
-			let histdict[item.seq]={'change': item.seq,
+			let histdict[item.change]={'change': item.change,
 				\'number': item.number,
 				\'time': item.time,
 				\'tag': tag,
@@ -160,7 +167,7 @@ fun! s:ReturnHistList()"{{{1
 				\}
 		endfor
 		unlet item
-		let first_seq = first.seq
+		let first_seq = first.change
 	else
 		" include the starting point as the first change.
 		" unfortunately, there does not seem to exist an 
@@ -205,7 +212,7 @@ fun! s:ReturnHistList()"{{{1
 endfun
 
 fun! s:SortValues(a,b)"{{{1
-	return (a:a.change+0)==(a:b.change+0) ? 0 : (a:a.change+0) > (a:b.change+0) ? 1 : -1
+	return (a:a.change)==(a:b.change) ? 0 : (a:a.change) > (a:b.change) ? 1 : -1
 endfun
 
 fun! s:MaxTagsLen()"{{{1
@@ -395,7 +402,7 @@ fun! s:DiffUndoBranch()"{{{1
 	try
 		exe ':u ' . prevchangenr
 		setl modifiable
-	catch /Vim(undo):Undo number \d\+ not found/
+	catch /Vim(undo):E830:Undo number \d\+ not found/
 		call s:WarningMsg("Undo Change not found!")
 		return ''
 	endtry
@@ -523,8 +530,6 @@ fun! s:UndoBranchTag()"{{{1
 				\'time':   tags[key].time+0,
 				\'change': key+0,
 				\'save': tags[key].save+0}
-	"let cdict[key]	 		 = {'tag': tag, 'number': 0, 'time': strftime('%H:%M:%S'), 'change': key, 'save': 0}
-	"let tags[changenr]		 = {'tag': cdict[changenr][tag], 'change': changenr, 'number': tags[key]['number'], 'time': tags[key]['time']}
 	let tags[key]['tag']		 = tag
 	call setbufvar(s:orig_buffer, 'undo_tagdict', tags)
 	call setbufvar(s:orig_buffer, 'undo_customtags', cdict)
@@ -602,6 +607,7 @@ fun! s:MapKeys()"{{{1
 	nnoremap <script> <silent> <buffer> D     :<C-U>silent :call <sid>DiffUndoBranch()<CR>
 	nnoremap <script> <silent> <buffer>	R     :<C-U>call <sid>ReplayUndoBranch()<CR>:silent! :call histwin#UndoBrowse()<CR>
 	nnoremap <script> <silent> <buffer> Q     :<C-U>q<CR>
+	nnoremap <script> <silent> <buffer> Q     :<C-U>silent :call <sid>CloseHistWin()<CR>
 	nnoremap <script> <silent> <buffer> <CR>  :<C-U>silent :call <sid>UndoBranch()<CR>:call histwin#UndoBrowse()<CR>
 	nmap	 <script> <silent> <buffer> T     :call <sid>UndoBranchTag()<CR>:call histwin#UndoBrowse()<CR>
 	nmap     <script> <silent> <buffer>	P     :<C-U>silent :call <sid>ToggleDetail()<CR><C-L>
@@ -619,6 +625,9 @@ fun! histwin#UndoBrowse()"{{{1
 		let b:undo_tagdict=s:ReturnHistList()
 		call s:PrintUndoTree(b:undo_win)
 		call s:MapKeys()
+		if !exists("#histwin#BufUnload")
+			call <sid>AuCommandClose()
+		endif
 	else
 		echoerr "Histwin: Undo has been disabled. Check your undolevel setting!"
 	endif
@@ -629,24 +638,33 @@ endfun
 
 fun! s:GetUndotreeEntries(entry) "{{{1
 	let b=[]
-	" Return only entries, that have an 'alt' key, which means, an undo branch
-	" started there
 	for item in a:entry
-		call add(b, { 'seq': item.seq, 'time': item.time, 'number': 1,
+		call add(b, { 'change': item.seq, 'time': item.time, 'number': 1,
 					\'save': has_key(item, 'save') ? item.save : 0})
 		if has_key(item, "alt")
-			" need to add the last seq. number that was in an alternative
-			" branch, so decrementing item.seq by one.
 			call extend(b,s:GetUndotreeEntries(item.alt))
 		endif
 	endfor
 	return b
 endfun
 
-" Debug function, not needed {{{1
-fun! SortUndoTreeValues(a,b)"{{{2
-	return (a:a.seq)==(a:b.seq) ? 0 : (a:a.seq) > (a:b.seq) ? 1 : -1
-endfun"}}}2
+fun! s:CloseHistWin() "{{{1
+	call setbufvar(s:orig_buffer, "&ma", getbufvar(s:orig_buffer, "modifiable"))
+	"exe "au! <buffer=".bufnr('')."> BufUnload *"
+	aug histwin
+		au! BufUnload <buffer>
+	augroup end
+	aug! histwin
+	wincmd c
+endfun
+	
+fun! s:AuCommandClose() "{{{1
+	aug histwin
+		au!
+		au BufUnload <buffer> :call <sid>CloseHistWin()
+	aug end
+endfun
+
 
 " Modeline and Finish stuff: {{{1
 let &cpo=s:cpo

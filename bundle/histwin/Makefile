@@ -11,7 +11,10 @@ all: uninstall vimball install README
 vimball: $(PLUGIN).vba
 
 clean:
-	rm -f *.vba */*.orig *.~* .VimballRecord
+#	rm -f *.vba */*.orig *.~* .VimballRecord .*.un~ */.*.un~ 
+	find . -type f \( -name "*.vba" -o -name "*.orig" -o -name "*.~*" \
+	-o -name ".VimballRecord" -o -name ".*.un~" -o -name "*.sw*" \) \
+	-delete
 
 dist-clean: clean
 
@@ -42,3 +45,6 @@ version:
 	perl -i -pne 'if (/Last Change:/) {s/(:\s+).*\n/sprintf(": %s", `date -R`)/e}' ${SCRIPT} ${AUTOL}
 	perl -i.orig -pne 'if (/Version:/) {s/\.(\d+).*\n/sprintf(".%d %s", 1+$$1, `date -R`)/e}' ${DOC}
 	VERSION=$(shell sed -n '/Version:/{s/^.*\(\S\.\S\+\)$$/\1/;p}' $(SCRIPT))
+
+upload:
+	git push
