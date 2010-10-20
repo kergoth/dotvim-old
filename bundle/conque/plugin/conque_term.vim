@@ -59,6 +59,11 @@ if !exists('g:ConqueTerm_SendVisKey')
     let g:ConqueTerm_SendVisKey = '<F9>'
 endif " }}}
 
+" Use this key to toggle terminal key mappings. {{{
+if !exists('g:ConqueTerm_ToggleKey')
+    let g:ConqueTerm_ToggleKey = '<F8>'
+endif " }}}
+
 " Enable color. {{{
 " If your apps use a lot of color it will slow down the shell.
 if !exists('g:ConqueTerm_Color')
@@ -83,6 +88,27 @@ endif " }}}
 " Use this regular expression to highlight prompt {{{
 if !exists('g:ConqueTerm_PromptRegex')
     let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
+endif " }}}
+
+" Choose which Python version to attempt to load first {{{
+" Valid values are 2, 3 or 0 (no preference)
+if !exists('g:ConqueTerm_PyVersion')
+    let g:ConqueTerm_PyVersion = 2
+endif " }}}
+
+" Path to python.exe. (Windows only) {{{
+" By default, Conque will check C:\PythonNN\python.exe then will search system path
+" If you have installed Python in an unusual location and it's not in your path, fill in the full path below
+" E.g. 'C:\Program Files\Python\Python27\python.exe'
+if !exists('g:ConqueTerm_PyExe')
+    let g:ConqueTerm_PyExe = ''
+endif " }}}
+
+" Path to autoload directory. (Windows only) {{{
+" Conque should be able to find this directory by itself, but if not you can specify it below
+" E.g. 'C:\Users\Nraffo\vimfiles\autoload'
+if !exists('g:ConqueTerm_AutoloadDir')
+    let g:ConqueTerm_AutoloadDir = ''
 endif " }}}
 
 " Automatically close buffer when program exits {{{
