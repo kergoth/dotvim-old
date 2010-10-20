@@ -131,13 +131,6 @@ bundle/pyflakes/ftplugin/python/pyflakes:
   squashed: true
   type: git
   url: git://github.com/kevinw/pyflakes.git
-bundle/reload: 
-  branch: master
-  remote: braid/bundle/reload
-  revision: e2443ff27a07e15a94d7935ae202d69894b1ab50
-  squashed: true
-  type: git
-  url: git://github.com/xolox/vim-reload.git
 bundle/repeat: 
   branch: master
   remote: braid/bundle/repeat
