@@ -104,6 +104,10 @@ aug pydoc
     au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
 aug END
 
+" remap the K (or 'help') key
+nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
+
+
 "commands
 command! -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
 command! -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
