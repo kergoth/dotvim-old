@@ -1,6 +1,6 @@
-" Vim script
-" Maintainer: Peter Odding <peter@peterodding.com>
-" Last Change: July 21, 2010
+" Vim auto-load script
+" Author: Peter Odding <peter@peterodding.com>
+" Last Change: September 17, 2010
 " URL: http://peterodding.com/code/vim/profile/autoload/xolox.vim
 
 " Miscellaneous functions used throughout my Vim profile and plug-ins.
@@ -15,7 +15,11 @@ if !exists('g:xolox_messages')
   let g:xolox_messages = []
 endif
 
-function! xolox#trim(s) " -- trim whitespace from start/end of {s} {{{1
+function! xolox#is_windows() " {{{1
+  return has('win16') || has('win32') || has('win64')
+endfunction
+
+function! xolox#trim(s) " -- trim whitespace from start and end of {s} {{{1
   return substitute(a:s, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
@@ -46,11 +50,17 @@ function! xolox#unique(list) " -- remove duplicate values from {list} (in-place)
 endfunction
 
 function! xolox#message(...) " -- show a formatted informational message to the user {{{1
-	return s:message('title', a:000)
+	call s:message('title', a:000)
 endfunction
 
 function! xolox#warning(...) " -- show a formatted warning message to the user {{{1
-	return s:message('warningmsg', a:000)
+	call s:message('warningmsg', a:000)
+endfunction
+
+function! xolox#debug(...) " -- show a formatted debugging message to the user {{{1
+  if &vbs >= 1
+	  call s:message('question', a:000)
+  endif
 endfunction
 
 function! s:message(hlgroup, args) " -- implementation of message() and warning() {{{1
@@ -68,7 +78,8 @@ function! s:message(hlgroup, args) " -- implementation of message() and warning(
         let s:ruler_save = &ruler
         let s:smd_save = &showmode
       endif
-      set nomore noruler noshowmode
+      set nomore noshowmode
+      if winnr('$') == 1 | set noruler | endif
       augroup PluginXoloxHideMode
         autocmd! CursorHold,CursorHoldI * call s:clear_message()
       augroup END
