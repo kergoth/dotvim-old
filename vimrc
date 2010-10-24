@@ -855,6 +855,7 @@ let g:debianfullname = 'Chris Larson'
 let g:debianemail = 'clarson@kergoth.com'
 let g:NTPNames = ['build.xml', 'Makefile', '.project', '.lvimrc', 'SConstruct',
                 \ 'CMakeLists.txt', 'setup.py', 'configure.ac', 'configure.in']
+let g:is_posix = 1
 let g:session_autosave = 1
 let g:session_autoload = 0
 if has('file_in_path')
