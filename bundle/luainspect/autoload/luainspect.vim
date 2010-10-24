@@ -1,6 +1,6 @@
 " Vim script.
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: August 19, 2010
+" Last Change: October 9, 2010
 " URL: http://peterodding.com/code/vim/lua-inspect/
 " License: MIT
 
@@ -38,7 +38,11 @@ endfunction
 
 function! luainspect#make_request(action) " {{{1
   let starttime = xolox#timer#start()
-  let bufname = fnamemodify(bufname(a:action != 'tooltip' ? '%' : v:beval_bufnr), ':p')
+  let bufnr = a:action != 'tooltip' ? bufnr('%') : v:beval_bufnr
+  let bufname = bufname(bufnr)
+  if bufname != ''
+    let bufname = fnamemodify(bufname, ':p')
+  endif
   if a:action == 'tooltip'
     let lines = getbufline(v:beval_bufnr, 1, "$")
     call insert(lines, v:beval_col)
@@ -53,7 +57,11 @@ function! luainspect#make_request(action) " {{{1
   call s:parse_text(join(lines, "\n"), s:prepare_search_path())
   if !empty(b:luainspect_output)
     let response = b:luainspect_output[0]
-    let friendlyname = fnamemodify(bufname, ':~')
+    if bufname == ''
+      let friendlyname = 'buffer #' . bufnr
+    else
+      let friendlyname = fnamemodify(bufname, ':~')
+    endif
     if response == 'syntax_error' && len(b:luainspect_output) >= 4
       " Never perform syntax error highlighting in non-Lua buffers!
       let linenum = b:luainspect_output[1] + 0
@@ -118,7 +126,9 @@ function! s:prepare_search_path() " {{{1
 endfunction
 
 function! s:parse_text(input, search_path) " {{{1
-  if !(exists('b:luainspect_input') && b:luainspect_input == a:input)
+  if !(exists('b:luainspect_input')
+          \ && exists('b:luainspect_output')
+          \ && b:luainspect_input == a:input)
     if !(has('lua') && g:lua_inspect_internal)
       let template = 'lua -e "%s; require ''luainspect4vim'' (io.read ''*a'')"'
       let command = printf(template, a:search_path)
@@ -223,7 +233,7 @@ function! s:update_warnings(warnings) " {{{1
     endif
     let warnings = len(list) > 1 ? 'warnings' : 'warning'
     let w:quickfix_title = printf('%i %s reported by LuaInspect', len(list), warnings)
-    wincmd w
+    wincmd p
   else
     lclose
   endif
