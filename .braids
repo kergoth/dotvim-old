@@ -92,7 +92,7 @@ bundle/gundo:
 bundle/histwin: 
   branch: master
   remote: braid/bundle/histwin
-  revision: b00be8188b848d07595b180823e4001c6ba763ce
+  revision: a41c7f46e8edb7b551b22e3b6ef1c79e4a3fc547
   squashed: true
   type: git
   url: http://github.com/chrisbra/histwin.vim.git
