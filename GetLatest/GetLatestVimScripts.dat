@@ -5,7 +5,7 @@ ScriptID SourceID Filename
 231 13650 ctab.vim
 273 7701 taglist.vim
 294  10110 Align.vim
-489  9573  Manpageview.vim
+489 14117 Manpageview.vim
 642  8136  getscript.vim
 729  3477  sudo.vim
 1195 5847  vis.vim
