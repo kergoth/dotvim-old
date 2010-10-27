@@ -89,13 +89,6 @@ bundle/gundo:
   squashed: true
   type: git
   url: /Users/kergoth/Code/Upstream/gundo.vim
-bundle/histwin: 
-  branch: master
-  remote: braid/bundle/histwin
-  revision: a41c7f46e8edb7b551b22e3b6ef1c79e4a3fc547
-  squashed: true
-  type: git
-  url: http://github.com/chrisbra/histwin.vim.git
 bundle/markdown: 
   branch: master
   remote: braid/bundle/markdown
