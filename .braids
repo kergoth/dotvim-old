@@ -57,7 +57,7 @@ bundle/fugitive:
 bundle/gist: 
   branch: master
   remote: braid/bundle/gist
-  revision: 4175388b40f0e9f95df2a55ab9894069a50f1825
+  revision: 3afdb256cf2ddb38d1a2654de5f7281432302968
   squashed: true
   type: git
   url: git://github.com/mattn/gist-vim.git
