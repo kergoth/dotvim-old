@@ -99,7 +99,7 @@ bundle/gundo:
 bundle/markdown: 
   branch: master
   remote: braid/bundle/markdown
-  revision: 8d0860c1d5ac0827588ba9d149fced4fbd6d9f69
+  revision: 34e28b3f6f6d702ff2963b8196eccae9344ed4bc
   squashed: true
   type: git
   url: git://github.com/tpope/vim-markdown.git
