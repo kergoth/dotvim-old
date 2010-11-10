@@ -26,7 +26,7 @@ bundle/conque:
   squashed: true
   type: svn
   url: http://conque.googlecode.com/svn/trunk
-bundle/cute-python/after/syntax/python: 
+bundle/cute-python: 
   branch: master
   remote: braid/bundle/cute-python/after/syntax/python
   revision: 28e51435dc3ee85a064ebfe17fa6064268ccd44a
