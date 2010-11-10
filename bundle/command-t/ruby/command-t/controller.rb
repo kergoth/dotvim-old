@@ -54,7 +54,13 @@ module CommandT
     def hide
       @match_window.close
       if VIM::Window.select @initial_window
-        ::VIM::command "silent b #{@initial_buffer.number}"
+        if @initial_buffer.number == 0
+          # upstream bug: buffer number misreported as 0
+          # see: https://wincent.com/issues/1617
+          ::VIM::command "silent b #{@initial_buffer.name}"
+        else
+          ::VIM::command "silent b #{@initial_buffer.number}"
+        end
       end
     end
 
