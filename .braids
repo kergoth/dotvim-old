@@ -85,7 +85,7 @@ bundle/gitosis:
 bundle/golang: 
   branch: master
   remote: braid/bundle/golang
-  revision: 36364ba08ae965f04513d3890f897c94fa7f82d7
+  revision: 0681d1f734562f3fe05743c7a0296d2fa7b986fc
   squashed: true
   type: git
   url: git://github.com/jnwhiteh/vim-golang.git
