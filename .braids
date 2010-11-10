@@ -197,7 +197,7 @@ bundle/taglist:
 pathogen: 
   branch: master
   remote: braid/pathogen
-  revision: 52b091892c0748d34e70b8b6d8e2bce13de6c2a8
+  revision: 968e87ef7fa5ce19dbd3ffe23f0e0d58d88fae43
   squashed: true
   type: git
   url: git://github.com/tpope/vim-pathogen.git
