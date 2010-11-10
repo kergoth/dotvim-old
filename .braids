@@ -183,7 +183,7 @@ bundle/surround:
 bundle/syntastic: 
   branch: master
   remote: braid/bundle/syntastic
-  revision: c76531336e6d37957dee14e41f0539268bc324b9
+  revision: 4b690ba5e20fd603986df9563614909442b4086c
   squashed: true
   type: git
   url: git://github.com/scrooloose/syntastic.git
