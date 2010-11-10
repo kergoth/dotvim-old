@@ -1,31 +1,63 @@
-###################################################################################################
-# ConqueScreen is an extention of the vim.current.buffer object
-# It restricts the working indices of the buffer object to the scroll region which pty is expecting
-# It also uses 1-based indexes, to match escape sequence commands
+# FILE:     autoload/conque_term/conque_screen.py {{{
+# AUTHOR:   Nico Raffo <nicoraffo@gmail.com>
+# WEBSITE:  http://conque.googlecode.com
+# MODIFIED: __MODIFIED__
+# VERSION:  __VERSION__, for Vim 7.0
+# LICENSE:
+# Conque - Vim terminal/console emulator
+# Copyright (C) 2009-__YEAR__ Nico Raffo
 #
-# E.g.:
-#   s = ConqueScreen()
-#   ...
-#   s[5] = 'Set 5th line in terminal to this line'
-#   s.append('Add new line to terminal')
-#   s[5] = 'Since previous append() command scrolled the terminal down, this is a different line than first cb[5] call'
+# MIT License
 #
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE. }}}
+
+"""
+ConqueScreen is an extention of the vim.current.buffer object
+
+It restricts the working indices of the buffer object to the scroll region
+which pty is expecting. It also uses 1-based indexes, to match escape
+sequence commands.
+
+  E.g.:
+    s = ConqueScreen()
+    ...
+    s[5] = 'Set 5th line in terminal to this line'
+    s.append('Add new line to terminal')
+    s[5] = 'Since previous append() command scrolled the terminal down, this is a different line than first cb[5] call'
+"""
 
 import vim
+
 
 class ConqueScreen(object):
 
     # CLASS PROPERTIES  {{{
 
     # the buffer
-    buffer          = None
+    buffer = None
 
     # screen and scrolling regions
-    screen_top      = 1
+    screen_top = 1
 
     # screen width
-    screen_width    = 80
-    screen_height    = 80
+    screen_width = 80
+    screen_height = 80
 
     # }}}
 
@@ -39,6 +71,7 @@ class ConqueScreen(object):
 
     ###############################################################################################
     # List overload {{{
+
     def __len__(self): # {{{
         return len(self.buffer)
     # }}}
@@ -51,21 +84,27 @@ class ConqueScreen(object):
             for i in range(len(self.buffer), real_line + 1):
                 self.append(' ' * self.screen_width)
 
-        return u(self.buffer[ real_line ], 'utf-8')
+        return u(self.buffer[real_line], 'utf-8')
     # }}}
 
     def __setitem__(self, key, value): # {{{
         real_line = self.get_real_idx(key)
 
+        if CONQUE_PYTHON_VERSION == 2:
+            val = value.encode('utf-8')
+        else:
+            # XXX / Vim's python3 interface doesn't accept bytes object
+            val = str(value)
+
         # if line is past end of screen, append
         if real_line == len(self.buffer):
-            self.buffer.append(value.encode('utf-8'))
+            self.buffer.append(val)
         else:
-            self.buffer[ real_line ] = value.encode('utf-8')
+            self.buffer[real_line] = val
     # }}}
 
     def __delitem__(self, key): # {{{
-        del self.buffer[ self.screen_top + key - 2 ]
+        del self.buffer[self.screen_top + key - 2]
     # }}}
 
     def append(self, value): # {{{
@@ -84,12 +123,13 @@ class ConqueScreen(object):
         logging.debug('insert at line ' + str(self.screen_top + line - 2))
         l = self.screen_top + line - 2
         self.buffer.append(value, l)
-    
+
     # }}}
     # }}}
 
     ###############################################################################################
     # Util {{{
+
     def get_top(self): # {{{
         return self.screen_top
     # }}}
@@ -117,7 +157,7 @@ class ConqueScreen(object):
 
     def set_cursor(self, line, column): # {{{
         # figure out line
-        real_line =  self.screen_top + line - 1
+        real_line = self.screen_top + line - 1
         if real_line > len(self.buffer):
             for l in range(len(self.buffer) - 1, real_line):
                 self.buffer.append('')
@@ -160,10 +200,10 @@ class ConqueScreen(object):
     def scroll_to_bottom(self): # {{{
         vim.current.window.cursor = (len(self.buffer) - 1, 1)
     # }}}
-        
+
     def align(self): # {{{
         # align bottom of buffer to bottom of screen
         vim.command('normal ' + str(self.screen_height) + 'kG')
     # }}}
 
-
+# vim:foldmethod=marker

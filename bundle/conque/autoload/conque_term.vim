@@ -1,10 +1,11 @@
-" FILE:     plugin/conque_term.vim {{{
+" FILE:     autoload/conque_term.vim {{{
 " AUTHOR:   Nico Raffo <nicoraffo@gmail.com>
+" WEBSITE:  http://conque.googlecode.com
 " MODIFIED: __MODIFIED__
 " VERSION:  __VERSION__, for Vim 7.0
 " LICENSE:
-" Conque - pty interaction in Vim
-" Copyright (C) 2009-2010 Nico Raffo 
+" Conque - Vim terminal/console emulator
+" Copyright (C) 2009-__YEAR__ Nico Raffo 
 "
 " MIT License
 " 
@@ -31,6 +32,8 @@
 " **** CROSS-TERMINAL SETTINGS *****************************************************************************
 " **********************************************************************************************************
 
+" {{{
+
 " path to this file
 let s:scriptfile = expand("<sfile>") 
 let s:scriptdir = expand("<sfile>:h") . '/'
@@ -44,13 +47,9 @@ let s:terminals = {}
 
 let s:save_updatetime = &updatetime
 
-augroup ConqueTerm
-autocmd ConqueTerm VimLeave * call conque_term#close_all()
+let s:initialized = 0
 
-" read more output when this isn't the current buffer
-if g:ConqueTerm_ReadUnfocused == 1
-    autocmd ConqueTerm CursorHold * call conque_term#read_all(0)
-endif
+" }}}
 
 " **********************************************************************************************************
 " **** SYSTEM DETECTION ************************************************************************************
@@ -58,93 +57,167 @@ endif
 
 " {{{
 
-function! conque_term#system_fail(feature) " {{{
+function! conque_term#fail(feature) " {{{
 
     " create a new buffer
     new
     setlocal buftype=nofile
     setlocal nonumber
     setlocal foldcolumn=0
-    setlocal nowrap
+    setlocal wrap
     setlocal noswapfile
 
     " missing vim features
-    if feature == 'has_py'
+    if a:feature == 'python'
 
         call append('$', 'Conque ERROR: Python interface cannot be loaded')
         call append('$', '')
-        call append('$', 'Your version of Vim appears to be installed without the Python interface.')
+
+        if !executable("python")
+            call append('$', 'Your version of Vim appears to be installed without the Python interface. In ')
+            call append('$', 'addition, you may need to install Python.')
+        else
+            call append('$', 'Your version of Vim appears to be installed without the Python interface.')
+        endif
+
+        call append('$', '')
+
+        if has('unix') == 1
+            call append('$', "You are using a Unix-like operating system. Most, if not all, of the popular ")
+            call append('$', "Linux package managers have Python-enabled Vim available. For example ")
+            call append('$', "vim-gnome or vim-gtk on Ubuntu will get you everything you need.")
+            call append('$', "")
+            call append('$', "If you are compiling Vim from source, make sure you use the --enable-pythoninterp ")
+            call append('$', "configure option. You will also need to install Python and the Python headers.")
+            call append('$', "")
+            call append('$', "If you are using OS X, MacVim will give you Python support by default.")
+        else
+            call append('$', "You appear to be using Windows. The official Vim 7.3 installer available at ")
+            call append('$', "http://www.vim.org comes with the required Python interfaces. You will also ")
+            call append('$', "need to install Python 2.7 and/or Python 3.1, both available at http://www.python.org")
+        endif
+
+    elseif a:feature == 'python_exe'
+
+        call append('$', "Conque ERROR: Can't find Python executable")
+        call append('$', "")
+        call append('$', "Conque needs to know the full path to python.exe on Windows systems. By default, ")
+        call append('$', "Conque will check your system path as well as the most common installation path ")
+        call append('$', "C:\\PythonXX\\. To fix this error either:")
+        call append('$', "")
+        call append('$', "Set the g:ConqueTerm_PyExe option in your .vimrc. E.g.")
+        call append('$', "        let g:ConqueTerm_PyExe = 'C:\Program Files\Python27\python.exe'")
+        call append('$', "")
+        call append('$', "Add the directory where you installed python to your system path. This isn't a bad ")
+        call append('$', "idea in general.")
+
+    elseif a:feature == 'ctypes'
+
+        call append('$', 'Conque ERROR: Python cannot load the ctypes module')
+        call append('$', "")
+        call append('$', "Conque requires the 'ctypes' python module. This has been a standard module since Python 2.5.")
+        call append('$', "")
+        call append('$', "The recommended fix is to make sure you're using the latest official GVim version 7.3, ")
+        call append('$', "and have at least one of the two compatible versions of Python installed, ")
+        call append('$', "2.7 or 3.1. You can download the GVim 7.3 installer from http://www.vim.org. You ")
+        call append('$', "can download the Python 2.7 or 3.1 installer from http://www.python.org")
 
     endif
 
 endfunction " }}}
 
-" **********************************************************************************************************
-" PYTHON DETECTION {{{
+function! conque_term#dependency_check() " {{{
 
-" choose a python version and define a string unicoding function
-let s:py = ''
-if g:ConqueTerm_PyVersion == 3
-    let s:pytest = 'python3'
-else
-    let s:pytest = 'python'
-    let g:ConqueTerm_PyVersion = 2
-endif
-
-" first the requested version
-if has(s:pytest)
-    if s:pytest == 'python3'
-        let s:py = 'py3'
-    else
-        let s:py = 'py'
+    " don't recheck the second time 'round
+    if s:initialized == 1
+        return 1
     endif
 
-" otherwise use the other version
-else
-    let s:py_alternate = 5 - g:ConqueTerm_PyVersion
-    if s:py_alternate == 3
+    " choose a python version and define a string unicoding function
+    let s:py = ''
+    if g:ConqueTerm_PyVersion == 3
         let s:pytest = 'python3'
     else
         let s:pytest = 'python'
+        let g:ConqueTerm_PyVersion = 2
     endif
+
+    " first the requested version
     if has(s:pytest)
-        echohl WarningMsg | echomsg "Python " . g:ConqueTerm_PyVersion . " interface is not installed, using Python " . s:py_alternate . " instead" | echohl None
-        let g:ConqueTerm_PyVersion = s:py_alternate
         if s:pytest == 'python3'
             let s:py = 'py3'
         else
             let s:py = 'py'
         endif
+
+    " otherwise use the other version
+    else
+        let s:py_alternate = 5 - g:ConqueTerm_PyVersion
+        if s:py_alternate == 3
+            let s:pytest = 'python3'
+        else
+            let s:pytest = 'python'
+        endif
+        if has(s:pytest)
+            echohl WarningMsg | echomsg "Python " . g:ConqueTerm_PyVersion . " interface is not installed, using Python " . s:py_alternate . " instead" | echohl None
+            let g:ConqueTerm_PyVersion = s:py_alternate
+            if s:pytest == 'python3'
+                let s:py = 'py3'
+            else
+                let s:py = 'py'
+            endif
+        endif
     endif
-endif
 
-" test if we actually found a python version
-if s:py == ''
-    call conque_term#system_fail('has_py')
-    finish
-endif
+    " test if we actually found a python version
+    if s:py == ''
+        call conque_term#fail('python')
+        return 0
+    endif
 
-" }}}
+    " quick and dirty platform declaration
+    if has('unix') == 1
+        let s:platform = 'nix'
+        sil exe s:py . " CONQUE_PLATFORM = 'nix'"
+    else
+        let s:platform = 'dos'
+        sil exe s:py . " CONQUE_PLATFORM = 'dos'"
+    endif
 
-" **********************************************************************************************************
-" OPERATING SYSTEM DETECTION {{{
+    " if we're using Windows, make sure ctypes is available
+    if s:platform == 'dos'
+        try
+            sil exe s:py . " import ctypes"
+        catch
+            call conque_term#fail('ctypes')
+            return 0
+        endtry
+    endif
 
-" quick and dirty platform declaration
-if has('unix') == 1
-    let s:platform = 'nix'
-    sil exe s:py . " CONQUE_PLATFORM = 'nix'"
-else
-    let s:platform = 'dos'
-    sil exe s:py . " CONQUE_PLATFORM = 'dos'"
-endif
+    " if we're using Windows, make sure we can finde python executable
+    if s:platform == 'dos' && conque_term#find_python_exe() == ''
+        call conque_term#fail('python_exe')
+        return 0
+    endif
 
-" }}}
+    " check for global cursorhold/cursormove events
+    let o = ''
+    silent redir => o
+    silent autocmd CursorHoldI,CursorMovedI
+    redir END
+    for line in split(o, "\n")
+        if line =~ '^ ' || line =~ '^--' || line =~ 'matchparen'
+            continue
+        endif
+        echohl WarningMsg | echomsg "Warning: Global CursorHoldI and CursorMovedI autocommands may cause ConqueTerm to run slowly." | echohl None
+    endfor
 
-" **********************************************************************************************************
-" WINDOWS PYTHON MODULE TEST {{{
+    " if we're all good, load python files
+    call conque_term#load_python()
 
+    return 1
 
-" }}}
+endfunction " }}}
 
 " }}}
 
@@ -269,8 +342,10 @@ let s:windows_vk = {
 " }}}
 
 " **********************************************************************************************************
-" **** VIM FUNCTIONS ***************************************************************************************
+" **** ACTUAL CONQUE FUNCTIONS!  ***************************************************************************
 " **********************************************************************************************************
+
+" {{{
 
 " launch conque
 function! conque_term#open(...) "{{{
@@ -278,6 +353,11 @@ function! conque_term#open(...) "{{{
     let hooks   = get(a:000, 1, [])
     let return_to_current  = get(a:000, 2, 0)
     let is_buffer  = get(a:000, 3, 1)
+
+    " dependency check
+    if conque_term#dependency_check() == 0
+        return 0
+    endif
 
     " switch to buffer if needed
     if is_buffer && return_to_current
@@ -299,7 +379,8 @@ function! conque_term#open(...) "{{{
         echohl WarningMsg | echomsg "No command found" | echohl None
         return 0
     else
-        let l:cargs = split(command, '\s')
+        let l:cargs = split(command, '[^\\]\@<=\s')
+        let l:cargs[0] = substitute(l:cargs[0], '\\ ', ' ', 'g')
         if !executable(l:cargs[0])
             echohl WarningMsg | echomsg "Not an executable: " . l:cargs[0] | echohl None
             return 0
@@ -309,6 +390,9 @@ function! conque_term#open(...) "{{{
     let g:ConqueTerm_Idx += 1
     let g:ConqueTerm_Var = 'ConqueTerm_' . g:ConqueTerm_Idx
     let g:ConqueTerm_BufName = substitute(command, ' ', '\\ ', 'g') . "\\ -\\ " . g:ConqueTerm_Idx
+
+    " initialize global mappings if needed
+    call conque_term#init()
 
     " set buffer window options
     if is_buffer
@@ -578,11 +662,56 @@ function! conque_term#set_mappings(action) "{{{
     endif
     " }}}
 
+    " <F-> keys {{{
+    if g:ConqueTerm_SendFunctionKeys
+        if l:action == 'start'
+            if s:platform == 'nix'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F1>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[11~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F2>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[12~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F3>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[13~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F4>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[14~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F5>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[15~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F6>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[17~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F7>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[18~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F8>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[19~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F9>  <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[20~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F10> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[21~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F11> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[23~"))<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F12> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write(u("\x1b[24~"))<CR>'
+            else
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F1> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F1 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F2> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F2 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F3> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F3 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F4> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F4 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F5> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F5 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F6> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F6 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F7> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F7 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F8> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F8 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F9> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F9 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F10> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F10 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F11> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F11 . ')<CR>'
+                sil exe 'i' . map_modifier . 'map <silent> <buffer> <F12> <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . '.write_vk(' . s:windows_vk.VK_F12 . ')<CR>'
+            endif
+        else
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F1>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F2>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F3>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F4>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F5>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F6>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F7>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F8>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F9>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F10>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F11>'
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> <F12>'
+        endif
+    endif
+    " }}}
+
     " send selected text into conque {{{
     if l:action == 'start'
         sil exe 'v' . map_modifier . 'map <silent> ' . g:ConqueTerm_SendVisKey . ' :<C-u>call conque_term#send_selected(visualmode())<CR>'
-    else
-        sil exe 'v' . map_modifier . 'map <silent> ' . g:ConqueTerm_SendVisKey
     endif
     " }}}
 
@@ -601,7 +730,7 @@ function! conque_term#set_mappings(action) "{{{
     if has('gui_running') == 1
         if l:action == 'start'
             sil exe 'i' . map_modifier . 'map <buffer> <S-Insert> <Esc>:' . s:py . ' ' . b:ConqueTerm_Var . ".write(unicode(vim.eval('@+'), 'utf-8'))<CR>a"
-            sil exe 'i' . map_modifier . 'map <buffer> <S-Help> <Esc>:<C-u>python ' . b:ConqueTerm_Var . ".write(vim.eval('@+'))<CR>a"
+            sil exe 'i' . map_modifier . 'map <buffer> <S-Help> <Esc>:<C-u>' . s:py . ' ' . b:ConqueTerm_Var . ".write(vim.eval('@+'))<CR>a"
         else
             sil exe 'i' . map_modifier . 'map <buffer> <S-Insert>'
             sil exe 'i' . map_modifier . 'map <buffer> <S-Help>'
@@ -609,7 +738,7 @@ function! conque_term#set_mappings(action) "{{{
     endif
     " }}}
 
-    " disable other normal mode keys which insert text
+    " disable other normal mode keys which insert text {{{
     if l:action == 'start'
         sil exe 'n' . map_modifier . 'map <silent> <buffer> r :echo "Replace mode disabled in shell."<CR>'
         sil exe 'n' . map_modifier . 'map <silent> <buffer> R :echo "Replace mode disabled in shell."<CR>'
@@ -627,23 +756,25 @@ function! conque_term#set_mappings(action) "{{{
     endif
     " }}}
 
-    " user defined mappings
+    " user defined mappings {{{
     for [map_from, map_to] in s:input_extra
         if l:action == 'start'
-            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . map_from . ' <C-o>:python ' . b:ConqueTerm_Var . ".write('" . conque_term#python_escape(map_to) . "')<CR>"
+            sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . map_from . ' <C-o>:' . s:py . ' ' . b:ConqueTerm_Var . ".write('" . conque_term#python_escape(map_to) . "')<CR>"
         else
             sil exe 'i' . map_modifier . 'map <silent> <buffer> ' . map_from
         endif
     endfor
+    " }}}
 
-    " set conque as on or off
+    " set conque as on or off {{{
     if l:action == 'start'
         let b:conque_on = 1
     else
         let b:conque_on = 0
     endif
+    " }}}
 
-    " map command to toggle terminal key mappings
+    " map command to toggle terminal key mappings {{{
     if a:action == 'start'
         sil exe 'nnoremap ' . g:ConqueTerm_ToggleKey . ' :<C-u>call conque_term#set_mappings("toggle")<CR>'
     endif
@@ -651,33 +782,24 @@ function! conque_term#set_mappings(action) "{{{
 
 endfunction " }}}
 
-" send selected text from another buffer
-function! conque_term#send_selected(type) "{{{
-    let reg_save = @@
+" Initialize global mappings. Should only be called once per Vim session
+function! conque_term#init() " {{{
 
-    " save user's sb settings
-    let sb_save = &switchbuf
-    set switchbuf=usetab
+    if s:initialized == 1
+        return
+    endif
 
-    " yank current selection
-    sil exe "normal! `<" . a:type . "`>y"
+    augroup ConqueTerm
+    autocmd ConqueTerm VimLeave * call conque_term#close_all()
 
-    " format yanked text
-    let @@ = substitute(@@, '^[\r\n]*', '', '')
-    let @@ = substitute(@@, '[\r\n]*$', '', '')
+    " read more output when this isn't the current buffer
+    if g:ConqueTerm_ReadUnfocused == 1
+        autocmd ConqueTerm CursorHold * call conque_term#read_all(0)
+    endif
 
-    " execute yanked text
-    sil exe ":sb " . g:ConqueTerm_BufName
-    sil exe s:py . ' ' . g:ConqueTerm_Var . '.paste_selection()'
+    let s:initialized = 1
 
-    " reset original values
-    let @@ = reg_save
-    sil exe 'set switchbuf=' . sb_save
-
-    " scroll buffer left
-    startinsert!
-    normal 0zH
-endfunction "}}}
+endfunction " }}}
 
 " read from all known conque buffers
 function! conque_term#read_all(insert_mode) "{{{
@@ -787,6 +909,14 @@ endfunction " }}}
 function! conque_term#bell() " {{{
     echohl WarningMsg | echomsg "BELL!" | echohl None
 endfunction " }}}
+
+" }}}
+
+" **********************************************************************************************************
+" **** Windows only functions ******************************************************************************
+" **********************************************************************************************************
+
+" {{{
 
 " find python.exe in windows
 function! conque_term#find_python_exe() " {{{
@@ -933,17 +1063,51 @@ function! conque_term#init_conceal_color() " {{{
 
 endfunction " }}}
 
+" }}}
+
+" **********************************************************************************************************
+" **** Add-on features *************************************************************************************
+" **********************************************************************************************************
+
+" send selected text from another buffer
+function! conque_term#send_selected(type) "{{{
+    let reg_save = @@
+
+    " save user's sb settings
+    let sb_save = &switchbuf
+    set switchbuf=usetab
+
+    " yank current selection
+    sil exe "normal! `<" . a:type . "`>y"
+
+    " format yanked text
+    let @@ = substitute(@@, '^[\r\n]*', '', '')
+    let @@ = substitute(@@, '[\r\n]*$', '', '')
+
+    " execute yanked text
+    sil exe ":sb " . g:ConqueTerm_BufName
+    sil exe s:py . ' ' . g:ConqueTerm_Var . '.paste_selection()'
+
+    " reset original values
+    let @@ = reg_save
+    sil exe 'set switchbuf=' . sb_save
+
+    " scroll buffer left
+    startinsert!
+    normal 0zH
+endfunction "}}}
+
 " **********************************************************************************************************
 " **** "API" functions *************************************************************************************
 " **********************************************************************************************************
 
-" See doc/conque_term.txt for full documentation
+" See doc/conque_term.txt for full documentation {{{
 
 " Write to a conque terminal buffer
 function! s:term_obj.write(text) dict " {{{
 
     " if we're not in terminal buffer, pass flag to not position the cursor
-    sil exe 'python ' . self.var . '.write(vim.eval("a:text"), False, False)'
+    sil exe s:py . ' ' . self.var . '.write(vim.eval("a:text"), False, False)'
 
 endfunction " }}}
 
@@ -976,15 +1140,24 @@ function! s:term_obj.read(...) dict " {{{
     let output = ''
 
     " read!
-    sil exec ":python conque_tmp = " . self.var . ".read(timeout = " . read_time . ", set_cursor = False, return_output = True, update_buffer = " . up_py . ")"
+    sil exec s:py . " conque_tmp = " . self.var . ".read(timeout = " . read_time . ", set_cursor = False, return_output = True, update_buffer = " . up_py . ")"
 
     " ftw!
-    python << EOF
+    if g:ConqueTerm_PyVersion == 2
+        python << EOF
 if conque_tmp:
     conque_tmp = re.sub('\\\\', '\\\\\\\\', conque_tmp) 
     conque_tmp = re.sub('"', '\\\\"', conque_tmp)
     vim.command('let output = "' + conque_tmp + '"')
 EOF
+    else
+        python3 << EOF
+if conque_tmp:
+    conque_tmp = re.sub('\\\\', '\\\\\\\\', conque_tmp) 
+    conque_tmp = re.sub('"', '\\\\"', conque_tmp)
+    vim.command('let output = "' + conque_tmp + '"')
+EOF
+    endif
 
     return output
 
@@ -1000,7 +1173,11 @@ endfunction " }}}
 " close subprocess with ABORT signal
 function! s:term_obj.close() dict " {{{
 
-    sil exe 'python ' . self.var . '.abort()'
+    try
+        sil exe s:py . ' ' . self.var . '.abort()'
+    catch
+        " probably already dead
+    endtry
 
     if self.is_buffer
         call conque_term#set_mappings('stop')
@@ -1071,18 +1248,25 @@ function! conque_term#imap_list(map_list) " {{{
     call extend(s:input_extra, a:map_list)
 endfunction " }}}
 
+" }}}
+
 " **********************************************************************************************************
 " **** PYTHON **********************************************************************************************
 " **********************************************************************************************************
 
-exec s:py . "file " . s:scriptdirpy . "conque_globals.py"
-exec s:py . "file " . s:scriptdirpy . "Conque.py"
-exec s:py . "file " . s:scriptdirpy . "ConqueScreen.py"
-exec s:py . "file " . s:scriptdirpy . "ConqueSubprocess.py"
-if s:platform == 'dos'
-    exec s:py . "file " . s:scriptdirpy . "ConqueWin32Util.py"
-    exec s:py . "file " . s:scriptdirpy . "ConqueSoleSharedMemory.py"
-    exec s:py . "file " . s:scriptdirpy . "ConqueSole.py"
-    exec s:py . "file " . s:scriptdirpy . "ConqueSoleWrapper.py"
-endif
+function! conque_term#load_python() " {{{
 
+    exec s:py . "file " . s:scriptdirpy . "conque_globals.py"
+    exec s:py . "file " . s:scriptdirpy . "conque.py"
+    exec s:py . "file " . s:scriptdirpy . "conque_screen.py"
+    exec s:py . "file " . s:scriptdirpy . "conque_subprocess.py"
+    if s:platform == 'dos'
+        exec s:py . "file " . s:scriptdirpy . "conque_win32_util.py"
+        exec s:py . "file " . s:scriptdirpy . "conque_sole_shared_memory.py"
+        exec s:py . "file " . s:scriptdirpy . "conque_sole.py"
+        exec s:py . "file " . s:scriptdirpy . "conque_sole_wrapper.py"
+    endif
+
+endfunction " }}}
+
+" vim:foldmethod=marker

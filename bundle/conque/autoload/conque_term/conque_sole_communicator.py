@@ -1,5 +1,33 @@
-""" {{{
+# FILE:     autoload/conque_term/conque_sole_communicator.py {{{
+# AUTHOR:   Nico Raffo <nicoraffo@gmail.com>
+# WEBSITE:  http://conque.googlecode.com
+# MODIFIED: __MODIFIED__
+# VERSION:  __VERSION__, for Vim 7.0
+# LICENSE:
+# Conque - Vim terminal/console emulator
+# Copyright (C) 2009-__YEAR__ Nico Raffo
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE. }}}
 
+"""
 ConqueSoleCommunicator
 
 Script to transfer communications between python being run in Vim and a
@@ -7,21 +35,16 @@ subprocess run inside a Windows console. This is required since interactive
 programs in Windows appear to require a console, and python run in Vim is
 not attached to any console. So a console version of python must be initiated
 for the subprocess. Communication is then done with the use of shared memory
-objects. Good times! 
+objects. Good times!
+"""
 
-}}} """
+import time
+import sys
 
-import time, sys
-import traceback # DEBUG
-from conque_globals import * # DEBUG
-from ConqueWin32Util import * # DEBUG
-from ConqueSoleSubprocess import * # DEBUG
-from ConqueSoleSharedMemory import * # DEBUG
-
-import logging # DEBUG
-import traceback # DEBUG
-LOG_FILENAME = 'pylog_sub.log' # DEBUG
-#logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG) # DEBUG
+from conque_globals import *
+from conque_win32_util import *
+from conque_sole_subprocess import *
+from conque_sole_shared_memory import *
 
 ##############################################################
 # only run if this file was run directly
@@ -36,7 +59,7 @@ if __name__ == '__main__':
         # simple arg validation
         logging.debug(str(sys.argv))
         if len(sys.argv) < 5:
-            logging.debug('Arg validation failed!')
+            logging.info('Arg validation failed!')
             exit()
 
         # shared memory size
@@ -65,12 +88,12 @@ if __name__ == '__main__':
 
         # the actual subprocess to run
         cmd = " ".join(sys.argv[4:])
-        logging.debug('opening command: ' + cmd)
+        logging.info('opening command: ' + cmd)
 
         # width and height
-        options = { 'LINES' : console_height, 'COLUMNS' : console_width }
+        options = {'LINES': console_height, 'COLUMNS': console_width}
 
-        logging.debug('with options: ' + str(options))
+        logging.info('with options: ' + str(options))
 
         # }}}
 
@@ -82,15 +105,15 @@ if __name__ == '__main__':
         res = proc.open(cmd, mem_key, options)
 
         if not res:
-            logging.debug('process failed to open')
+            logging.info('process failed to open')
             exit()
 
-        shm_command = ConqueSoleSharedMemory(CONQUE_SOLE_COMMANDS_SIZE, 'command', mem_key, serialize = True)
+        shm_command = ConqueSoleSharedMemory(CONQUE_SOLE_COMMANDS_SIZE, 'command', mem_key, serialize=True)
         shm_command.create('write')
         shm_command.clear()
 
         # }}}
-        
+
         ##############################################################
         # main loop!
 
@@ -103,7 +126,7 @@ if __name__ == '__main__':
 
                 # check process health
                 if not proc.is_alive():
-                    logging.debug('subprocess appears to be deadish, closing')
+                    logging.info('subprocess appears to be deadish, closing')
                     proc.close()
                     exit()
 
@@ -113,11 +136,11 @@ if __name__ == '__main__':
                     if cmd['cmd'] == 'idle':
                         is_idle = True
                         shm_command.clear()
-                        logging.debug('idling')
+                        logging.info('idling')
                     elif cmd['cmd'] == 'resume':
                         is_idle = False
                         shm_command.clear()
-                        logging.debug('resuming')
+                        logging.info('resuming')
 
             # sleep between loops if moderation is requested
             if sleep_time > 0:
@@ -145,7 +168,8 @@ if __name__ == '__main__':
 
     # if an exception was thrown, croak
     except:
-        logging.debug(traceback.format_exc())
+        logging.info(traceback.format_exc())
         proc.close()
 
 
+# vim:foldmethod=marker

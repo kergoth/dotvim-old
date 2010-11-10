@@ -1,8 +1,35 @@
-""" {{{
+# FILE:     autoload/conque_term/conque_sole_wrapper.py {{{
+# AUTHOR:   Nico Raffo <nicoraffo@gmail.com>
+# WEBSITE:  http://conque.googlecode.com
+# MODIFIED: __MODIFIED__
+# VERSION:  __VERSION__, for Vim 7.0
+# LICENSE:
+# Conque - Vim terminal/console emulator
+# Copyright (C) 2009-__YEAR__ Nico Raffo
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE. }}}
 
-ConqueSoleSubprocessWrapper
+""" ConqueSoleSubprocessWrapper {{{
 
-Subprocess wrapper to deal with Windows insanity. Launches console based python, 
+Subprocess wrapper to deal with Windows insanity. Launches console based python,
 which in turn launches originally requested command. Communicates with cosole
 python through shared memory objects.
 
@@ -11,10 +38,6 @@ python through shared memory objects.
 import ctypes
 import time
 
-import logging # DEBUG
-import traceback # DEBUG
-LOG_FILENAME = 'pylog.log' # DEBUG
-#logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG) # DEBUG
 
 class ConqueSoleWrapper():
 
@@ -35,10 +58,10 @@ class ConqueSoleWrapper():
     columns = 80
 
     # shared memory objects
-    shm_input   = None
-    shm_output  = None
+    shm_input = None
+    shm_output = None
     shm_attributes = None
-    shm_stats   = None
+    shm_stats = None
     shm_command = None
     shm_rescroll = None
     shm_resize = None
@@ -59,7 +82,7 @@ class ConqueSoleWrapper():
     #########################################################################
     # run communicator process which will in turn run cmd
 
-    def open(self, cmd, options = {}, python_exe = 'python.exe', communicator_py = 'conque_sole_communicator.py'): # {{{
+    def open(self, cmd, options={}, python_exe='python.exe', communicator_py='conque_sole_communicator.py'): # {{{
 
         self.lines = options['LINES']
         self.columns = options['COLUMNS']
@@ -69,7 +92,7 @@ class ConqueSoleWrapper():
 
         # python command
         cmd_line = '%s "%s" %s %d %d %s' % (python_exe, communicator_py, self.shm_key, int(self.columns), int(self.lines), cmd)
-        logging.debug('python command: ' + cmd_line)
+        logging.info('python command: ' + cmd_line)
 
         # console window attributes
         flags = NORMAL_PRIORITY_CLASS | DETACHED_PROCESS
@@ -78,15 +101,15 @@ class ConqueSoleWrapper():
 
         # start the stupid process already
         try:
-            ctypes.windll.kernel32.CreateProcessA(None, cmd_line, None, None, 0, flags, None, '.', ctypes.byref(si), ctypes.byref(pi))
+            res = ctypes.windll.kernel32.CreateProcessW(None, u(cmd_line), None, None, 0, flags, None, u('.'), ctypes.byref(si), ctypes.byref(pi))
         except:
-            logging.debug('COULD NOT START %s' % cmd_line)
+            logging.info('COULD NOT START %s' % cmd_line)
             raise
 
         # handle
         self.pid = pi.dwProcessId
 
-        logging.debug('communicator pid: ' + str(self.pid))
+        logging.info('communicator pid: ' + str(self.pid))
 
         # init shared memory objects
         self.init_shared_memory(self.shm_key)
@@ -96,7 +119,7 @@ class ConqueSoleWrapper():
     #########################################################################
     # read output from shared memory
 
-    def read(self, start_line, num_lines, timeout = 0): # {{{
+    def read(self, start_line, num_lines, timeout=0): # {{{
 
         # emulate timeout by sleeping timeout time
         if timeout > 0:
@@ -141,7 +164,7 @@ class ConqueSoleWrapper():
                 self.shm_output = ConqueSoleSharedMemory(CONQUE_SOLE_BUFFER_LENGTH * self.columns * rescroll['data']['blocks'], 'output', rescroll['data']['mem_key'], True)
                 self.shm_output.create('read')
 
-                self.shm_attributes= ConqueSoleSharedMemory(CONQUE_SOLE_BUFFER_LENGTH * self.columns * rescroll['data']['blocks'], 'attributes', rescroll['data']['mem_key'], True, encoding = 'latin-1')
+                self.shm_attributes = ConqueSoleSharedMemory(CONQUE_SOLE_BUFFER_LENGTH * self.columns * rescroll['data']['blocks'], 'attributes', rescroll['data']['mem_key'], True, encoding='latin-1')
                 self.shm_attributes.create('read')
 
             stats_str = self.shm_stats.read()
@@ -150,7 +173,7 @@ class ConqueSoleWrapper():
             else:
                 return False
         except:
-            logging.debug(traceback.format_exc())
+            logging.info(traceback.format_exc())
             return False
 
         return self.stats
@@ -200,7 +223,7 @@ class ConqueSoleWrapper():
 
     def idle(self): # {{{
 
-        self.shm_command.write({ 'cmd' : 'idle', 'data' : {} })
+        self.shm_command.write({'cmd': 'idle', 'data': {}})
 
         # }}}
 
@@ -209,7 +232,7 @@ class ConqueSoleWrapper():
 
     def resume(self): # {{{
 
-        self.shm_command.write({ 'cmd' : 'resume', 'data' : {} })
+        self.shm_command.write({'cmd': 'resume', 'data': {}})
 
         # }}}
 
@@ -218,7 +241,7 @@ class ConqueSoleWrapper():
 
     def close(self): # {{{
 
-        self.shm_command.write({ 'cmd' : 'close', 'data' : {} })
+        self.shm_command.write({'cmd': 'close', 'data': {}})
         time.sleep(0.2)
 
         # }}}
@@ -234,13 +257,13 @@ class ConqueSoleWrapper():
         if columns > self.columns:
             self.columns = columns
 
-        self.shm_resize.write({ 'cmd' : 'resize', 'data' : { 'width' : columns, 'height' : lines } })
+        self.shm_resize.write({'cmd': 'resize', 'data': {'width': columns, 'height': lines}})
 
         # }}}
 
     # ****************************************************************************
     # create shared memory objects
-   
+
     def init_shared_memory(self, mem_key): # {{{
 
         self.shm_input = ConqueSoleSharedMemory(CONQUE_SOLE_INPUT_SIZE, 'input', mem_key)
@@ -250,22 +273,22 @@ class ConqueSoleWrapper():
         self.shm_output = ConqueSoleSharedMemory(CONQUE_SOLE_BUFFER_LENGTH * self.columns, 'output', mem_key, True)
         self.shm_output.create('write')
 
-        self.shm_attributes = ConqueSoleSharedMemory(CONQUE_SOLE_BUFFER_LENGTH * self.columns, 'attributes', mem_key, True, encoding = 'latin-1')
+        self.shm_attributes = ConqueSoleSharedMemory(CONQUE_SOLE_BUFFER_LENGTH * self.columns, 'attributes', mem_key, True, encoding='latin-1')
         self.shm_attributes.create('write')
 
-        self.shm_stats = ConqueSoleSharedMemory(CONQUE_SOLE_STATS_SIZE, 'stats', mem_key, serialize = True)
+        self.shm_stats = ConqueSoleSharedMemory(CONQUE_SOLE_STATS_SIZE, 'stats', mem_key, serialize=True)
         self.shm_stats.create('write')
         self.shm_stats.clear()
 
-        self.shm_command = ConqueSoleSharedMemory(CONQUE_SOLE_COMMANDS_SIZE, 'command', mem_key, serialize = True)
+        self.shm_command = ConqueSoleSharedMemory(CONQUE_SOLE_COMMANDS_SIZE, 'command', mem_key, serialize=True)
         self.shm_command.create('write')
         self.shm_command.clear()
 
-        self.shm_resize = ConqueSoleSharedMemory(CONQUE_SOLE_RESIZE_SIZE, 'resize', mem_key, serialize = True)
+        self.shm_resize = ConqueSoleSharedMemory(CONQUE_SOLE_RESIZE_SIZE, 'resize', mem_key, serialize=True)
         self.shm_resize.create('write')
         self.shm_resize.clear()
 
-        self.shm_rescroll = ConqueSoleSharedMemory(CONQUE_SOLE_RESCROLL_SIZE, 'rescroll', mem_key, serialize = True)
+        self.shm_rescroll = ConqueSoleSharedMemory(CONQUE_SOLE_RESCROLL_SIZE, 'rescroll', mem_key, serialize=True)
         self.shm_rescroll.create('write')
         self.shm_rescroll.clear()
 
@@ -273,3 +296,4 @@ class ConqueSoleWrapper():
 
         # }}}
 
+# vim:foldmethod=marker
