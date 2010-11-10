@@ -697,7 +697,8 @@ function! s:Commit(args) abort
       endif
       return ''
     else
-      let error = get(readfile(errorfile),-2,'!')
+      let errors = readfile(errorfile)
+      let error = get(errors,-2,get(errors,-1,'!'))
       if error =~# "'false'\\.$"
         let args = a:args
         let args = s:gsub(args,'%(%(^| )-- )@<!%(^| )@<=%(-[se]|--edit|--interactive)%($| )','')
@@ -748,7 +749,6 @@ endfunction
 
 function! s:FinishCommit()
   let args = getbufvar(+expand('<abuf>'),'fugitive_commit_arguments')
-  let g:args = args
   if !empty(args)
     call setbufvar(+expand('<abuf>'),'fugitive_commit_arguments','')
     return s:Commit(args)
@@ -1008,6 +1008,8 @@ endfunction
 " Gdiff {{{1
 
 call s:command("-bang -bar -nargs=? -complete=customlist,s:EditComplete Gdiff :execute s:Diff(<bang>0,<f-args>)")
+call s:command("-bar -nargs=? -complete=customlist,s:EditComplete Gvdiff :execute s:Diff(0,<f-args>)")
+call s:command("-bar -nargs=? -complete=customlist,s:EditComplete Gsdiff :execute s:Diff(1,<f-args>)")
 
 augroup fugitive_diff
   autocmd!
@@ -1215,6 +1217,10 @@ function! s:Blame(bang,line1,line2,count,args) abort
           silent! execute '%write !('.basecmd.' > '.temp.') >& '.error
         else
           silent! execute '%write !'.basecmd.' > '.temp.' 2> '.error
+        endif
+        if exists('l:dir')
+          execute cd.'`=dir`'
+          unlet dir
         endif
         if v:shell_error
           call s:throw(join(readfile(error),"\n"))
