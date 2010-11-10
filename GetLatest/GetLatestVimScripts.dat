@@ -1,6 +1,7 @@
 ScriptID SourceID Filename
 --------------------------
 39   8196  matchit.zip
+42 14208 bufexplorer.zip
 231 14152 ctab.vim
 273 7701 taglist.vim
 294  10110 Align.vim
