@@ -262,17 +262,21 @@ let fonts = ['Consolas', 'Inconsolata', 'DejaVu Sans Mono', 'Monaco',
           \  'Andale Mono', 'Courier']
 
 if has("gui_running")
-  let fontstrings = []
-  for font in fonts
-    if has('gui_gtk2')
-      let fontstrings += [font . ' ' . fontsize]
-    elseif has('macunix') && has('gui')
-      let fontstrings += [font . ':h' . fontsize]
-    elseif has('gui_win32')
-      let fontstrings += [font . ':h' . fontsize . 'cANSI']
-    endif
-  endfor
-  let &guifont = join(fontstrings, ',')
+  if has('gui_gtk2')
+    let &guifont = "Inconsolata " . fontsize
+  else
+    let fontstrings = []
+    for font in fonts
+      if has('gui_gtk2')
+        let fontstrings += [font . ' ' . fontsize]
+      elseif has('macunix') && has('gui')
+        let fontstrings += [font . ':h' . fontsize]
+      elseif has('gui_win32')
+        let fontstrings += [font . ':h' . fontsize . 'cANSI']
+      endif
+    endfor
+    let &guifont = join(fontstrings, ',')
+  endif
 endif
 " }}}
 
