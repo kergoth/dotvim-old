@@ -175,9 +175,9 @@ class ConqueSoleSubprocess():
             # create the process!
             res = ctypes.windll.kernel32.CreateProcessW(None, u(cmd), None, None, 0, flags, None, u('.'), ctypes.byref(si), ctypes.byref(pi))
 
-            logging.debug(str(res))
-            logging.debug(str(ctypes.GetLastError()))
-            logging.debug(str(ctypes.FormatError(ctypes.GetLastError())))
+            logging.info(str(res))
+            logging.info(str(ctypes.GetLastError()))
+            logging.info(str(ctypes.FormatError(ctypes.GetLastError())))
             self.pid = pi.dwProcessId
             self.handle = pi.hProcess
             logging.info('process pid is ' + str(self.pid))
@@ -287,11 +287,12 @@ class ConqueSoleSubprocess():
 
         if cmd:
 
-            # clear command
-            self.shm_command.clear()
-
             # shut it all down
             if cmd['cmd'] == 'close':
+
+                # clear command
+                self.shm_command.clear()
+
                 self.close()
                 return
 
@@ -538,21 +539,22 @@ class ConqueSoleSubprocess():
             ke.wRepeatCount = ctypes.c_short(1)
 
             cnum = ord(text[i])
-            ke.wVirtualKeyCode = ctypes.windll.user32.VkKeyScanA(cnum)
+            ke.wVirtualKeyCode = ctypes.windll.user32.VkKeyScanW(cnum)
+            ke.wVirtualScanCode = ctypes.c_short(ctypes.windll.user32.MapVirtualKeyW(int(cnum), 0))
 
             if cnum > 31:
                 ke.uChar.UnicodeChar = u(chr(cnum))
             elif cnum == 3:
                 ctypes.windll.kernel32.GenerateConsoleCtrlEvent(0, self.pid)
                 ke.uChar.UnicodeChar = u(chr(cnum))
-                ke.wVirtualKeyCode = ctypes.windll.user32.VkKeyScanA(cnum + 96)
+                ke.wVirtualKeyCode = ctypes.windll.user32.VkKeyScanW(cnum + 96)
                 ke.dwControlKeyState = LEFT_CTRL_PRESSED
             else:
                 ke.uChar.UnicodeChar = u(chr(cnum))
                 if cnum in CONQUE_WINDOWS_VK_INV:
                     ke.wVirtualKeyCode = cnum
                 else:
-                    ke.wVirtualKeyCode = ctypes.windll.user32.VkKeyScanA(cnum + 96)
+                    ke.wVirtualKeyCode = ctypes.windll.user32.VkKeyScanW(cnum + 96)
                     ke.dwControlKeyState = LEFT_CTRL_PRESSED
 
             kc = INPUT_RECORD(KEY_EVENT)
@@ -577,14 +579,22 @@ class ConqueSoleSubprocess():
     # ****************************************************************************
 
     def write_vk(self, vk_code): # {{{
+        logging.debug('virtual key code' + str(vk_code))
 
         li = INPUT_RECORD * 1
 
         # create keyboard input
         ke = KEY_EVENT_RECORD()
+        ke.uChar.UnicodeChar = u(chr(0))
         ke.wVirtualKeyCode = ctypes.c_short(int(vk_code))
+        ke.wVirtualScanCode = ctypes.c_short(ctypes.windll.user32.MapVirtualKeyW(int(vk_code), 0))
         ke.bKeyDown = ctypes.c_byte(1)
         ke.wRepeatCount = ctypes.c_short(1)
+
+        # set enhanced key mode for arrow keys
+        if vk_code in CONQUE_WINDOWS_VK_ENHANCED:
+            logging.debug('enhanced key!')
+            ke.dwControlKeyState = ENHANCED_KEY
 
         kc = INPUT_RECORD(KEY_EVENT)
         kc.Event.KeyEvent = ke

@@ -107,13 +107,6 @@ if !exists('g:ConqueTerm_PyExe')
     let g:ConqueTerm_PyExe = ''
 endif " }}}
 
-" Path to autoload directory. (Windows only) {{{
-" Conque should be able to find this directory by itself, but if not you can specify it below
-" E.g. 'C:\Users\Nraffo\vimfiles\autoload'
-if !exists('g:ConqueTerm_AutoloadDir')
-    let g:ConqueTerm_AutoloadDir = ''
-endif " }}}
-
 " Automatically close buffer when program exits {{{
 if !exists('g:ConqueTerm_CloseOnEnd')
     let g:ConqueTerm_CloseOnEnd = 0
@@ -134,7 +127,7 @@ endif " }}}
 
 let g:ConqueTerm_Loaded = 1
 let g:ConqueTerm_Idx = 0
-let g:ConqueTerm_Version = 120
+let g:ConqueTerm_Version = 200
 
 command! -nargs=+ -complete=shellcmd ConqueTerm call conque_term#open(<q-args>)
 command! -nargs=+ -complete=shellcmd ConqueTermSplit call conque_term#open(<q-args>, ['belowright split'])
