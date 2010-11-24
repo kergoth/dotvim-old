@@ -85,15 +85,14 @@ function! ShowPyDoc(name, type)
     endif
 endfunction
 
-
+"highlighting
 function! Highlight(name)
     execute "sb __doc__"
     set filetype=man
-    syn on
-    execute 'syntax keyword pydoc '.s:name2
+    "syn on
+    execute 'syntax keyword pydoc '.a:name
     hi pydoc gui=reverse
 endfunction
-
 
 "mappings
 aug pydoc
