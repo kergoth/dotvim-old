@@ -22,7 +22,7 @@ bundle/conque:
 bundle/cute-python: 
   branch: master
   remote: braid/bundle/cute-python/after/syntax/python
-  revision: 2f76aa122710f733ae9c436d68f36c5330bbce9b
+  revision: 92c7b7820c295aae10133587712c6912fed6332d
   squashed: true
   type: git
   url: git://github.com/ehamberg/vim-cute-python.git
