@@ -13,14 +13,14 @@ This plug-in aims to improve the integration between Vim and its environment
    web browser, e-mail client, etc). To invoke this functionality without
    using the |:Open| command see my open.vim [2] plug-in, which was split off
    from 'shell.vim' so that other Vim plug-ins can bundle it without bringing
-   in all the other crap.
+   in all the other crap :-).
 
  • The |xolox#shell#execute()| function enables other Vim plug-ins (like my
    easytags.vim [3] plug-in) to execute external commands in the background
    (i.e. asynchronously) without opening a command prompt window on Windows.
 
-A Windows DLL [4] is included to perform these functions on Windows, while on
-UNIX external commands are used.
+Two Windows DLL files [4] are included to perform these functions on Windows,
+while on UNIX external commands are used.
 
 ==============================================================================
 Usage ~
@@ -28,10 +28,10 @@ Usage ~
 The below paragraphs document the functionality in the 'shell.vim' plug-in.
 I'd be very grateful if people would test the plug-in in different
 environments and report their results by contacting the |vim-dev| mailing-list
-or e-mailing me directly at peter@peterodding.com. You can test the DLL by
+or e-mailing me directly at peter@peterodding.com. You can test the plug-in by
 unpacking the ZIP archive from www.vim.org [5] in the '%USERPROFILE%\vimfiles'
 directory (on Windows) or the '~/.vim/' directory (on UNIX), restarting Vim
-and testing the three functions described above and documented below.
+and checking whether the commands below work as documented.
 
 ------------------------------------------------------------------------------
 The *:Fullscreen* command
@@ -55,11 +55,10 @@ The *:Open* command
 
 The |:Open| command knows how to open files, directories, URLs and e-mail
 addresses. It's mapped to <F6> by default, see |g:shell_mappings_enabled| if you
-don't like this). You can provide a filename, URL or e-mail address as
-argument to the command or if there's a filename, URL or e-mail address under
-the text cursor that will be used. If both of those fail, the directory
-containing the current file will be opened. You can use the command as
-follows:
+don't like this. You can provide a filename, URL or e-mail address as argument
+to the command or if there's a filename, URL or e-mail address under the text
+cursor that will be used. If both of those fail, the directory containing the
+current file will be opened. You can use the command as follows:
 >
     :Open http://www.vim.org/
 
@@ -156,14 +155,14 @@ I switched to Linux I've also added an autoload script that wraps the DLL on
 Windows and calls out to external programs such as 'wmctrl', 'gnome-open',
 'kde-open', and others on UNIX.
 
-Before I go ahead and bundle the DLL with my easytags.vim [3] plug-in I need
-to make sure that the DLL is compatible with as many Windows Vim installations
+Before I go ahead and bundle the DLL files with my easytags.vim [3] plug-in I
+need to make sure they're compatible with as many Windows Vim installations
 out there as possible, e.g. XP/Vista/7, different service packs, 32/64 bits,
-etc. and I don't know where to start! I've uploaded a ZIP archive including a
-compiled DLL [5] to the Vim scripts page [8] for this plug-in (build using the
-latest Windows SDK but targeting Windows XP x86 DEBUG, should also work on
-Vista/7) and the source code is available in the GitHub repository [9] (see
-the 'NMAKE' makefile [10] for compile instructions).
+etc. I've uploaded a ZIP archive including two compiled DLL files [5] to the
+Vim scripts page [8] for this plug-in (build using the latest Windows SDK but
+targeting Windows XP x86/x64 DEBUG, should also work on Vista/7) and the
+source code is available in the GitHub repository [9] (see the 'NMAKE'
+makefile [10] for compile instructions).
 
 ==============================================================================
 Other full-screen implementations ~
@@ -180,7 +179,7 @@ Contact ~
 If you have questions, bug reports, suggestions, etc. the author can be
 contacted at peter@peterodding.com. The latest version is available at
 http://peterodding.com/code/vim/shell/ and http://github.com/xolox/vim-shell.
-If you like the plug-in please vote for it on www.vim.org [8].
+If you like the plug-in please vote for it on Vim Online [8].
 
 ==============================================================================
 License ~
@@ -192,7 +191,7 @@ This software is licensed under the MIT license [13].
 References ~
 
 [1] http://peterodding.com/code/vim/shell/screenshots/
-[2] http://peterodding.com/code/vim/open-external-location/
+[2] http://peterodding.com/code/vim/open-associated-programs/
 [3] http://peterodding.com/code/vim/easytags/
 [4] http://en.wikipedia.org/wiki/Dynamic-link_library
 [5] http://peterodding.com/code/vim/downloads/shell

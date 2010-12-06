@@ -1,8 +1,8 @@
 " Vim auto-load script
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: September 18, 2010
+" Last Change: December 4, 2010
 " URL: http://peterodding.com/code/vim/open-associated-programs/
-" Version: 1.2
+" Version: 1.2.1
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3242 1 :AutoInstall: open-associated-programs.zip
@@ -68,7 +68,7 @@ function! s:handle_error(cmd, output)
     if output != ''
       let output = ", output: " . string(output)
     endif
-    throw printf(message, s:script, string(a:command), output)
+    throw printf(message, s:script, a:cmd, output)
   endif
 endfunction
 
