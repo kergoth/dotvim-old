@@ -864,6 +864,11 @@ let g:NTPNames = ['build.xml', 'Makefile', '.project', '.lvimrc', 'SConstruct',
 let g:is_posix = 1
 let g:session_autosave = 1
 let g:session_autoload = 0
+let g:ConqueTerm_InsertOnEnter = 1
+let g:ConqueTerm_CWInsert = 1
+let g:ConqueTerm_Color = 0
+let g:ConqueTerm_ReadUnfocused = 1
+let g:ConqueTerm_CloseOnEnd = 1
 if has('file_in_path')
   let miscdir = finddir("misc", &rtp)
   if miscdir
