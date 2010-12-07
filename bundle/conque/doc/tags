@@ -10,6 +10,7 @@ ConqueTerm_PyVersion	conque_term.txt	/*ConqueTerm_PyVersion*
 ConqueTerm_ReadUnfocused	conque_term.txt	/*ConqueTerm_ReadUnfocused*
 ConqueTerm_SendFunctionKeys	conque_term.txt	/*ConqueTerm_SendFunctionKeys*
 ConqueTerm_SendVisKey	conque_term.txt	/*ConqueTerm_SendVisKey*
+ConqueTerm_SessionSupport	conque_term.txt	/*ConqueTerm_SessionSupport*
 ConqueTerm_Syntax	conque_term.txt	/*ConqueTerm_Syntax*
 ConqueTerm_TERM	conque_term.txt	/*ConqueTerm_TERM*
 ConqueTerm_ToggleKey	conque_term.txt	/*ConqueTerm_ToggleKey*
