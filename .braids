@@ -117,13 +117,6 @@ bundle/pydoc/ftplugin/python:
   squashed: true
   type: git
   url: git://github.com/fs111/pydoc.vim.git
-bundle/pyflakes/ftplugin/python: 
-  branch: master
-  remote: braid/bundle/pyflakes/ftplugin/python
-  revision: 21dc9e0c5ef36fae5425845abbc328130c6b2a15
-  squashed: true
-  type: git
-  url: git://github.com/kevinw/pyflakes-vim.git
 bundle/repeat: 
   branch: master
   remote: braid/bundle/repeat
