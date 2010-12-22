@@ -8,6 +8,22 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS 
+"   1.30.011	19-Dec-2010	Removed return value of jump position from
+"				CountJump#CountJump() and CountJump#JumpFunc();
+"				it isn't needed, as these functions are
+"				typically used directly in motion mappings. 
+"				CountJump#JumpFunc() now uses cursor position
+"				after invoking jump function, and doesn't
+"				require a returned position any more. This is
+"				only a special case for CountJump#TextObject,
+"				and should not be generally required of a jump
+"				function. The jump function is now also expected
+"				to beep, so removed that here. 
+"   1.30.010	18-Dec-2010	Moved CountJump#Region#Jump() here as
+"				CountJump#JumpFunc(). It fits here much better
+"				because of the similarity to
+"				CountJump#CountJump(), and actually has nothing
+"				to do with regions. 
 "   1.20.009	30-Jul-2010	FIX: CountJump#CountJump() with mode "O" didn't
 "				add original position to jump list. Simplified
 "				conditional. 
@@ -62,8 +78,8 @@ function! CountJump#CountSearch( count, searchArguments )
     let l:searchArguments = copy(a:searchArguments)
 
     for l:i in range(1, a:count)
-	let l:matchPos = call('searchpos', l:searchArguments)
-	if l:matchPos == [0, 0]
+	let l:matchPosition = call('searchpos', l:searchArguments)
+	if l:matchPosition == [0, 0]
 	    if l:i > 1
 		" (Due to the count,) we've already moved to an intermediate
 		" match. Undo that to behave like the old vi-compatible
@@ -80,7 +96,7 @@ function! CountJump#CountSearch( count, searchArguments )
 	    " \<Esc>", which only works in normal mode. 
 	    execute "normal \<Plug>RingTheBell"
 
-	    return l:matchPos
+	    return l:matchPosition
 	endif
 
 	if len(l:searchArguments) > 1 && l:i == 1
@@ -97,7 +113,7 @@ function! CountJump#CountSearch( count, searchArguments )
     " a match inside a closed fold. 
     normal! zv
 
-    return l:matchPos
+    return l:matchPosition
 endfunction
 function! CountJump#CountJump( mode, ... )
 "*******************************************************************************
@@ -120,7 +136,7 @@ function! CountJump#CountJump( mode, ... )
 "   ...	    Arguments to search(). 
 "
 "* RETURN VALUES: 
-"   List with the line and column position, or [0, 0], like searchpos(). 
+"   None. 
 "*******************************************************************************
     let l:save_view = winsaveview()
 
@@ -128,12 +144,12 @@ function! CountJump#CountJump( mode, ... )
 	normal! gv
     endif
 
-    let l:matchPos = CountJump#CountSearch(v:count1, a:000)
-    if l:matchPos != [0, 0]
+    let l:matchPosition = CountJump#CountSearch(v:count1, a:000)
+    if l:matchPosition != [0, 0]
 	" Add the original cursor position to the jump list. 
 	call winrestview(l:save_view)
 	normal! m'
-	call setpos('.', [0] + l:matchPos + [0])
+	call setpos('.', [0] + l:matchPosition + [0])
 
 	if a:mode ==# 'O'
 	    " Special additional treatment for operator-pending mode with a pattern
@@ -157,8 +173,75 @@ function! CountJump#CountJump( mode, ... )
 	    let &whichwrap = l:save_ww
 	endif
     endif
+endfunction
+function! CountJump#JumpFunc( mode, JumpFunc, ... )
+"*******************************************************************************
+"* PURPOSE:
+"   Implement a custom motion by invoking a jump function that is passed the
+"   <count> and the optional arguments. 
+"
+"* ASSUMPTIONS / PRECONDITIONS:
+"   None. 
+"
+"* EFFECTS / POSTCONDITIONS:
+"   Normal mode: Jumps to the <count>th occurrence. 
+"   Visual mode: Extends the selection to the <count>th occurrence. 
+"   If the jump doesn't work, a beep is emitted. 
+"
+"* INPUTS:
+"   a:mode  Mode in which the search is invoked. Either 'n', 'v' or 'o'. 
+"	    With 'O': Special additional treatment for operator-pending mode
+"	    with a characterwise jump. 
+"   a:JumpFunc		Function which is invoked to jump. 
+"   The jump function must take at least one argument:
+"	a:count	Number of matches to jump to. 
+"   It can take more arguments which must then be passed in here: 
+"   ...	    Arguments to the passed a:JumpFunc
+"   The jump function should position the cursor to the appropriate position in
+"   the current window, and open any folds there. It is expected to beep and
+"   keep the cursor at its original position when no appropriate position can be
+"   found. 
+"
+"* RETURN VALUES: 
+"   None. 
+"*******************************************************************************
+    let l:save_view = winsaveview()
+    let l:originalPosition = getpos('.')
 
-    return l:matchPos
+    if a:mode ==# 'v'
+	normal! gv
+    endif
+
+    call call(a:JumpFunc, [v:count1] + a:000)
+    let l:matchPosition = getpos('.')
+    if l:matchPosition != l:originalPosition
+	" Add the original cursor position to the jump list. 
+	call winrestview(l:save_view)
+	normal! m'
+	call setpos('.', l:matchPosition)
+
+	if a:mode ==# 'O'
+	    " Special additional treatment for operator-pending mode with a
+	    " characterwise jump. 
+	    " The difference between normal mode, visual and operator-pending 
+	    " mode is that in the latter, the motion must go _past_ the final
+	    " character, so that all characters are selected. This is done by
+	    " appending a 'l' motion after the search. 
+	    "
+	    " In operator-pending mode, the 'l' motion only works properly
+	    " at the end of the line (i.e. when the moved-over "word" is at
+	    " the end of the line) when the 'l' motion is allowed to move
+	    " over to the next line. Thus, the 'l' motion is added
+	    " temporarily to the global 'whichwrap' setting. 
+	    " Without this, the motion would leave out the last character in
+	    " the line. I've also experimented with temporarily setting
+	    " "set virtualedit=onemore", but that didn't work. 
+	    let l:save_ww = &whichwrap
+	    set whichwrap+=l
+	    normal! l
+	    let &whichwrap = l:save_ww
+	endif
+    endif
 endfunction
 
 " vim: set sts=4 sw=4 noexpandtab ff=unix fdm=syntax :

@@ -3,9 +3,9 @@
 			 COUNT JUMP    by Ingo Karkat
 								*CountJump.vim*
 description			|CountJump-description|
-usage	    			|CountJump-usage|
-example	    			|CountJump-example|
-installation   			|CountJump-installation|
+usage				|CountJump-usage|
+example				|CountJump-example|
+installation			|CountJump-installation|
 limitations			|CountJump-limitations|
 known problems			|CountJump-known-problems|
 todo				|CountJump-todo|
@@ -35,6 +35,7 @@ text regions that can be defined by continuous lines that match a particular
 pattern, e.g. comment blocks that all start with /^\s*#/. 
 
 SEE ALSO *
+
 The following ftplugins use this plugin: 
 
 diff_movement	  (vimscript #3180): Movement over diff hunks with ]] etc.
@@ -94,27 +95,32 @@ Often, a region can be defined as a block of continuous lines that all match a
 certain pattern. The following functions aid in implementing movements to the
 boundaries of these regions and text objects consisting of the region: 
 
-CountJump#Region#JumpToRegionEnd( count, pattern, step )
+CountJump#Region#JumpToRegionEnd( count, pattern, isMatch, step, isToEndOfLine )
 
 Starting from the current line, search for the position where the count'th
 region ends. Use this function to build Funcrefs for forward / backward jumps
 that can then be passed to CountJump#TextObject#MakeWithJumpFunctions(). 
 
-CountJump#Region#JumpToNextRegion( count, pattern, step, isAcrossRegion )
+CountJump#Region#JumpToNextRegion( count, pattern, isMatch, step, isAcrossRegion, isToEndOfLine )
 
 Starting from the current line, search for the position where the count'th
 region begins/ends. 
 
-CountJump#Region#Jump( mode, JumpFunc, ... )
+CountJump#Region#Motion#MakeBracketMotion( mapArgs, keyAfterBracket, inverseKeyAfterBracket, pattern, isMatch, ... )
 
-Implement a custom motion by jumping to the <count>th occurrence of the passed
-pattern. This function allows to implement jump functions working on text
-regions. These can then be passed to
-CountJump#Motion#MakeBracketMotionWithJumpFunctions(). >
-    function! s:JumpToBeginForward( mode )
-	return CountJump#Region#Jump(a:mode, function('CountJump#Region#JumpToNextRegion'), '^\s*#', 1, 0)
-    endfunction
-<
+This function sets up mappings starting with [ and ] for movement (with
+optional [count]) relative to the current cursor position, targeting a text
+region defined by contiguous lines that (don't) match a:pattern. 
+
+CountJump#Region#TextObject#Make( mapArgs, textObjectKey, types, selectionMode, pattern, isMatch )
+
+Defines a complete set of mappings for inner and/or outer text objects that
+support an optional [count] and select regions of lines which are defined by
+contiguous lines that (don't) match a:pattern. 
+The inner text object comprises all lines of the region itself, while the
+outer text object also includes all adjacent lines above and below which do
+not themselves belong to a region. 
+
 ==============================================================================
 EXAMPLE							   *CountJump-example*
 
@@ -148,13 +154,13 @@ above calls in a ~/.vim/ftplugin/pascal_movement.vim script and are done.
 ==============================================================================
 INSTALLATION					       *CountJump-installation*
 
-This script is packaged as a|vimball|. If you have the "gunzip" decompressor
+This script is packaged as a |vimball|. If you have the "gunzip" decompressor
 in your PATH, simply edit the *.vba.gz package in Vim; otherwise, decompress
 the archive first, e.g. using WinZip. Inside Vim, install by sourcing the
-vimball or via the|:UseVimball|command. >
+vimball or via the |:UseVimball| command. >
     vim CountJump.vba.gz
     :so %
-To uninstall, use the|:RmVimball|command. 
+To uninstall, use the |:RmVimball| command. 
 
 DEPENDENCIES					       *CountJump-dependencies*
 
@@ -187,6 +193,32 @@ IDEAS							      *CountJump-ideas*
 
 ==============================================================================
 HISTORY							    *CountJump-history*
+
+1.40	20-Dec-2010
+- ENH: Added CountJump#Region#TextObject#Make() to easily define text objects
+  for regions. 
+- Interface change: Jump functions again return position (and actual,
+  corrected one for a:isToEndOfLine). Though the position is not used for
+  motions, it is necessary for text objects to differentiate between "already
+  at the begin/end position" and "no such position".  
+
+1.30	20-Dec-2010
+- ENH: Added CountJump#Region#Motion#MakeBracketMotion() to easily define
+  bracket motions for regions. 
+- Interface changes: 
+  - Jump functions don't necessarily return jump position any more; this
+    special case is only required for text objects. 
+  - Moved CountJump#Region#Jump() to CountJump#JumpFunc(). 
+  - Added a:isToEndOfLine argument to CountJump#Region#JumpToRegionEnd() and
+    CountJump#Region#JumpToNextRegion(), which is useful for operator-pending
+    and characterwise visual mode mappings; the entire last line will then be
+    operated on / selected. 
+  - Added a:isMatch argument to CountJump#Region#SearchForRegionEnd(),
+    CountJump#Region#JumpToRegionEnd(),
+    CountJump#Region#SearchForNextRegion(),
+    CountJump#Region#JumpToNextRegion(). This allows definition of regions via
+    non-matches, which can be substantially simpler (and faster to match) than
+    coming up with a "negative" regular expression.
 
 1.22	06-Aug-2010
 - No more motion mappings and text objects for select mode; as the mappings
@@ -236,7 +268,7 @@ First published version.
 Started development. 
 
 ==============================================================================
-Copyright: (C) 2009-2010 by Ingo Karkat
+Copyright: (C) 2009-2010 Ingo Karkat
 The VIM LICENSE applies to this script; see|copyright|. 
 
 Maintainer:	Ingo Karkat <ingo@karkat.de>

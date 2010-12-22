@@ -9,6 +9,7 @@
 " Maintainer:	Ingo Karkat <ingo@karkat.de>
 "
 " REVISION	DATE		REMARKS 
+"   1.40.010	20-Dec-2010	Replaced s:Escape() function with string(). 
 "   1.22.009	06-Aug-2010	No more text objects for select mode; as the
 "				mappings start with a printable character ("a" /
 "				"i"), no select-mode mapping should be defined. 
@@ -61,10 +62,6 @@
 
 let s:save_cpo = &cpo
 set cpo&vim
-
-function! s:Escape( argumentText )
-    return substitute(a:argumentText, "'", "''", 'g')
-endfunction
 
 "			Select text delimited by ???. 
 "ix			Select [count] text blocks delimited by ??? without the
@@ -242,8 +239,12 @@ function! CountJump#TextObject#MakeWithJumpFunctions( mapArgs, textObjectKey, ty
 "			the complete lines matching the pattern. 
 "   a:JumpToBegin	Function which is invoked to jump to the begin of the
 "			block. 
+"			The function is invoked at the cursor position where the
+"			text object was requested. 
 "   a:JumpToEnd		Function which is invoked to jump to the end of the
 "			block. 
+"			The function is invoked after the call to a:JumpToBegin,
+"			with the cursor located at the beginning of the text object. 
 "   The jump functions must take two arguments:
 "	JumpToBegin( count, isInner )
 "	JumpToEnd( count, isInner )
@@ -363,30 +364,26 @@ function! CountJump#TextObject#MakeWithCountSearch( mapArgs, textObjectKey, type
     let l:searchFunction = "
     \	function! %s( count, isInner )\n
     \	    if a:isInner\n
-    \		let l:matchPos = CountJump#CountSearch(a:count, ['%s', '%s'])\n
+    \		let l:matchPos = CountJump#CountSearch(a:count, [%s, %s])\n
     \		if l:matchPos != [0, 0]\n
-    \		    call CountJump#CountSearch(1, ['%s', '%s'])\n
+    \		    call CountJump#CountSearch(1, [%s, %s])\n
     \		endif\n
     \		return l:matchPos\n
     \	    else\n
-    \		return CountJump#CountSearch(a:count, ['%s', '%s'])\n
+    \		return CountJump#CountSearch(a:count, [%s, %s])\n
     \	    endif\n
     \	endfunction"
-    "execute printf("function! %s( count, isInner )\nreturn CountJump#CountSearch(a:count, ['%s', 'bcW' . (a:isInner ? 'e' : '')])\nendfunction", l:functionToBeginName, s:Escape(a:patternToBegin))
-    "execute printf("function! %s( count, isInner )\nif a:isInner\nreturn (CountJump#CountSearch(a:count, ['%s', 'bcW']) ? CountJump#CountSearch(1, ['%s', 'ceW']) : 0)\nelse\nreturn CountJump#CountSearch(a:count, ['%s', 'bcW'])\nendif\nendfunction", l:functionToBeginName, s:Escape(a:patternToBegin), s:Escape(a:patternToBegin), s:Escape(a:patternToBegin))
     execute printf(l:searchFunction,
     \	l:functionToBeginName,
-    \	s:Escape(a:patternToBegin), 'bcW',
-    \	s:Escape(a:patternToBegin), 'ceW',
-    \	s:Escape(a:patternToBegin), 'bcW'
+    \	string(a:patternToBegin), string('bcW'),
+    \	string(a:patternToBegin), string('ceW'),
+    \	string(a:patternToBegin), string('bcW')
     \)
-    "execute printf("function! %s( count, isInner )\nreturn CountJump#CountSearch(a:count, ['%s', 'cW'  . (a:isInner ? '' : 'e')])\nendfunction", l:functionToEndName, s:Escape(a:patternToEnd))
-    "execute printf("function! %s( count, isInner )\nif a:isInner\nreturn (CountJump#CountSearch(a:count, ['%s', 'ceW']) ? CountJump#CountSearch(1, ['%s', 'bcW']) : 0)\nelse\nreturn CountJump#CountSearch(a:count, ['%s', 'ceW'])\nendif\nendfunction", l:functionToEndName, s:Escape(a:patternToEnd), s:Escape(a:patternToEnd), s:Escape(a:patternToEnd))
     execute printf(l:searchFunction,
     \	l:functionToEndName,
-    \	s:Escape(a:patternToEnd), 'ceW',
-    \	s:Escape(a:patternToEnd), 'bcW',
-    \	s:Escape(a:patternToEnd), 'eW'
+    \	string(a:patternToEnd), string('ceW'),
+    \	string(a:patternToEnd), string('bcW'),
+    \	string(a:patternToEnd), string('eW')
     \)
     " Note: For the outer jump to end, a:patternToEnd must not match at the
     " current cursor position (no 'c' flag to search()). This allows to handle
