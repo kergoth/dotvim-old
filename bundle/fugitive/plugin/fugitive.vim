@@ -378,10 +378,25 @@ function! s:buffer_type(...) dict abort
   endif
 endfunction
 
-function! s:buffer_spec() dict abort
-  let bufname = bufname(self['#'])
-  return s:shellslash(bufname == '' ? '' : fnamemodify(bufname,':p'))
-endfunction
+if has('win32')
+
+  function! s:buffer_spec() dict abort
+    let bufname = bufname(self['#'])
+    let retval = ''
+    for i in split(bufname,'[^:]\zs\\')
+      let retval = fnamemodify((retval==''?'':retval.'\').i,':.')
+    endfor
+    return s:shellslash(fnamemodify(retval,':p'))
+  endfunction
+
+else
+
+  function! s:buffer_spec() dict abort
+    let bufname = bufname(self['#'])
+    return s:shellslash(bufname == '' ? '' : fnamemodify(bufname,':p'))
+  endfunction
+
+endif
 
 function! s:buffer_name() dict abort
   return self.spec()
@@ -398,7 +413,7 @@ function! s:buffer_path(...) dict abort
   else
     let rev = self.spec()[strlen(self.repo().tree()) : -1]
   endif
-  return s:sub(rev,'^/',a:0 ? a:1 : '')
+  return s:sub(s:sub(rev,'.\zs/$',''),'^/',a:0 ? a:1 : '')
 endfunction
 
 function! s:buffer_rev() dict abort
@@ -437,7 +452,7 @@ function! s:buffer_expand(rev) dict abort
   else
     let file = a:rev
   endif
-  return s:sub(file,'\%$',self.path())
+  return s:sub(s:sub(file,'\%$',self.path()),'/$','')
 endfunction
 
 function! s:buffer_containing_commit() dict abort
@@ -548,7 +563,7 @@ endfunction
 function! s:StageDiff(bang) abort
   let section = getline(search('^# .*:$','bnW'))
   let line = getline('.')
-  let filename = matchstr(line,'^#\t\%([[:alpha:] ]\+: *\)\=\zs.*')
+  let filename = matchstr(line,'^#\t\%([[:alpha:] ]\+: *\)\=\zs.\{-\}\ze\%( (new commits)\)\=$')
   if filename ==# '' && section == '# Changes to be committed:'
     return 'Git diff --cached'
   elseif filename ==# ''
@@ -574,7 +589,7 @@ function! s:StageToggle(lnum1,lnum2) abort
       if getline('.') == '# Changes to be committed:'
         return 'Gcommit'
       endif
-      let filename = matchstr(line,'^#\t\%([[:alpha:] ]\+: *\)\=\zs.*')
+      let filename = matchstr(line,'^#\t\%([[:alpha:] ]\+: *\)\=\zs.\{-\}\ze\%( (new commits)\)\=$')
       if filename ==# ''
         continue
       endif
@@ -604,7 +619,7 @@ function! s:StageToggle(lnum1,lnum2) abort
       silent! edit!
       1
       redraw
-      call search('^#\t\%([[:alpha:] ]\+: *\)\=\V'.jump.'\$','W')
+      call search('^#\t\%([[:alpha:] ]\+: *\)\=\V'.jump.'\%( (new commits)\)\=\$','W')
     endif
     echo s:sub(s:gsub(output,'\n+','\n'),'\n$','')
   catch /^fugitive:/
@@ -624,7 +639,7 @@ function! s:StagePatch(lnum1,lnum2) abort
     elseif line == '# Changed but not updated:'
       return 'Git add --patch'
     endif
-    let filename = matchstr(line,'^#\t\%([[:alpha:] ]\+: *\)\=\zs.*')
+    let filename = matchstr(line,'^#\t\%([[:alpha:] ]\+: *\)\=\zs.\{-\}\ze\%( (new commits)\)\=$')
     if filename ==# ''
       continue
     endif
@@ -652,7 +667,7 @@ function! s:StagePatch(lnum1,lnum2) abort
       silent! edit!
       1
       redraw
-      call search('^#\t\%([[:alpha:] ]\+: *\)\=\V'.first_filename.'\$','W')
+      call search('^#\t\%([[:alpha:] ]\+: *\)\=\V'.first_filename.'\%( (new commits)\)\=\$','W')
     endif
   catch /^fugitive:/
     return 'echoerr v:errmsg'
@@ -860,7 +875,7 @@ function! s:Edit(cmd,...) abort
     if a:cmd =~# '!$'
       call s:warn(':Gread! is deprecated. Use :Gread')
     endif
-    return 'silent %delete|read '.s:fnameescape(file).'|silent 1delete_|diffupdate|'.line('.')
+    return 'silent %delete_|read '.s:fnameescape(file).'|silent 1delete_|diffupdate|'.line('.')
   else
     if &previewwindow && getbufvar('','fugitive_type') ==# 'index'
       wincmd p
@@ -1128,6 +1143,11 @@ function! s:Move(force,destination)
       let destination = destination[strlen(s:repo().tree('')):-1]
     endif
   endif
+  if isdirectory(s:buffer().name())
+    " Work around Vim parser idiosyncrasy
+    let b = s:buffer()
+    call b.setvar('&swapfile',0)
+  endif
   let message = call(s:repo().git_chomp_in_tree,['mv']+(a:force ? ['-f'] : [])+['--', s:buffer().path(), destination], s:repo())
   if v:shell_error
     let v:errmsg = 'fugitive: '.message
@@ -1139,7 +1159,11 @@ function! s:Move(force,destination)
   endif
   call fugitive#reload_status()
   if s:buffer().commit() == ''
-    return 'saveas! '.s:fnameescape(destination)
+    if isdirectory(destination)
+      return 'edit '.s:fnameescape(destination)
+    else
+      return 'saveas! '.s:fnameescape(destination)
+    endif
   else
     return 'file '.s:fnameescape(s:repo().translate(':0:'.destination)
   endif
@@ -1595,9 +1619,9 @@ function! s:GF(mode) abort
       if showtree && line('.') == 1
         return ""
       elseif showtree && line('.') > 2
-        return s:Edit(a:mode,buffer.commit().':'.(buffer.path() == '' ? '' : buffer.path().'/').s:sub(getline('.'),'/$',''))
+        return s:Edit(a:mode,buffer.commit().':'.s:buffer().path().(buffer.path() =~# '^$\|/$' ? '' : '/').s:sub(getline('.'),'/$',''))
       elseif getline('.') =~# '^\d\{6\} \l\{3,8\} \x\{40\}\t'
-        return s:Edit(a:mode,buffer.commit().':'.(buffer.path() == '' ? '' : buffer.path().'/').s:sub(matchstr(getline('.'),'\t\zs.*'),'/$',''))
+        return s:Edit(a:mode,buffer.commit().':'.s:buffer().path().(buffer.path() =~# '^$\|/$' ? '' : '/').s:sub(matchstr(getline('.'),'\t\zs.*'),'/$',''))
       endif
 
     elseif buffer.type('blob')
@@ -1622,7 +1646,7 @@ function! s:GF(mode) abort
         let file = '/'.matchstr(getline('.'),' -> \zs.*')
         return s:Edit(a:mode,file)
       elseif getline('.') =~# '^#\t[[:alpha:] ]\+: *.'
-        let file = '/'.matchstr(getline('.'),': *\zs.*')
+        let file = '/'.matchstr(getline('.'),': *\zs.\{-\}\ze\%( (new commits)\)\=$')
         return s:Edit(a:mode,file)
       elseif getline('.') =~# '^#\t.'
         let file = '/'.matchstr(getline('.'),'#\t\zs.*')
