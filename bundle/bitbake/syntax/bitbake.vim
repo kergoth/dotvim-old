@@ -59,7 +59,7 @@ syn region bbVarPyValue         start=+${@+ skip=+\\$+ excludenl end=+}+ contain
 
 " Vars metadata flags
 syn match bbVarFlagDef          "^\([a-zA-Z0-9\-_\.]\+\)\(\[[a-zA-Z0-9\-_\.]\+\]\)\@=" contains=bbIdentifier nextgroup=bbVarFlagFlag
-syn region bbVarFlagFlag        matchgroup=bbArrayBrackets start="\[" end="\]\s*\(+=\|=\)\@=" keepend excludenl contained contains=bbIdentifier nextgroup=bbVarEq
+syn region bbVarFlagFlag        matchgroup=bbArrayBrackets start="\[" end="\]\s*\(=\)\@=" keepend excludenl contained contains=bbIdentifier nextgroup=bbVarEq
 
 " Includes and requires
 syn keyword bbInclude           inherit include require contained 
@@ -100,7 +100,7 @@ hi def link bbUnmatched         Error
 hi def link bbInclude           Include
 hi def link bbTodo              Todo
 hi def link bbComment           Comment
-hi def link bbQuote             Special
+hi def link bbQuote             String
 hi def link bbString            String
 hi def link bbDelimiter         Keyword
 hi def link bbArrayBrackets     Statement
