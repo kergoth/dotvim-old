@@ -5,6 +5,10 @@ def bail_on_failure
   end
 end
 
+def version
+  `git describe`.chomp
+end
+
 task :default => :spec
 
 desc 'Run specs'
@@ -14,9 +18,10 @@ task :spec do
 end
 
 desc 'Create vimball archive'
-task :vimball do
+task :vimball => :check_tag do
   system 'make'
   bail_on_failure
+  FileUtils.cp 'command-t.vba', "command-t-#{version}.vba"
 end
 
 desc 'Clean compiled products'
@@ -66,3 +71,24 @@ end
 
 desc 'Run checks prior to release'
 task :prerelease => ['make:all', 'spec:all', :vimball, :check_tag]
+
+desc 'Upload current vimball to Amazon S3'
+task :upload => :vimball do
+  sh 'aws put ' +
+     "s3.wincent.com/command-t/releases/command-t-#{version}.vba " +
+     "command-t-#{version}.vba"
+  sh 'aws put ' +
+     "s3.wincent.com/command-t/releases/command-t-#{version}.vba?acl " +
+     '--public'
+end
+
+desc 'Add current vimball to releases branch'
+task :archive => :vimball do
+  v = version # store version before switching branches
+  sh 'git stash && ' +
+     'git checkout releases && ' +
+     "git add command-t-#{v}.vba && " +
+     "git commit -s -m 'Add #{v} release vimball' && " +
+     'git checkout @{-1} && ' +
+     'git stash pop'
+end

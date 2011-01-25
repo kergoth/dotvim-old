@@ -9,7 +9,7 @@ bundle/changesplugin:
 bundle/command-t: 
   branch: master
   remote: braid/bundle/command-t
-  revision: a338c4c3a964ec79215aed92b4337763757b17bd
+  revision: 85fd8b0ce657f772ad9c1c50fe502e08ca2bf04c
   squashed: true
   type: git
   url: git://git.wincent.com/command-t.git
