@@ -113,7 +113,7 @@ bundle/nerdtree:
 bundle/pydoc/ftplugin/python: 
   branch: master
   remote: braid/bundle/pydoc/ftplugin/python
-  revision: 9547e6a6657991fb1c3894e4a376763b14e3cf82
+  revision: 14ffe6cdd74e086271e4eb07ba94fe4bd5b94e26
   squashed: true
   type: git
   url: git://github.com/fs111/pydoc.vim.git
