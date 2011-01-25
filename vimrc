@@ -85,6 +85,9 @@ else
 endif
 behave xterm
 
+if has('unix')
+  let $TEMP = '/tmp'
+endif
 if !exists('$MYVIMRC')
   let $MYVIMRC = $HOME . '/' . s:prefix . 'vimrc'
 endif
@@ -455,7 +458,7 @@ set backupcopy=auto
 if has("win32")
   let &backupdir = './_vimtmp,' . $TEMP . ',c:/tmp,c:/temp'
 else
-  let &backupdir = './.vimtmp,' . $HOME . '/.vim/tmp,/var/tmp,/tmp'
+  let &backupdir = './.vimtmp,' . $HOME . '/.vim/tmp,/var/tmp,' . $TEMP
 endif
 let &directory = &backupdir
 
@@ -503,14 +506,7 @@ if has('viminfo')
   " <   max # of lines for each register to be saved
   " s   max # of Kb for each register to be saved
   " h   don't restore hlsearch behavior
-  set viminfo=f1,'1000,:1000,/1000,<1000,s100,h
-  if has('win32')
-    set viminfo+=rc:/tmp/
-  elseif has('macunix')
-    set viminfo+=r/private/tmp/
-  else
-    set viminfo+=r/tmp/
-  endif
+  let &viminfo = "f1,'1000,:1000,/1000,<1000,s100,h,r" . $TEMP
 endif
 
 " Only save the current tab page
@@ -760,6 +756,7 @@ if has('autocmd')
 
     if has('persistent_undo')
       au BufReadPre .netrwhist setlocal noundofile
+      au BufReadPre $TEMP/* setlocal noundofile
     endif
 
     " Smart cursor positioning for emails, courtesy tip#1240
