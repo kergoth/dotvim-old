@@ -155,7 +155,7 @@ bundle/snipmate:
 bundle/speeddating: 
   branch: master
   remote: braid/bundle/speeddating
-  revision: 799bcdddca4f8b81dcfffc1f327f0e511d11980c
+  revision: b0ee6ec2153c5f30827d67db1668f37a975a1005
   squashed: true
   type: git
   url: git://github.com/tpope/vim-speeddating.git
