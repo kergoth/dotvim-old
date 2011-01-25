@@ -82,6 +82,13 @@ bundle/golang:
   squashed: true
   type: git
   url: git://github.com/jnwhiteh/vim-golang.git
+bundle/gundo: 
+  branch: master
+  remote: braid/bundle/gundo
+  revision: 327b8d3f6989f4e481b455477ad29692037be25b
+  squashed: true
+  type: git
+  url: git://github.com/sjl/gundo.vim.git
 bundle/markdown: 
   branch: master
   remote: braid/bundle/markdown
