@@ -328,6 +328,13 @@ if &compatible
 endif
 set nodigraph
 
+" Don't manually sync the swap to disk on unix, since that's periodically done
+" for us, so the risk of losing data is relatively small, and this should
+" improve performance slightly.
+if has('unix')
+  set swapsync=
+endif
+
 " Reliant upon securemodelines.vim
 set modelines=5
 set nomodeline
