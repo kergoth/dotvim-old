@@ -1,8 +1,8 @@
 "=============================================================================
 " File: gist.vim
 " Author: Yasuhiro Matsumoto <mattn.jp@gmail.com>
-" Last Change: 09-Nov-2010.
-" Version: 4.5
+" Last Change: 04-Jan-2011.
+" Version: 4.7
 " WebPage: http://github.com/mattn/gist-vim
 " License: BSD
 " Usage:
@@ -258,7 +258,7 @@ endfunction
 
 function! s:GistDetectFiletype(gistid)
   let url = 'https://gist.github.com/'.a:gistid
-  let mx = '^.*<div class="data syntax type-\([^"]\+\)">.*$'
+  let mx = '^.*<div class=".\{-}type-\([^"]\+\)">.*$'
   let res = system('curl -s '.url)
   let res = substitute(matchstr(res, mx), mx, '\1', '')
   let res = substitute(res, '.*\(\.[^\.]\+\)$', '\1', '')
@@ -379,12 +379,12 @@ function! s:GistUpdate(user, token, content, gistid, gistnm)
   return res
 endfunction
 
+let s:cookiedir = substitute(expand('<sfile>:p:h'), '[/\\]plugin$', '', '').'/cookies'
 function! s:GistGetPage(url, user, param, opt)
-  let cookiedir = substitute(expand('<sfile>:p:h'), '[/\\]plugin$', '', '').'/cookies'
-  if !isdirectory(cookiedir)
-    call mkdir(cookiedir, 'p')
+  if !isdirectory(s:cookiedir)
+    call mkdir(s:cookiedir, 'p')
   endif
-  let cookiefile = cookiedir.'/github'
+  let cookiefile = s:cookiedir.'/github'
 
   if len(a:url) == 0
     call delete(cookiefile)
