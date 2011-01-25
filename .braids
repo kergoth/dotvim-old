@@ -169,7 +169,7 @@ bundle/supertab:
 bundle/surround: 
   branch: master
   remote: braid/bundle/surround
-  revision: 27710a2224d6dd0486d1c40d09ef18dd752e7d37
+  revision: d9e6bfdd902fc661c8fd58ede248ccfc3b3039d7
   squashed: true
   type: git
   url: git://github.com/tpope/vim-surround.git
