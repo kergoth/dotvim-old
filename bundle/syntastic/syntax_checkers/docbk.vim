@@ -1,5 +1,5 @@
 "============================================================================
-"File:        haml.vim
+"File:        docbk.vim
 "Description: Syntax checking plugin for syntastic.vim
 "Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
 "License:     This program is free software. It comes without any warranty,
@@ -9,23 +9,21 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-if exists("loaded_haml_syntax_checker")
+if exists("loaded_docbk_syntax_checker")
     finish
 endif
-let loaded_haml_syntax_checker = 1
+let loaded_docbk_syntax_checker = 1
 
-"bail if the user doesnt have the haml binary installed
-if !executable("haml")
+"bail if the user doesnt have tidy or grep installed
+if !executable("xmllint")
     finish
 endif
 
-function! SyntaxCheckers_haml_GetLocList()
-    let output = system("haml -c " . shellescape(expand("%")))
-    if v:shell_error != 0
-        "haml only outputs the first error, so parse it ourselves
-        let line = substitute(output, '^\(Syntax\|Haml\) error on line \(\d*\):.*', '\2', '')
-        let msg = substitute(output, '^\(Syntax\|Haml\) error on line \d*:\(.*\)', '\2', '')
-        return [{'lnum' : line, 'text' : msg, 'bufnr': bufnr(""), 'type': 'E' }]
-    endif
-    return []
+function! SyntaxCheckers_docbk_GetLocList()
+
+    let makeprg="xmllint --xinclude --noout --postvalid %"
+    let errorformat='%E%f:%l: parser error : %m,%W%f:%l: parser warning : %m,%E%f:%l:%.%# validity error : %m,%W%f:%l:%.%# validity warning : %m,%-Z%p^,%-C%.%#,%-G%.%#'
+    let loclist = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+
+    return loclist
 endfunction
