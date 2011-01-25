@@ -1,9 +1,0 @@
-{
-  "name" : "startup_profile",
-  "version" : "dev",
-  "author" : "Tom Link <micathom at gmail com>",
-  "maintainer" : "Tom Link <micathom at gmail com>",
-  "repository" : {"type": "git", "url": "git://github.com/tomtom/startup_profile_vim.git"},
-  "dependencies" : {},
-  "description" : "Profile vim startup"
-}
