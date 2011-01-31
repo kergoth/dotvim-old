@@ -981,3 +981,5 @@ let g:bufExplorerSplitType = 'v'
 let g:bufExplorerOpenMode = 1
 " }}}
 " }}}
+
+runtime vimrc.$HOSTNAME
