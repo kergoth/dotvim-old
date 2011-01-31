@@ -190,24 +190,6 @@ nnoremap <Leader>S :TlistShowPrototype<Enter>
 nnoremap <Leader>f :NERDTreeToggle<Enter>
 nnoremap <Leader>F :NERDTreeFind<Enter>
 
-" Mouse {{{
-if has('mouse')
-  set mouse=a
-  if has('unix') &&
-        \ ! has('gui_running')
-    if &term == 'xterm'
-      set ttymouse=xterm2
-    else
-      set ttymouse=xterm
-    endif
-  endif
-endif
-
-" Line numbering
-if v:version >= 700
-  set number
-endif
-
 " When selecting with the mouse, copy to clipboard on release.
 vnoremap <LeftRelease> '+y<LeftRelease>gv
 vnoremap <RightRelease> '+y<RightRelease>gv
@@ -230,7 +212,6 @@ if &ttymouse != '' ||
   " unmap <S-MouseDown>
   " unmap <S-MouseUp>
 endif
-" }}}
 
 " Execute an appropriate interpreter for the current file
 " If there is no #! line at the top of the file, it will
@@ -241,6 +222,8 @@ fun! RunInterp()
 
   if line =~ '^#\!'
     let l:interp = strpart(line, 2)
+
+
   else
     if exists('g:interp_' . &filetype)
       let l:interp = g:interp_{&filetype}
@@ -348,6 +331,23 @@ set sidescroll=1
 " Show 2 rows/cols of context when scrolling
 set scrolloff=2
 set sidescrolloff=2
+
+if has('mouse')
+  set mouse=a
+  if has('unix') &&
+        \ ! has('gui_running')
+    if &term == 'xterm'
+      set ttymouse=xterm2
+    else
+      set ttymouse=xterm
+    endif
+  endif
+endif
+
+" Line numbering
+if v:version >= 700
+  set number
+endif
 
 " The prompt to save changes when switching buffers is incredibly annoying
 " when doing development.  An alternative is to set autowrite, but one could
