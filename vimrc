@@ -353,13 +353,6 @@ if v:version >= 700
   set number
 endif
 
-" The prompt to save changes when switching buffers is incredibly annoying
-" when doing development.  An alternative is to set autowrite, but one could
-" easily lose old changes that way.  I like to write when I'm explicitly ready
-" to do so.
-set hidden
-" set path=.
-
 " Don't use old weak encryption for Vim 7.3
 if has('cryptv')
   try
@@ -538,8 +531,10 @@ set popt+=number:y
 set popt+=paper:letter
 set popt+=left:5pc
 
-" Don't automatically write buffers on switch
-set noautowrite
+" Automatically write buffers on switch/make/exit
+set nohidden
+set autowrite
+set autowriteall
 
 " Allow editing of all types of files
 if has('unix')
