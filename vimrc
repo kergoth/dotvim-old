@@ -243,28 +243,32 @@ com! DiffOrig bel new | set bt=nofile | r # | 0d_ | diffthis
 " }}}
 
 " Fonts {{{
+fun! SetFont(fonts, fontsize)
+  if has("gui_running")
+    if has('gui_gtk2')
+      let &guifont = "Inconsolata " . a:fontsize
+    else
+      let fontstrings = []
+      for font in fonts
+        if has('gui_gtk2')
+          let fontstrings += [font . ' ' . a:fontsize]
+        elseif has('macunix') && has('gui')
+          let fontstrings += [font . ':h' . a:fontsize]
+        elseif has('gui_win32')
+          let fontstrings += [font . ':h' . a:fontsize . 'cANSI']
+        endif
+      endfor
+      let &guifont = join(fontstrings, ',')
+    endif
+  endif
+endfun
+
 let fontsize = "13"
 " In order of preference, best to worst
 let fonts = ['Consolas', 'Inconsolata', 'DejaVu Sans Mono', 'Monaco',
           \  'Andale Mono', 'Courier']
 
-if has("gui_running")
-  if has('gui_gtk2')
-    let &guifont = "Inconsolata " . fontsize
-  else
-    let fontstrings = []
-    for font in fonts
-      if has('gui_gtk2')
-        let fontstrings += [font . ' ' . fontsize]
-      elseif has('macunix') && has('gui')
-        let fontstrings += [font . ':h' . fontsize]
-      elseif has('gui_win32')
-        let fontstrings += [font . ':h' . fontsize . 'cANSI']
-      endif
-    endfor
-    let &guifont = join(fontstrings, ',')
-  endif
-endif
+call SetFont(fonts, fontsize)
 " }}}
 
 " Indentation {{{
