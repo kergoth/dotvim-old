@@ -88,12 +88,6 @@ behave xterm
 if has('unix')
   let $TEMP = '/tmp'
 endif
-if !exists('$MYVIMRC')
-  let $MYVIMRC = $HOME . '/' . s:prefix . 'vimrc'
-endif
-if !exists('$MYVIMRUNTIME')
-  let $MYVIMRUNTIME = $HOME . '/' . s:prefix . 'vim'
-endif
 
 
 " Functions {{{
@@ -162,10 +156,6 @@ noremap <Leader>= gg=G
 
 " Select everything
 noremap <Leader>gg ggVG
-
-" Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " Pressing ,ss will toggle spell checking
 map <leader>ss :set spell!<CR>
@@ -833,9 +823,6 @@ if has('autocmd')
     endfun
     au VimEnter * :call <SID>check_pager_mode()
     " }}}
-
-    " Reload the vimrc when it changes
-    autocmd BufWritePost $MYVIMRC nested source %
   augroup END " augroup Kergoth
 endif " has('autocmd')
 " }}}
@@ -899,7 +886,7 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:detectindent_preferred_expandtab = 1
 let g:detectindent_preferred_indent = 4
-let g:yankring_history_dir = $MYVIMRUNTIME
+let g:yankring_history_dir = split(globpath(&rtp, ''))[0]
 let g:yankring_persist = 0
 let g:GetLatestVimScripts_allowautoinstall = 0
 let g:LustyExplorerSuppressRubyWarning = 1
