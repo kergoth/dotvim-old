@@ -243,10 +243,15 @@ com! DiffOrig bel new | set bt=nofile | r # | 0d_ | diffthis
 " }}}
 
 " Fonts {{{
-fun! SetFont(fonts, fontsize)
+fun! SetFont(fonts, gtkfont, fontsize)
   if has("gui_running")
     if has('gui_gtk2')
-      let &guifont = "Inconsolata " . a:fontsize
+      " Gtk2 has to be handled specially, because the font fallback does not
+      " appear to function correctly.  Instead of seeing an error message from
+      " vim when setting an invalid font, as it does on other platforms, it
+      " simply displays screwed up text, and as a result doesn't fall back to
+      " the next font in the &guifont list, so set it explicitly.
+      let &guifont = a:gtkfont . ' ' . a:fontsize
     else
       let fontstrings = []
       for font in fonts
@@ -263,12 +268,13 @@ fun! SetFont(fonts, fontsize)
   endif
 endfun
 
-let fontsize = "13"
+let g:fontsize = "11"
 " In order of preference, best to worst
-let fonts = ['Consolas', 'Inconsolata', 'DejaVu Sans Mono', 'Monaco',
-          \  'Andale Mono', 'Courier']
+let g:fonts = ['Consolas', 'Inconsolata', 'Menlo', 'DejaVu Sans Mono',
+            \  'Monaco', 'Andale Mono', 'Courier']
+let g:gtkfont = 'Inconsolata'
 
-call SetFont(fonts, fontsize)
+au VimEnter * call SetFont(g:fonts, g:gtkfont, g:fontsize)
 " }}}
 
 " Indentation {{{
