@@ -7,3 +7,4 @@ endif
 set isk+=.
 setlocal fdm=syntax
 setlocal fdl=1
+set suffixesadd=.py

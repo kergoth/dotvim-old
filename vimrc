@@ -540,9 +540,6 @@ else
   set fileformats=dos,unix,mac
 endif
 
-" Allow spaces in filenames
-set isfname+=32
-
 if has('gui_running')
   set lines=50
   set columns=112
