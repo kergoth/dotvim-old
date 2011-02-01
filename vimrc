@@ -228,8 +228,13 @@ endfun
 nnoremap <silent> <F9> :call RunInterp()<CR>
 com! -complete=command Interp call RunInterp()
 
+" Diff the current file contents against last saved
 com! DiffOrig bel new | set bt=nofile | r # | 0d_ | diffthis
       \ | wincmd p | diffthis
+
+" Change the current directory to the location of the
+" file being edited.
+com! -nargs=0 -complete=command Bcd lcd %:p:h
 " }}}
 
 " Fonts {{{
@@ -571,14 +576,6 @@ set tw=78
 " Keep cursor in the same column if possible (see help).
 set nostartofline
 
-" Filter expected errors from make
-" if has('eval') && v:version >= 700
-"    let &makeprg = 'nice make $* 2>&1 \| sed -u -n '
-"    let &makeprg.= '-e '/should fail/s/:\([0-9]\)/???\1/g' '
-"    let &makeprg.= '-e 's/\([0-9]\{2\}\):\([0-9]\{2\}\):\([0-9]\{2\}\)/\1???\2???\3/g' '
-"    let &makeprg.= '-e '/^/p' '
-" endif
-
 " Ignore binary files matched with grep by default
 set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m,%-OBinary\ file%.%#
 
@@ -597,13 +594,10 @@ if has('statusline')
   set statusline+=%(%{StatusLine_FileName()}\ %) " filename
   set statusline+=%h%m%r%w                     " status flags
   set statusline+=%{fugitive#statusline()}     " current git branch
-  " let Tlist_Process_File_Always = 1
   set statusline+=%((%{StatusLine_Tlist_Info()})\ %) " tag name
 
-  " set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
   set statusline+=%(\[%{&ft}]%)               " file type
   set statusline+=%=                          " right align remainder
-  " set statusline+=0x%-8B                    " character value
   set statusline+=%-14(%l,%c%V%)              " line, character
   set statusline+=%<%P                        " file position
 endif
@@ -613,19 +607,14 @@ if has('autocmd') && v:version >= 700
   " NOTE: only Vim7+ supports a statusline local to a window
   augroup KergothStatusLines
     au!
-    au FileType qf
-          \ setlocal statusline=%2*%-3.3n%0* |
-          \ setlocal statusline+=\ \[Compiler\ Messages\] |
-          \ setlocal statusline+=%=%2*\ %<%P |
-          \ let w:numberoverride = 1 |
-          \ setlocal nonumber
-
     au VimEnter,BufWinEnter __Tag_List__
           \ setlocal statusline=\[Tags\] |
           \ setlocal statusline+=%= |
           \ setlocal statusline+=%l
 
-    au VimEnter,BufWinEnter TreeExplorer let w:numberoverride = 1 | setlocal nonumber
+    au VimEnter,BufWinEnter TreeExplorer
+          \ let w:numberoverride = 1 |
+          \ set nonumber
   augroup END
 endif
 
@@ -799,11 +788,6 @@ if has('autocmd')
       endif
     endfun
     au BufEnter * call <SID>QuickFixClose()
-
-    " Change the current directory to the location of the
-    " file being edited.
-    com! -nargs=0 -complete=command Bcd lcd %:p:h
-
     " Special less.sh and man modes {{{
     fun! <SID>check_pager_mode()
       if exists('g:loaded_less') && g:loaded_less
