@@ -476,7 +476,6 @@ set pastetoggle=<Leader>P
 set isk+=_,$,@,%,#,-
 set shortmess=atItToO
 
-" Test display
 "  lastline  When included, as much as possible of the last line
 "            in a window will be displayed.  When not included, a
 "            last line that doesn't fit is replaced with '@' lines.
@@ -565,6 +564,11 @@ if has('gui_running')
   set mousef
 
   set go=Acgae
+
+  try
+    set fuoptions=maxvert,maxhorz
+  catch
+  endtry
 endif
 
 " Make operations like yank, which normally use the unnamed register, use the
