@@ -558,11 +558,7 @@ if has('gui_running')
   " Automatically activate the window the mouse pointer is on
   set mousef
 
-  " set go=Acgtm
-  set go=Acga
-
-  set columns=112
-  set lines=50
+  set go=Acgae
 endif
 
 " Make operations like yank, which normally use the unnamed register, use the
