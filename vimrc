@@ -951,4 +951,7 @@ let g:bufExplorerOpenMode = 1
 " }}}
 " }}}
 
+if !exists('$HOSTNAME') && executable('hostname')
+  let $HOSTNAME = substitute(system('hostname'), "\n", "", "")
+endif
 runtime vimrc.$HOSTNAME
