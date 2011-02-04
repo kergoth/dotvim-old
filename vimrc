@@ -249,7 +249,7 @@ fun! SetFont(fonts, gtkfont, fontsize)
       let &guifont = a:gtkfont . ' ' . a:fontsize
     else
       let fontstrings = []
-      for font in fonts
+      for font in a:fonts
         if has('gui_gtk2')
           let fontstrings += [font . ' ' . a:fontsize]
         elseif has('macunix') && has('gui')
