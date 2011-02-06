@@ -832,6 +832,7 @@ let g:c_impl_defined = 1
 " }}}
 
 " Plugin options {{{
+let g:python_fold_imports_level = '2'
 let g:pyflakes_use_quickfix = 0
 let g:snips_author = 'Chris Larson <clarson@kergoth.com>'
 let g:debianfullname = 'Chris Larson'

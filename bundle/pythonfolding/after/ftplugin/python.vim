@@ -45,6 +45,10 @@ if !exists("g:python_fold_imports")
   "   = 0 -- do not fold imports
 endif
 
+if !exists("g:python_fold_imports_level")
+  let g:python_fold_imports_level = '1'
+endif
+
 "}}}
 
 " FOLDING {{{
@@ -66,9 +70,9 @@ function! PythonFoldLevel(lnum) "{{{
     let rx_import = '^\%(import\|from\)\s.*$'
     if line =~ rx_import
       if pline =~ rx_import
-        return '1'
+        return g:python_fold_imports_level
       else
-        return '>1'
+        return '>' . g:python_fold_imports_level
       endif
     endif
   endif
