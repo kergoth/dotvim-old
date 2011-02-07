@@ -120,7 +120,7 @@ bundle/pydoc/ftplugin/python:
 bundle/pyflakes: 
   branch: master
   remote: braid/bundle/pyflakes
-  revision: 21dc9e0c5ef36fae5425845abbc328130c6b2a15
+  revision: 6ec94555e460a2f93de8bf8d927dccd1a6a09751
   squashed: true
   type: git
   url: git://github.com/kevinw/pyflakes-vim
