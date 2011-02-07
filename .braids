@@ -169,7 +169,7 @@ bundle/startup_profile:
 bundle/supertab: 
   branch: master
   remote: braid/bundle/supertab
-  revision: 2bc1b9d3a734e3d8732320fe1c1d5bd774cc7a53
+  revision: de3ece9e3669641019eec14af405777ac0953072
   squashed: true
   type: git
   url: git://github.com/ervandew/supertab.git
