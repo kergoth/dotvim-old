@@ -99,7 +99,7 @@ bundle/markdown:
 bundle/nerdcommenter: 
   branch: master
   remote: braid/bundle/nerdcommenter
-  revision: 760df352734666753ceb66a0886e0f0a844c3a48
+  revision: 197ce731be849c484a9c2555fae3fb094c9b88fc
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdcommenter.git
