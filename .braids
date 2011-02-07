@@ -36,7 +36,7 @@ bundle/detectindent:
 bundle/endwise: 
   branch: master
   remote: braid/bundle/endwise
-  revision: b674cb5c7c3c8595e639847cce95f9ba834181e5
+  revision: d8c887b93b7ceb250c02ee7d9fc36de09f8b120d
   squashed: true
   type: git
   url: git://github.com/tpope/vim-endwise.git
