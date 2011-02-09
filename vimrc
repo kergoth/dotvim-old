@@ -515,6 +515,7 @@ set sessionoptions-=help
 set backspace=indent,eol,start
 set noshowmatch
 set formatoptions=crqn
+set nojoinspaces
 
 " Default to replace all in :s
 set gdefault
