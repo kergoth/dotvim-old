@@ -516,6 +516,9 @@ set backspace=indent,eol,start
 set noshowmatch
 set formatoptions=crqn
 
+" Default to replace all in :s
+set gdefault
+
 " Case insensitivity
 set ignorecase
 set smartcase
