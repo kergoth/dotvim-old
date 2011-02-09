@@ -1,30 +1,33 @@
 *reload.txt*  Automatic reloading of Vim scripts
 
 The reload.vim [1] plug-in automatically reloads various types of Vim scripts
-as they're being edited in Vim to give you instant feedback on the changes you
+as you're editing them in Vim to give you instant feedback on the changes you
 make. For example while writing a Vim syntax script you can open a split
 window of the relevant file type and every time you |:update| your syntax
 script, reload.vim [1] will refresh the syntax highlighting in the split
 window. Automatic reloading of Vim scripts is currently supported for the
 following types of scripts:
 
- • Standard plug-ins (see |standard-plugin|) located at '~/.vim/plugin/.vim' on
-   UNIX, '~\_vimfiles\plugin\.vim' on Windows;
+ * Standard plug-ins (see |standard-plugin|) located in '~/.vim/plugin' on UNIX,
+   '~\vimfiles\plugin' on Windows;
 
- • Auto-load scripts (see |autoload|) located at '~/.vim/autoload/.vim' on UNIX,
-   '~\_vimfiles\autoload\.vim' on Windows;
+ * Auto-load scripts (see |autoload|) located in or below '~/.vim/autoload' on
+   UNIX, '~\vimfiles\autoload' on Windows;
 
- • File-type plug-ins (see |filetype-plugins|) located at '~/.vim/ftplugin/.vim'
-   on UNIX, '~\_vimfiles\ftplugin\.vim' on Windows;
+ * File-type plug-ins (see |filetype-plugins|) located in or below
+   '~/.vim/ftplugin' on UNIX, '~\vimfiles\ftplugin' on Windows;
 
- • Syntax highlighting scripts (see |syntax-highlighting|) located at
-   '~/.vim/syntax/.vim' on UNIX, '~\_vimfiles\syntax\.vim' on Windows;
+ * Syntax highlighting scripts (see |syntax-highlighting|) located in
+   '~/.vim/syntax' on UNIX, '~\vimfiles\syntax' on Windows;
 
- • File-type indentation plug-ins (see |30.3|) located at '~/.vim/indent/.vim' on
-   UNIX, '~\_vimfiles\indent\.vim' on Windows;
+ * File-type indentation plug-ins (see |30.3|) located in '~/.vim/indent' on
+   UNIX, '~\vimfiles\indent' on Windows;
 
- • Color scheme scripts (see |:colorscheme|) located at '~/.vim/colors/.vim' on
-   UNIX, '~\_vimfiles\colors\.vim' on Windows.
+ * Color scheme scripts (see |:colorscheme|) located in '~/.vim/colors' on UNIX,
+   '~\vimfiles\colors' on Windows.
+
+The directories listed above are Vim's defaults but you're free to change the
+|'runtimepath'| and reloading will still work.
 
 Note that |vimrc| scripts are not reloaded because that seems to cause more
 trouble than it's worth...
@@ -117,13 +120,13 @@ Alternatives ~
 The ReloadScript [3] plug-in on Vim Online also supports reloading of Vim
 scripts, but there are a few notable differences:
 
- • This plug-in focuses on automatic reloading (I'm lazy) while the other one
+ * This plug-in focuses on automatic reloading (I'm lazy) while the other one
    requires manual reloading;
 
- • This plug-in will never |:source| a file that hasn't already been loaded by
+ * This plug-in will never |:source| a file that hasn't already been loaded by
    Vim -- it checks using Vim's |:scriptnames| command;
 
- • This plug-in can more or less reload itself ;-)
+ * This plug-in can more or less reload itself ;-)
 
 ==============================================================================
 Contact ~
@@ -137,7 +140,7 @@ If you like the plug-in please vote for it on Vim Online [4].
 License ~
 
 This software is licensed under the MIT license [5].
-© 2010 Peter Odding <peter@peterodding.com>.
+Copyright 2010 Peter Odding <peter@peterodding.com>.
 
 ==============================================================================
 References ~
