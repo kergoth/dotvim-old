@@ -159,13 +159,6 @@ bundle/speeddating:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-speeddating.git
-bundle/startup_profile: 
-  branch: master
-  remote: braid/bundle/startup-profile
-  revision: b42ae337e02c9a4ca1d989f762ed50c628482849
-  squashed: true
-  type: git
-  url: git://github.com/tomtom/startup_profile_vim.git
 bundle/supertab: 
   branch: master
   remote: braid/bundle/supertab
