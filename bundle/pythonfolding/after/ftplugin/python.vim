@@ -49,6 +49,9 @@ if !exists("g:python_fold_imports_level")
   let g:python_fold_imports_level = '1'
 endif
 
+if !exists("g:python_fold_comments_level")
+  let g:python_fold_comments_level = '1'
+endif
 "}}}
 
 " FOLDING {{{
@@ -116,11 +119,11 @@ function! PythonFoldLevel(lnum) "{{{
     else
       if line =~ rx_comment
         if pline =~ rx_comment && nline !~ rx_comment
-          return 's1'
+          return 's' . g:python_fold_comments_level
         elseif pline =~ rx_comment
           return '='
         elseif nline =~ rx_comment
-          return 'a1'
+          return 'a' . g:python_fold_comments_level
         endif
       endif
     endif
