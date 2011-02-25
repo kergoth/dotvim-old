@@ -176,7 +176,7 @@ bundle/surround:
 pathogen: 
   branch: master
   remote: braid/pathogen
-  revision: 968e87ef7fa5ce19dbd3ffe23f0e0d58d88fae43
+  revision: c8f5e6c63ca47ca6ccdef5404a1a117c492f2288
   squashed: true
   type: git
   url: git://github.com/tpope/vim-pathogen.git
