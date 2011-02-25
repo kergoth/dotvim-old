@@ -162,7 +162,7 @@ bundle/speeddating:
 bundle/supertab: 
   branch: master
   remote: braid/bundle/supertab
-  revision: 79aaf04be2bcdf19b36df401fb43ed3b12561543
+  revision: edfcc1dea02bf08e377f64b90db8423dbe0a3847
   squashed: true
   type: git
   url: git://github.com/ervandew/supertab.git
