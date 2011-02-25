@@ -103,6 +103,20 @@ fun! Print(...)
   let &background = l:bg
 endfun
 
+" Via vimcasts / http://bit.ly/gktKmH
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+
+  execute a:command
+
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+
 fun! <SID>Max(a, b)
   if a:a >= a:b
     return a:a
