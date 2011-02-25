@@ -102,6 +102,11 @@ TODO
     - have to manually run QuickfixsignsSet rather than it doing so
       automatically
 
+- Fix bugs in the current python folding plugin
+
+  - Fails with multi-line function definitions
+  - Fails with nested function definitions
+
 - Find a good vim script / configuration for:
 
   - "Project" handling
@@ -122,3 +127,26 @@ TODO
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
   - lua-inspect: http://peterodding.com/code/vim/lua-inspect/
+
+Personal Notes / Reference:
+---------------------------
+
+- Keymap / Commands:
+
+  - Vim core:
+
+    - :only - close all windows but the current one
+
+    - ctrl-^: switches between active and alternate buffer in the current window
+    - ctrl-w s: split
+    - gt, gT: next, previous tab
+    - g;, g, (normal mode): previous, next in the changelist
+    - ctrl-o, ctrl-i: previous, next in the jumplist
+    - f{char}, F{char} (normal mode): occurance of {char} to the left, right
+    - A == $a
+    - C == d$a
+    - I == ctrl-i: insert text before the first non-blank in the line
+    - S == ctrl-c == cc: delete line(s) and start insert
+
+- A 'hidden' buffer is one which has been modified, and is not loaded in a
+  window.
