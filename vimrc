@@ -93,7 +93,7 @@ endif
 " Functions {{{
 fun! Print(...)
   let l:colo = g:colors_name
-  let l:printcolo = a:0 == 1 ? a:1 : 'print_bw'
+  let l:printcolo = a:0 == 1 ? a:1 : g:print_syntax
   let l:bg = &background
 
   exe 'colo ' . l:printcolo
@@ -819,6 +819,7 @@ endif " has('autocmd')
 " }}}
 
 " Syntax options {{{
+let g:print_syntax = 'github' " color scheme to use for printing
 let g:go_highlight_array_whitespace_error = 1
 let g:go_highlight_chan_whitespace_error = 1
 let g:go_highlight_extra_types = 1
