@@ -1,6 +1,7 @@
 fugitive	fugitive.txt	/*fugitive*
 fugitive#statusline()	fugitive.txt	/*fugitive#statusline()*
 fugitive-:Gblame	fugitive.txt	/*fugitive-:Gblame*
+fugitive-:Gbrowse	fugitive.txt	/*fugitive-:Gbrowse*
 fugitive-:Gcd	fugitive.txt	/*fugitive-:Gcd*
 fugitive-:Gcommit	fugitive.txt	/*fugitive-:Gcommit*
 fugitive-:Gdiff	fugitive.txt	/*fugitive-:Gdiff*
