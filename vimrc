@@ -148,6 +148,8 @@ map <leader>ddr :s/\.\+\s*/. /g<CR>    ' Delete Dot Runs
 map <leader>dsr :s/\s\s\+/ /g<CR>      ' Delete Space Runs
 map <leader>dtw :%s/\s\+$//g<CR>       ' Delete Trailing Whitespace
 
+nmap <leader>l :set list!<CR>
+
 " Make <leader>' switch between ' and "
 nnoremap <leader>' ""yls<c-r>={'"': "'", "'": '"'}[@"]<cr><esc>
 
@@ -658,10 +660,10 @@ endif
 " Show nonprintable characters like hard tabs
 "   NOTE: No longer showing trailing spaces this way, as those
 "   are being highlighted in red, along with spaces before tabs.
-set list
+set nolist
 
 if (&termencoding == 'utf-8') || has('gui_running')
-  set listchars=tab:»·,extends:…,precedes:…
+  set listchars=tab:»·,extends:…,precedes:…,eol:¬
 
   if v:version >= 700
     set listchars+=nbsp:‗
