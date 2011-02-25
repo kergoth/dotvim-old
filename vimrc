@@ -117,14 +117,6 @@ function! Preserve(command)
   call cursor(l, c)
 endfunction
 
-fun! <SID>Max(a, b)
-  if a:a >= a:b
-    return a:a
-  else
-    return a:b
-  endif
-endfun
-
 " Display the current tag if available, or nothing
 " Used by the statusline
 fun! StatusLine_Tlist_Info()
