@@ -148,5 +148,42 @@ Personal Notes / Reference:
     - I == ctrl-i: insert text before the first non-blank in the line
     - S == ctrl-c == cc: delete line(s) and start insert
 
+  - Plugins:
+
+    - surround
+
+      - ds (normal mode): delete surrounding characters
+      - cs (normal mode), s (visual mode), ctrl-g s (insert mode):
+        change/insert surrounding characters
+      - S (visual mode): change/insert surrounding characters, separate lines
+
+    - align
+
+      - <leader>adec: align C declarations
+      - <leader>acom: align comments
+      - <leader>afnc: align ansi-style C function input arguments
+      - <leader>Htd: align html tables
+
+    - nerdcommenter
+
+      - <leader>cs: apply 'sexy' comment to line(s)
+      - <leader>c<space>: toggle commenting on line(s)
+      - <leader>cc: comment block as a whole (doesnt obey space_delim)
+      - <leader>ci: comment individually
+      - <leader>cu: uncomment individually
+
+    - [modelines] <leader>im: insert modeline
+    - [hilinks] <leader>hlt: show highlighting groups of mouseover
+    - [getscript] :GLVS - Download updated vim scripts
+
+- Common indentation setups:
+
+    - No hard tabs, 2 space indent: set sw=2 sts=2 et
+    - No hard tabs, 4 space indent: set sw=4 sts=4 et
+    - All hard tabs, 8 space tabstops: set ts=8 sw=8 sts=0 noet
+    - Hard tabs for indentation, 4 space tabstops: set ts=4 sw=4 sts=0 noet
+    - Horrendous, 4 space indent, 8 space tabstops, hard tabs:
+      set ts=8 sw=4 sts=4 noet
+
 - A 'hidden' buffer is one which has been modified, and is not loaded in a
   window.
