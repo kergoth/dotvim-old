@@ -178,12 +178,12 @@ Personal Notes / Reference:
 
 - Common indentation setups:
 
-    - No hard tabs, 2 space indent: set sw=2 sts=2 et
-    - No hard tabs, 4 space indent: set sw=4 sts=4 et
-    - All hard tabs, 8 space tabstops: set ts=8 sw=8 sts=0 noet
-    - Hard tabs for indentation, 4 space tabstops: set ts=4 sw=4 sts=0 noet
-    - Horrendous, 4 space indent, 8 space tabstops, hard tabs:
-      set ts=8 sw=4 sts=4 noet
+  - No hard tabs, 2 space indent: set sw=2 sts=2 et
+  - No hard tabs, 4 space indent: set sw=4 sts=4 et
+  - All hard tabs, 8 space tabstops: set ts=8 sw=8 sts=0 noet
+  - Hard tabs for indentation, 4 space tabstops: set ts=4 sw=4 sts=0 noet
+  - Horrendous, 4 space indent, 8 space tabstops, hard tabs:
+    set ts=8 sw=4 sts=4 noet
 
 - A 'hidden' buffer is one which has been modified, and is not loaded in a
   window.
