@@ -148,6 +148,13 @@ Personal Notes / Reference:
     - I == ctrl-i: insert text before the first non-blank in the line
     - S == ctrl-c == cc: delete line(s) and start insert
 
+  - Vimrc:
+
+    - <leader>ew: edit a file in the same directory as the current file
+    - <leader>es: same as above, in a split
+    - <leader>ev: same as above, in a vertical split
+    - <leader>et: same as above, in a new tab
+
   - Plugins:
 
     - surround
