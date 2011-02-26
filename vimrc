@@ -38,19 +38,17 @@ endfun
 " Via vimcasts / http://bit.ly/gktKmH
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
-  let _s=@/
+  let _s = @/
   let l = line(".")
   let c = col(".")
 
   execute a:command
 
   " Clean up: restore previous search history, and cursor position
-  let @/=_s
+  let @/ = _s
   call cursor(l, c)
 endfunction
 
-" Display the current tag if available, or nothing
-" Used by the statusline
 fun! StatusLine_Tlist_Info()
   if exists('g:loaded_taglist') &&
         \ g:loaded_taglist == 'available'
