@@ -100,6 +100,12 @@ noremap <Leader>gg ggVG
 " Pressing ,ss will toggle spell checking
 map <leader>ss :set spell!<CR>
 
+" Open a file in the same directory as the current file
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
 " quickfix things
 nmap <Leader>cwc :cclose<CR>
 nmap <Leader>cwo :botright copen 5<CR><C-w>p
