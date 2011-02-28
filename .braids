@@ -215,6 +215,13 @@ bundle/py2stdlib:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/Python-2.x-Standard-Library-Reference
+bundle/py3stdlib: 
+  branch: master
+  remote: braid/bundle/py3stdlib
+  revision: 758b2563a6f5ebc8054889f5d735f42d9e8d327a
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/Python-3.x-Standard-Library-Reference
 bundle/pydoc/ftplugin/python: 
   branch: master
   remote: braid/bundle/pydoc/ftplugin/python
