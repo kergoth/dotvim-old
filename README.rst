@@ -1,8 +1,6 @@
 Included Bundles
 ----------------
 
-  Notes:
-
   - pythoncomplete is available in git as a mirror at
     git://github.com/vim-scripts/pythoncomplete, but the version there places
     the pythoncomplete.vim file in the wrong location, so currently the
