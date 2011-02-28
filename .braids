@@ -208,6 +208,13 @@ bundle/nerdtreeproject:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/NERD_tree-Project
+bundle/py2stdlib: 
+  branch: master
+  remote: braid/bundle/py2stdlib
+  revision: 305b08a99a6e3e3c4df6f6936869ba69a6b21fcf
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/Python-2.x-Standard-Library-Reference
 bundle/pydoc/ftplugin/python: 
   branch: master
   remote: braid/bundle/pydoc/ftplugin/python

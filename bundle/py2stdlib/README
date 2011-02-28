@@ -1,0 +1,3 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3277
+
+Installing this help file will give you access to the Python 2.7 standard library documentation as a Vim help file (available from within Vim by typing ":help py2stdlib"). For this release I've only tagged the module names (otherwise the help tagspace becomes too cluttered).
