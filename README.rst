@@ -10,7 +10,6 @@ Included Bundles
     laid out in a traditional vim bundle manner.
   - Non-ideal layouts in the vim-scripts mirrors, so not using braid:
 
-    - pydoc
     - pythoncomplete
 
 - Local
@@ -74,7 +73,6 @@ Included Bundles
   - pathogen: manage your runtimepath
   - py2stdlib: The Python 2.x standard library documentation as a Vim help file
   - py3stdlib: The Python 3.x standard library documentation as a Vim help file
-  - pydoc: Pulls external python documentation into a Vim window
   - pyflakes: on the fly Python checking in Vim with PyFlakes
   - pylint: compiler plugin which runs pylint against python files
   - pythonfolding: python folding plugin from
