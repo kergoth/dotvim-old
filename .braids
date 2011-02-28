@@ -131,13 +131,6 @@ bundle/golang:
   squashed: true
   type: git
   url: git://github.com/jnwhiteh/vim-golang.git
-bundle/gundo: 
-  branch: master
-  remote: braid/bundle/gundo
-  revision: 8de0b4ce478380e5c637b152449b728dc1997cad
-  squashed: true
-  type: git
-  url: git://github.com/sjl/gundo.vim.git
 bundle/help_movement: 
   branch: master
   remote: braid/bundle/help-movement
