@@ -7,4 +7,4 @@ else
   com! -nargs=+ -complete=command Windofast let l:ei = &eventignore | let &eventignore = 'all' | call tip1161#WinDo(<q-args>) | let &eventignore = l:ei
 endif
 
-com! -nargs=+ -complete=command Bufdo call BufDo(<q-args>)
+com! -nargs=+ -complete=command Bufdo call tip1161#BufDo(<q-args>)
