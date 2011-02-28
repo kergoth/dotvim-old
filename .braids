@@ -82,6 +82,13 @@ bundle/git:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-git.git
+bundle/github-colors: 
+  branch: master
+  remote: braid/bundle/github-colors
+  revision: 3adc3f93822896919797051ef8218a492fff2259
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/github-theme
 bundle/gitolite: 
   branch: master
   remote: braid/bundle/gitolite

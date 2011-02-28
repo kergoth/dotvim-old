@@ -1,0 +1,11 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2855
+
+Screenshot: http://i.imgur.com/LJXdy.png
+Diffsplit screenshot: http://i.imgur.com/RKtVD.png
+
+This is a port of github's lovely light-background syntax highlighting theme.  I tried to make it as comprehensive as possible; it should look good with:
+ - Completion menus
+ - Diffsplit
+ - STL highlighting
+
+It's not an exact replica, but it's pretty close - enjoy!
