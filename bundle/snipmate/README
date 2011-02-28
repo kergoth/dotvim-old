@@ -1,0 +1,34 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3432
+
+fork of the famous https://github.com/msanders/snipmate.vim, 
+http://www.vim.org/scripts/script.php?script_id=2540
+plugin
+
+my upstream: http://github.com/MarcWebre/snipmate.vim
+
+Changes:
+
+- snippets are loaded lazily as needed and cached. Whenever a file changes they will be reloaded automatically based on timestamps. Thus never reload snippets
+
+- :SnipMateOpenSnippetFiles command for opening snippet files fast.
+  All sane paths depending on your runtimepath are supported
+
+- when writing .snippets files you can visuall select text and press <cr> which will replace space indentation by tabs in a smart way
+
+- {VISUAL} support which means you can make snippets support surrounding some selected text. Example could be:
+
+snippet fun
+  fun ${1:name}
+  {VISUAL}
+  endf
+
+then you can visually select and press tab, then select the snippet and {VIUSAL} will be filled
+
+- because there is a global function returning a list of snippets you can also create snippets on the fly. See example about how to create python function skeletons based on definitions in the current file
+
+I'd like to merge - but I never got valuable feedback from the main author.
+Don't miss the README file in the git repo which also clearly states that maybe XPTemplate is another option. So maybe I'll make XPTemplate read snippet files in the future.
+
+Apart from those changes everything should be compatible
+
+I was asked to put my fork here so that people find it.

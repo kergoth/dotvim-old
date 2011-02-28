@@ -281,7 +281,7 @@ bundle/smarttabs:
 bundle/snipmate: 
   branch: master
   remote: braid/bundle/snipmate
-  revision: f5a75d075d3c005ebe69e3f5e56cf99516e8aa3b
+  revision: bce171e908bbead9ecf71db694f949b83962c7d7
   squashed: true
   type: git
   url: https://github.com/vim-scripts/lazysnipmate

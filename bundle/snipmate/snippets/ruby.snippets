@@ -502,3 +502,17 @@ snippet tas
 	task :${2:task_name => [:dependent, :tasks]} do
 		${3}
 	end
+# block
+snippet b
+	{|${1:var}| ${2}}
+snippet begin
+	begin   
+		raise 'A test exception.'   
+	rescue Exception => e   
+		puts e.message   
+		puts e.backtrace.inspect   
+	else
+		# other exception
+	ensure
+		# always excute
+	end   
