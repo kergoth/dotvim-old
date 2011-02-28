@@ -97,6 +97,10 @@ Included Bundles
   - surround: quoting/parenthesizing made simple
   - taglist: Source code browser (supports C/C++, java, perl, python, tcl, sql,
     php, etc)
+  - tlib: Some utility functions
+
+    - Used by the lazy fork of snipmate
+
   - vis: Extended Visual Mode Commands, Substitutes, and Searches
   - yankring: Maintains a history of previous yanks, changes and deletes
 
