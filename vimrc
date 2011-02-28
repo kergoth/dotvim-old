@@ -179,6 +179,9 @@ com! DiffOrig bel new | set bt=nofile | r # | 0d_ | diffthis
 " Change the current directory to the location of the
 " file being edited.
 com! -nargs=0 -complete=command Bcd lcd %:p:h
+
+com! -bar -nargs=0 SudoWrite
+      \ | :silent exe "write !sudo tee % >/dev/null" | silent edit!
 " }}}
 
 " Fonts {{{
