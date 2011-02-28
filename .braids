@@ -103,6 +103,13 @@ bundle/markdown:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-markdown.git
+bundle/matchit: 
+  branch: master
+  remote: braid/bundle/matchit
+  revision: ced6c409c9beeb0b4142d21906606bd194411d1d
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/matchit.zip
 bundle/nerdcommenter: 
   branch: master
   remote: braid/bundle/nerdcommenter
