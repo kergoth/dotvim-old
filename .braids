@@ -89,6 +89,13 @@ bundle/gundo:
   squashed: true
   type: git
   url: git://github.com/sjl/gundo.vim.git
+bundle/jellyx: 
+  branch: master
+  remote: braid/bundle/jellyx
+  revision: 778f0ebc379181cf9a367b8df6d064acc5a0599e
+  squashed: true
+  type: git
+  url: git://github.com/guns/jellyx.vim
 bundle/markdown: 
   branch: master
   remote: braid/bundle/markdown
