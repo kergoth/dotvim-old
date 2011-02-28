@@ -68,6 +68,13 @@ bundle/detectindent:
   squashed: true
   type: git
   url: git://github.com/ciaranm/detectindent.git
+bundle/diff_movement: 
+  branch: master
+  remote: braid/bundle/diff-movement
+  revision: d49c93b15c62a55e1b9602027332b31fb114e824
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/diff_movement
 bundle/endwise: 
   branch: master
   remote: braid/bundle/endwise
