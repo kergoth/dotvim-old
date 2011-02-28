@@ -218,7 +218,7 @@ bundle/nerdcommenter:
 bundle/nerdtree: 
   branch: master
   remote: braid/bundle/nerdtree
-  revision: 21bd1418667e2ae31c44400b0d51902eb27fb0dd
+  revision: e697444f29bbe2fb38f2274b6a136ad06ac3d755
   squashed: true
   type: git
   url: git://github.com/scrooloose/nerdtree.git

@@ -51,6 +51,7 @@ call s:initVariable("g:NERDTreeAutoCenter", 1)
 call s:initVariable("g:NERDTreeAutoCenterThreshold", 3)
 call s:initVariable("g:NERDTreeCaseSensitiveSort", 0)
 call s:initVariable("g:NERDTreeChDirMode", 0)
+call s:initVariable("g:NERDTreeMinimalUI", 0)
 if !exists("g:NERDTreeIgnore")
     let g:NERDTreeIgnore = ['\~$']
 endif
@@ -149,7 +150,11 @@ let s:NERDTreeBufName = 'NERD_tree_'
 
 let s:tree_wid = 2
 let s:tree_markup_reg = '^[ `|]*[\-+~▾▸ ]*'
-let s:tree_up_dir_line = '.. (up a dir)'
+if g:NERDTreeMinimalUI == 0
+    let s:tree_up_dir_line = '.. (up a dir)'
+else
+    let s:tree_up_dir_line = '..'
+endif
 
 "the number to add to the nerd tree buffer name to make the buf name unique
 let s:next_buffer_number = 1
@@ -2663,6 +2668,7 @@ function! s:initNerdTreeInPlace(dir)
         setlocal nu
     else
         setlocal nonu
+        setlocal nornu
     endif
 
     iabc <buffer>
@@ -2899,6 +2905,7 @@ function! s:createTreeWin()
         setlocal nu
     else
         setlocal nonu
+        setlocal nornu
     endif
 
     iabc <buffer>
@@ -3014,11 +3021,11 @@ function! s:dumpHelp()
         let @h=@h."\" :OpenBookmark <name>\n"
         let @h=@h."\" :ClearBookmarks [<names>]\n"
         let @h=@h."\" :ClearAllBookmarks\n"
-    else
+        silent! put h
+    elseif g:NERDTreeMinimalUI == 0
         let @h="\" Press ". g:NERDTreeMapHelp ." for help\n"
+        silent! put h
     endif
-
-    silent! put h
 
     let @h = old_h
 endfunction
@@ -3266,8 +3273,10 @@ endfunction
 "FUNCTION: s:renderBookmarks {{{2
 function! s:renderBookmarks()
 
-    call setline(line(".")+1, ">----------Bookmarks----------")
-    call cursor(line(".")+1, col("."))
+    if g:NERDTreeMinimalUI == 0
+        call setline(line(".")+1, ">----------Bookmarks----------")
+        call cursor(line(".")+1, col("."))
+    endif
 
     for i in s:Bookmark.Bookmarks()
         call setline(line(".")+1, i.str())
@@ -3294,8 +3303,10 @@ function! s:renderView()
     call s:dumpHelp()
 
     "delete the blank line before the help and add one after it
-    call setline(line(".")+1, "")
-    call cursor(line(".")+1, col("."))
+    if g:NERDTreeMinimalUI == 0
+        call setline(line(".")+1, "")
+        call cursor(line(".")+1, col("."))
+    endif
 
     if b:NERDTreeShowBookmarks
         call s:renderBookmarks()
