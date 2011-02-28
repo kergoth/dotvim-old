@@ -145,6 +145,13 @@ bundle/help_movement:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/help_movement
+bundle/hilinks: 
+  branch: master
+  remote: braid/bundle/hilinks
+  revision: 98d9cb6745d9a33151961c073dedb930d77ce703
+  squashed: true
+  type: git
+  url: https://github.com/kergoth/vim-HiLinkTrace
 bundle/jellyx: 
   branch: master
   remote: braid/bundle/jellyx
