@@ -1,86 +1,105 @@
 Included Bundles
 ----------------
 
-  - pythoncomplete is available in git as a mirror at
-    git://github.com/vim-scripts/pythoncomplete, but the version there places
-    the pythoncomplete.vim file in the wrong location, so currently the
-    pythoncomplete bundle is not being managed with braid, and will be updated
-    manually.
+  - pythonfolding: python folding plugin from
+    http://habamax.ru/blog/2009/05/python-folding-in-vim/ is not managed with
+    github, as there's no git mirror of it yet, afaik.
   - All of the plugins I use from Peter Odding(xolox) are handled using the
     vim-scripts mirror git repositories, even though there are proper upstream
     repositories (github.com/xolox/), because the upstream repositories aren't
     laid out in a traditional vim bundle mannger.
+  - Non-ideal layouts in the vim-scripts mirrors, so not using braid:
 
-- align: Help folks to align text, eqns, declarations, tables, etc
-- bitbake: Syntax highlighting, indentation settings, new file skeleton for
-  BitBake recipes and configuration files
-- bufexplorer: Buffer Explorer / Browser
-- changesplugin: indicate changes of a buffer
-- conque: Conque is a Vim plugin allowing users to execute and interact with
-  programs, typically a shell such as bash, inside a buffer window
-- countjump: Create custom motions and text objects via repeated jumps.
+    - pydoc
+    - pythoncomplete
 
-  - Used by diff_movement, help_movement
+- Local
 
-- csapprox: Make gvim-only colorschemes work transparently in terminal vim
-- c-syntax: C Syntax Extensions
-- detectindent: Automatically detect indent (expandtab, shiftwidth, tabstop)
-  settings
-- diff_movement: Movement over diff hunks with ]] etc.
-- endwise: Wisely add "end" in ruby, endfunction/endif/more in vim script, etc
-- fugitive: A Git wrapper so awesome, it should be illegal
-- getscript: Keep your plugins up-to-date! (semi-automatic retrieval)
+  - bitbake: Syntax highlighting, indentation settings, new file skeleton for
+    BitBake recipes and configuration files
+  - exec-selected-python: execute the selected lines of python code
+  - hi-py-decorators: highlight python decorators
+  - kergoth: Personal settings, plugins, tweaks
+  - pythongotofile: allow jumping to an imported python module with 'gf'
+  - snipmate-skeleton: Trivial implementation of skeleton files using snipmate
+  - tips: Various snippets of vimscript pulled from the Vim tips site(s)
+  - vimorg-runtime: Updated files from the latest upstream vim runtime files
 
-  - Only used for the bundles which aren't handled with braid
+- External
 
-- gist: vimscript for gist.github.com
-- git: Vim Git runtime files
-- github-colors: A gvim colorscheme based on github's syntax highlighting
-- gitolite: Syntax highlight for gitolite configuration
-- gitosis: gitosis-admin.conf syntax highlighting for vim
-- go: Vim syntax highlighting for Go (http://golang.org)
-- help_movement: Movement over Vim help sections with ]] etc.
-- hilinks: A plugin which traces the highlighting linkages; ie. just what
-  highlighting groups associated with the word under the cursor?
-- histwin: A Vim Plugin for browsing the undo tree
-- indentconsistencycop:  Is the buffer's indentation consistent and does it
-  conform to tab settings?
-- kergoth
-- largefile: Edit large files quickly
-- manpageview: Viewer for manpages, gnu info,  perldoc, and php
-  (unix/linux/cygwin)
-- markdown: Vim Markdown runtime files that WON'T leave you sterile
-- matchit: extended % matching for HTML, LaTeX, and many other languages
-- modeliner: Generates modeline according to the current settings.
-- nerdcommenter: Vim plugin for intensely orgasmic commenting
-- nerdtree: hax0r vim script to give you a tree explorer
-- pathogen: manage your runtimepath
-- pyflakes: on the fly Python checking in Vim with PyFlakes
-- pylint: use pylint as the 'compiler' for python files
-- pythoncomplete: Python Omni Completion
+  - align: Help folks to align text, eqns, declarations, tables, etc
+  - bufexplorer: Buffer Explorer / Browser
+  - c-syntax: C Syntax Extensions
+  - changesplugin: indicate changes of a buffer
+  - command-t: Fast file navigation for VIM
+  - conque: Conque is a Vim plugin allowing users to execute and interact with
+    programs, typically a shell such as bash, inside a buffer window
+  - countjump: Create custom motions and text objects via repeated jumps.
 
-  - Latest version of the omnicompletion plugin included with Vim 7
+    - Used by diff_movement, help_movement
 
-- reload: The reload.vim plug-in automatically reloads various types of Vim
-  scripts as they’re being edited in Vim to give you instant feedback on the
-  changes you make
-- repeat: enable repeating supported plugin maps with "."
-- securemodelines: Secure, user-configurable modeline support
-- snipmate: TextMate-style snippets for Vim
-- smarttabs: Use tabs for indent, spaces for alignment
-- speeddating: use CTRL-A/CTRL-X to increment dates, times, and more
-- sudo: allows one to edit a file with prevledges from an unprivledged
-  session.
-- supertab: aims to provide tab completion to satisfy all your insert
-  completion needs
-- surround: quoting/parenthesizing made simple
-- syntastic: Automatic syntax checking
-- taglist: Source code browser (supports C/C++, java, perl, python, tcl, sql,
-  php, etc)
-- tips: Various snippets of vimscript pulled from the Vim tips site(s)
-- vimorg-runtime: Updated files from the latest upstream vim runtime files
-- vis: Extended Visual Mode Commands, Substitutes, and Searches
-- yankring: Maintains a history of previous yanks, changes and deletes
+  - csapprox: Make gvim-only colorschemes work transparently in terminal vim
+  - cute-python: Unicode goodness for Python code by using vim's new “conceal”
+    feature
+  - detectindent: Automatically detect indent (expandtab, shiftwidth, tabstop)
+    settings
+  - diff_movement: Movement over diff hunks with ]] etc.
+  - endwise: Wisely add "end" in ruby, endfunction/endif/more in vim script, etc
+  - fugitive: A Git wrapper so awesome, it should be illegal
+  - gist: vimscript for gist.github.com
+  - git: Vim Git runtime files
+  - github-colors: A gvim colorscheme based on github's syntax highlighting
+  - gitolite: Syntax highlight for gitolite configuration
+  - gitosis: gitosis-admin.conf syntax highlighting for vim
+  - golang: Vim syntax highlighting for Go (http://golang.org)
+  - gundo: Graph your Vim undo tree in style
+  - help_movement: Movement over Vim help sections with ]] etc.
+  - hilinks: A plugin which traces the highlighting linkages; ie. just what
+    highlighting groups associated with the word under the cursor?
+  - jellyx: A delicious collision of Jellybeans and Xoria256
+  - largefile: Edit large files quickly
+  - luainspect: Semantic highlighting for Lua in Vim
+  - manpageview: Viewer for manpages, gnu info,  perldoc, and php
+    (unix/linux/cygwin)
+  - markdown: Vim Markdown runtime files that WON'T leave you sterile
+  - matchit: extended % matching for HTML, LaTeX, and many other languages
+  - modeliner: Generates modeline according to the current settings.
+  - mw-utils: various utils such as caching interpreted contents of files or
+    advanced glob like things
+
+    - Used by the lazy fork of snipmate
+
+  - nerdcommenter: Vim plugin for intensely orgasmic commenting
+  - nerdtree: hax0r vim script to give you a tree explorer
+  - nerdtreeproject:
+  - pathogen: manage your runtimepath
+  - py2stdlib: The Python 2.x standard library documentation as a Vim help file
+  - py3stdlib: The Python 3.x standard library documentation as a Vim help file
+  - pydoc: Pulls external python documentation into a Vim window
+  - pyflakes: on the fly Python checking in Vim with PyFlakes
+  - pylint: compiler plugin which runs pylint against python files
+  - pythonfolding: python folding plugin from
+    http://habamax.ru/blog/2009/05/python-folding-in-vim/
+  - pythonimport: automatically remove unused imports and clean up the rest
+  - pythoncomplete: Python Omni Completion.
+    http://www.vim.org/scripts/script.php?script_id=1542
+  - reload: The reload.vim plug-in automatically reloads various types of Vim
+    scripts as they’re being edited in Vim to give you instant feedback on the
+    changes you make
+  - repeat: enable repeating supported plugin maps with "."
+  - securemodelines: Secure, user-configurable modeline support
+  - session: Extended session management for Vim
+  - shell: Improved integration between Vim and its environment
+  - smarttabs: Use tabs for indent, spaces for alignment
+  - snipmate: TextMate-style snippets for Vim
+  - speeddating: use CTRL-A/CTRL-X to increment dates, times, and more
+  - supertab: aims to provide tab completion to satisfy all your insert
+    completion needs
+  - surround: quoting/parenthesizing made simple
+  - taglist: Source code browser (supports C/C++, java, perl, python, tcl, sql,
+    php, etc)
+  - vis: Extended Visual Mode Commands, Substitutes, and Searches
+  - yankring: Maintains a history of previous yanks, changes and deletes
 
 TODO
 ----
