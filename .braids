@@ -187,6 +187,13 @@ bundle/modeliner:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/Modeliner
+bundle/mw-utils: 
+  branch: master
+  remote: braid/bundle/mw-utils
+  revision: c4edcd08a96f0012c161570b07165e02be9750c9
+  squashed: true
+  type: git
+  url: https://github.com/MarcWeber/vim-addon-mw-utils
 bundle/nerdcommenter: 
   branch: master
   remote: braid/bundle/nerdcommenter
