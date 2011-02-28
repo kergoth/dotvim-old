@@ -361,6 +361,10 @@ if has('folding')
   set foldlevel=5
 endif
 
+if has('conceal')
+  set conceallevel=2
+endif
+
 " Cscope
 if has("cscope")
   set csto=0
@@ -669,8 +673,13 @@ if &t_Co > 2 || has('gui_running')
   if has('autocmd')
     augroup KergothMatches
       au!
-      au BufRead,BufNewFile * syn match foldMarker contains= contained /{{{[1-9]\|}}}[1-9]/
-      au BufRead,BufNewFile * syn match foldMarker contains= contained /{{{\|}}}/
+      if has('conceal')
+        au BufRead,BufNewFile *
+              \ syn match foldMarker contains= contained conceal /{{{[1-9]\?\|}}}[1-9]\?/
+      else
+        au BufRead,BufNewFile *
+              \ syn match foldMarker contains= contained /{{{[1-9]\?\|}}}[1-9]\?/
+      endif
       au BufRead,BufNewFile * syn match vimModeline contains=@NoSpell contained /vim:\s*set[^:]\{-1,\}:/
     augroup END
   endif
