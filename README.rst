@@ -1,6 +1,18 @@
 Included Bundles
 ----------------
 
+  Notes:
+
+  - pythoncomplete is available in git as a mirror at
+    git://github.com/vim-scripts/pythoncomplete, but the version there places
+    the pythoncomplete.vim file in the wrong location, so currently the
+    pythoncomplete bundle is not being managed with braid, and will be updated
+    manually.
+  - All of the plugins I use from Peter Odding(xolox) are handled using the
+    vim-scripts mirror git repositories, even though there are proper upstream
+    repositories (github.com/xolox/), because the upstream repositories aren't
+    laid out in a traditional vim bundle mannger.
+
 - align: Help folks to align text, eqns, declarations, tables, etc
 - bitbake: Syntax highlighting, indentation settings, new file skeleton for
   BitBake recipes and configuration files
