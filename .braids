@@ -110,6 +110,13 @@ bundle/jellyx:
   squashed: true
   type: git
   url: git://github.com/guns/jellyx.vim
+bundle/manpageview: 
+  branch: master
+  remote: braid/bundle/manpageview
+  revision: 4b79c381c3f35e8a61d68cd9e7be9682fb32cfac
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/ManPageView
 bundle/markdown: 
   branch: master
   remote: braid/bundle/markdown
