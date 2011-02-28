@@ -40,6 +40,13 @@ bundle/conque:
   squashed: true
   type: svn
   url: http://conque.googlecode.com/svn/trunk
+bundle/countjump: 
+  branch: master
+  remote: braid/bundle/countjump
+  revision: 433018f21808fba844f9418cf1ce8dc1aefa6f1f
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/CountJump
 bundle/csapprox: 
   branch: master
   remote: braid/bundle/csapprox
