@@ -33,6 +33,13 @@ bundle/conque:
   squashed: true
   type: svn
   url: http://conque.googlecode.com/svn/trunk
+bundle/csapprox: 
+  branch: master
+  remote: braid/bundle/csapprox
+  revision: ce2b1fda9f901da183e99936abb446cd9ab00c3c
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/CSApprox
 bundle/cute-python: 
   branch: master
   remote: braid/bundle/cute-python/after/syntax/python
