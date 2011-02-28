@@ -131,6 +131,13 @@ bundle/matchit:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/matchit.zip
+bundle/modeliner: 
+  branch: master
+  remote: braid/bundle/modeliner
+  revision: 0c3b58ce05c4df17c67316b6a0f956eb226e77e8
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/Modeliner
 bundle/nerdcommenter: 
   branch: master
   remote: braid/bundle/nerdcommenter
