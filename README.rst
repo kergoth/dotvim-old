@@ -109,15 +109,6 @@ TODO
   - Fails with multi-line function definitions
   - Fails with nested function definitions
 
-- Find a good vim script / configuration for:
-
-  - "Project" handling
-
-    - nerdtree_project: http://www.vim.org/scripts/script.php?script_id=2801
-    - workspace: http://www.vim.org/scripts/script.php?script_id=1410
-    - winmanager: http://www.vim.org/scripts/script.php?script_id=95
-    - project: http://www.vim.org/scripts/script.php?script_id=69
-
 - To Test
 
   - https://github.com/mbadran/headlights
@@ -126,8 +117,14 @@ TODO
       this under gtk+ to see if it's a MacVim specific problem.
 
   - https://github.com/vim-scripts/AutoFold.vim
-  - http://majutsushi.github.com/tagbar/ (alternative to taglist)
   - https://github.com/vim-scripts/easytags.vim
+  - https://github.com/nathanaelkane/vim-indent-guides
+  - http://majutsushi.github.com/tagbar/ (alternative to taglist)
+  - https://github.com/vim-scripts/indentpython.vim--nianyang
+  - https://github.com/alfredodeza/pytest.vim
+  - https://github.com/vim-scripts/VimPdb
+  - https://github.com/vim-scripts/NERD_Tree-and-ack
+  - https://github.com/vim-scripts/toner.vim
 
   - svndiff, gitdiff, etc
   - quiltdiff: http://www.vim.org/scripts/script.php?script_id=2148
@@ -191,7 +188,6 @@ Personal Notes / Reference:
 
     - [modelines] <leader>im: insert modeline
     - [hilinks] <leader>hlt: show highlighting groups of mouseover
-    - [getscript] :GLVS - Download updated vim scripts
 
 - Common indentation setups:
 
