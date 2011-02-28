@@ -22,7 +22,7 @@
 if &cp || exists("g:loaded_AlignPlugin")
  finish
 endif
-let g:loaded_AlignPlugin = "v36g"
+let g:loaded_AlignPlugin = "v35"
 let s:keepcpo            = &cpo
 set cpo&vim
 

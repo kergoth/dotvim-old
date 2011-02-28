@@ -1,4 +1,11 @@
 --- 
+bundle/align: 
+  branch: master
+  remote: braid/bundle/align
+  revision: cace4fd5ccf4c2ae8707b3119097d9f9e551960f
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/Align
 bundle/bufexplorer: 
   branch: master
   remote: braid/bundle/bufexplorer
