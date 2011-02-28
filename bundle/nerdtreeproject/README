@@ -1,0 +1,20 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2801
+
+This plugin works together with NERD_tree (http://www.vim.org/scripts/script.php?script_id=1658). It tries to find out root project directory for current file, and calls NERD_tree in that directory. If no project found, then calls NERD_tree in current directory.
+
+=== How does this plugin work ===
+It searches several files used to indicate a project root directory when creating or reading file:
+    build.xml, Makefile, .project, .lvimrc
+If any one of them found, the located directory is recognized as project root directory. Command 'ToggleNERDTree' should open this directory as root so that you could keep working on the proper project. NERD_tree opens current directory if nothing found.
+
+=== Usage ===
+  Type in normal mode:
+      :ToggleNERDTree<CR>,
+  or map shortcut in your .vimrc file:
+      map <F8> :ToggleNERDTree<CR>
+
+=== Customize ===
+  Make NERD_tree Project to recognize more project, such as scons:
+      let g:NTPNames = add(g:NTPNames, 'SConstruct')
+  or add more file types:
+      extend(g:NTPNames, ['*.sln', '*.csproj'])
