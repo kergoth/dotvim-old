@@ -243,13 +243,6 @@ bundle/py3stdlib:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/Python-3.x-Standard-Library-Reference
-bundle/pydoc/ftplugin/python: 
-  branch: master
-  remote: braid/bundle/pydoc/ftplugin/python
-  revision: 9a0784853b9974de90f5f07259ae52c0bee15cc9
-  squashed: true
-  type: git
-  url: git://github.com/fs111/pydoc.vim.git
 bundle/pyflakes: 
   branch: master
   remote: braid/bundle/pyflakes
