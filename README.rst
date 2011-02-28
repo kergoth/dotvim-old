@@ -7,7 +7,7 @@ Included Bundles
   - All of the plugins I use from Peter Odding(xolox) are handled using the
     vim-scripts mirror git repositories, even though there are proper upstream
     repositories (github.com/xolox/), because the upstream repositories aren't
-    laid out in a traditional vim bundle mannger.
+    laid out in a traditional vim bundle manner.
   - Non-ideal layouts in the vim-scripts mirrors, so not using braid:
 
     - pydoc
