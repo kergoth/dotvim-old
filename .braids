@@ -131,6 +131,13 @@ bundle/gundo:
   squashed: true
   type: git
   url: git://github.com/sjl/gundo.vim.git
+bundle/help_movement: 
+  branch: master
+  remote: braid/bundle/help-movement
+  revision: b67cac1ff53bd3eccaa667f73e14128396029d07
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/help_movement
 bundle/jellyx: 
   branch: master
   remote: braid/bundle/jellyx
