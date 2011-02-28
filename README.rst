@@ -101,9 +101,6 @@ TODO
 - Disable trailing whitespace and beyond textwidth highlighting for
   conque_term buffers
 - Make detectindent obey 'comments' for non-C files.
-- May want to try to implement the green/red bar for unit testing that exists
-  in the vimrc at http://bitbucket.org/garybernhardt/dotfiles.
-- Figure out why let g:manpageview_pgm_py = "pydoc" doesn't work
 - Show the pyflakes error message in the cursor bubble
 
   - Note: the pyflakes error message uses the quickfix stuff.  There's a vim
