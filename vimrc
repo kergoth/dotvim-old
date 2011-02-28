@@ -121,7 +121,7 @@ nmap <leader>im :Modeliner<CR>
 nnoremap <Leader>s :TlistToggle<Enter>
 nnoremap <Leader>S :TlistShowPrototype<Enter>
 
-nnoremap <Leader>f :NERDTreeToggle<Enter>
+nnoremap <Leader>f :ToggleNERDTree<Enter>
 nnoremap <Leader>F :NERDTreeFind<Enter>
 
 " When selecting with the mouse, copy to clipboard on release.
