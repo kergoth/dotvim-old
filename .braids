@@ -201,6 +201,13 @@ bundle/surround:
   squashed: true
   type: git
   url: git://github.com/tpope/vim-surround.git
+bundle/taglist: 
+  branch: master
+  remote: braid/bundle/taglist
+  revision: 6fbe43be0d07c24d72c8f8149963c94d4082a0de
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/taglist.vim
 pathogen: 
   branch: master
   remote: braid/pathogen
