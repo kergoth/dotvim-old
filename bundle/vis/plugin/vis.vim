@@ -1,12 +1,31 @@
 " vis.vim:
 " Function:	Perform an Ex command on a visual highlighted block (CTRL-V).
-" Version:	20f	ASTRO-ONLY
-" Date:		May 18, 2010
+" Version:	19
+" Date:		Jun 20, 2006
 " GetLatestVimScripts: 1066 1 cecutil.vim
 " GetLatestVimScripts: 1195 1 :AutoInstall: vis.vim
 " Verse: For am I now seeking the favor of men, or of God? Or am I striving
 " to please men? For if I were still pleasing men, I wouldn't be a servant
 " of Christ. (Gal 1:10, WEB)
+
+" ---------------------------------------------------------------------
+"  Details: {{{1
+" Requires: Requires 6.0 or later  (this script is a plugin)
+"           Requires <cecutil.vim> (see :he vis-required)
+"
+" Usage:    Mark visual block (CTRL-V) or visual character (v),
+"           press ':B ' and enter an Ex command [cmd].
+"
+"           ex. Use ctrl-v to visually mark the block then use
+"                 :B cmd     (will appear as   :'<,'>B cmd )
+"
+"           ex. Use v to visually mark the block then use
+"                 :B cmd     (will appear as   :'<,'>B cmd )
+"
+"           Command-line completion is supported for Ex commands.
+"
+" Note:     There must be a space before the '!' when invoking external shell
+"           commands, eg. ':B !sort'. Otherwise an error is reported.
 "
 " Author:   Charles E. Campbell <NdrchipO@ScampbellPfamily.AbizM> - NOSPAM
 "           Based on idea of Stefan Roemer <roemer@informatik.tu-muenchen.de>
@@ -19,27 +38,58 @@ if &cp || exists("g:loaded_vis")
   finish
 endif
 let s:keepcpo    = &cpo
-let g:loaded_vis = "v20f"
+let g:loaded_vis = "v19"
 set cpo&vim
+
+" ------------------------------------------------------------------------------
+" Public Interface: {{{1
+"  -range       : VisBlockCmd operates on the range itself
+"  -com=command : Ex command and arguments
+"  -nargs=+     : arguments may be supplied, up to any quantity
+com! -range -nargs=+ -com=command    B  silent <line1>,<line2>call s:VisBlockCmd(<q-args>)
+com! -range -nargs=* -com=expression S  silent <line1>,<line2>call s:VisBlockSearch(<q-args>)
+
+" Suggested by Hari --
+vn // <esc>/<c-r>=<SID>VisBlockSearch()<cr>
+vn ?? <esc>?<c-r>=<SID>VisBlockSearch()<cr>
 
 " ---------------------------------------------------------------------
 "  Support Functions: {{{1
 " ------------------------------------------------------------------------------
-" vis#VisBlockCmd: {{{2
-fun! vis#VisBlockCmd(cmd) range
-"  call Dfunc("vis#VisBlockCmd(cmd<".a:cmd.">")
+" VisBlockCmd: {{{2
+fun! <SID>VisBlockCmd(cmd) range
+"  call Dfunc("VisBlockCmd(cmd<".a:cmd.">")
 
   " retain and re-use same visual mode
-  sil! keepj norm `<
+  norm `<
   let curposn = SaveWinPosn(0)
   let vmode   = visualmode()
 "  call Decho("vmode<".vmode.">")
 
-  call s:SaveUserSettings()
+  " save options which otherwise may interfere
+  let keep_lz    = &lz
+  let keep_fen   = &fen
+  let keep_fo    = &fo
+  let keep_ic    = &ic
+  let keep_magic = &magic
+  let keep_sol   = &sol
+  let keep_ve    = &ve
+  let keep_ww    = &ww
+  set lz
+  set magic
+  set nofen
+  set noic
+  set nosol
+  set ve=
+  set ww=
+  set fo=nroql2
+
+  " Save any contents in register a
+  let rega= @a
 
   if vmode == 'V'
 "   call Decho("cmd<".a:cmd.">")
-   exe "keepj '<,'>".a:cmd
+   exe "'<,'>".a:cmd
   else
 
    " Initialize so begcol<endcol for non-v modes
@@ -66,37 +116,37 @@ fun! vis#VisBlockCmd(cmd) range
    " =======================
    " 1. delete selected region into register "a
 "   call Decho("delete selected region into register a")
-   sil! keepj norm! gv"ad
+   norm! gv"ad
 
    " 2. put cut-out text at end-of-file
 "   call Decho("put cut-out text at end-of-file")
-   keepj $
-   keepj pu_
+   $
+   pu_
    let lastline= line("$")
-   sil! keepj norm! "ap
+   silent norm! "ap
 "   call Decho("reg-A<".@a.">")
 
    " 3. apply command to those lines
    let curline = line(".")
    ka
-   keepj $
+   $
 "   call Decho("apply command<".a:cmd."> to those lines (curline=".line(".").")")
-   exe "keepj ". curline.',$'.a:cmd
+   exe curline.',$'.a:cmd
 
    " 4. visual-block select the modified text in those lines
 "   call Decho("visual-block select modified text at end-of-file")
-   exe "keepj ".lastline
-   exe "keepj norm! 0".vmode."G$\"ad"
+   exe lastline
+   exe "norm! 0".vmode."G$\"ad"
 
    " 5. delete excess lines
 "   call Decho("delete excess lines")
-   exe "sil! keepj ".lastline.',$d'
+   silent exe lastline.',$d'
 
    " 6. put modified text back into file
 "   call Decho("put modifed text back into file (beginning=".begline.".".begcol.")")
-   exe "keepj ".begline
+   exe begline
    if begcol > 1
-	exe 'sil! keepj norm! '.begcol."\<bar>\"ap"
+	exe 'norm! '.begcol."\<bar>\"ap"
    elseif begcol == 1
 	norm! 0"ap
    else
@@ -108,24 +158,33 @@ fun! vis#VisBlockCmd(cmd) range
    " not necessarily the changed region
    let begcol= begcol+1
    let endcol= endcol+1
-   exe "sil keepj ".begline
-   exe 'sil keepj norm! '.begcol."\<bar>".vmode
-   exe "sil keepj ".endline
-   exe 'sil keepj norm! '.endcol."\<bar>\<esc>"
-   exe "sil keepj ".begline
-   exe 'sil keepj norm! '.begcol."\<bar>"
+   silent exe begline
+   silent exe 'norm! '.begcol."\<bar>".vmode
+   silent exe endline
+   silent exe 'norm! '.endcol."\<bar>\<esc>"
+   silent exe begline
+   silent exe 'norm! '.begcol."\<bar>"
   endif
 
-  call s:RestoreUserSettings()
+  " restore register a and options
+"  call Decho("restore register a, options, and window pos'n")
+  let @a  = rega
+  let &lz = keep_lz
+  let &fen= keep_fen
+  let &fo = keep_fo
+  let &ic = keep_ic
+  let &sol= keep_sol
+  let &ve = keep_ve
+  let &ww = keep_ww
   call RestoreWinPosn(curposn)
 
-"  call Dret("vis#VisBlockCmd")
+"  call Dret("VisBlockCmd")
 endfun
 
 " ------------------------------------------------------------------------------
-" vis#VisBlockSearch: {{{2
-fun! vis#VisBlockSearch(...) range
-"  call Dfunc("vis#VisBlockSearch() a:0=".a:0." lines[".a:firstline.",".a:lastline."]")
+" VisBlockSearch: {{{2
+fun! <SID>VisBlockSearch(...) range
+"  call Dfunc("VisBlockSearch() a:0=".a:0." lines[".a:firstline.",".a:lastline."]")
   let keepic= &ic
   set noic
 
@@ -152,11 +211,11 @@ fun! vis#VisBlockSearch(...) range
    let firstline = line("'>")
    let lastline  = line("'<")
    if a:0 >= 1
-    keepj norm! `>
+    norm! `>
    endif
   else
    if a:0 >= 1
-    keepj norm! `<
+    norm! `<
    endif
   endif
 "  call Decho("2: firstline=".firstline." lastline=".lastline." firstcolm1=".firstcolm1." lastcolm1=".lastcolm1)
@@ -208,18 +267,18 @@ fun! vis#VisBlockSearch(...) range
   " restore ignorecase
   let &ic= keepic
 
-"  call Dret("vis#VisBlockSearch <".srch.">")
+"  call Dret("VisBlockSearch <".srch.">")
   return srch
 endfun
 
 " ------------------------------------------------------------------------------
-" s:VirtcolM1: usually a virtcol(mark)-1, but due to tabs this can be different {{{2
+" VirtcolM1: usually a virtcol(mark)-1, but due to tabs this can be different {{{2
 fun! s:VirtcolM1(mark)
-"  call Dfunc("s:VirtcolM1(mark ".a:mark.")")
+"  call Dfunc("VirtcolM1(mark ".a:mark.")")
   let mark   = "'".a:mark
 
   if virtcol(mark) <= 1
-"   call Dret("s:VirtcolM1 0")
+"   call Dret("VirtcolM1 0")
    return 0
   endif
 
@@ -230,56 +289,14 @@ fun! s:VirtcolM1(mark)
   endif
 
 "  call Decho("exe norm! `".a:mark."h")
-  exe "keepj norm! `".a:mark."h"
+  exe "norm! `".a:mark."h"
 
   let vekeep = &ve
   let vc  = virtcol(".")
   let &ve = vekeep
 
-"  call Dret("s:VirtcolM1 ".vc)
+"  call Dret("VirtcolM1 ".vc)
   return vc
-endfun
-
-" ---------------------------------------------------------------------
-" s:SaveUserSettings: save options which otherwise may interfere {{{2
-fun! s:SaveUserSettings()
-"  call Dfunc("s;SaveUserSettings()")
-  let s:keep_lz    = &lz
-  let s:keep_fen   = &fen
-  let s:keep_fo    = &fo
-  let s:keep_ic    = &ic
-  let s:keep_magic = &magic
-  let s:keep_sol   = &sol
-  let s:keep_ve    = &ve
-  let s:keep_ww    = &ww
-  set lz
-  set magic
-  set nofen
-  set noic
-  set nosol
-  set ve=
-  set ww=
-  set fo=nroql2
-
-  " Save any contents in register a
-  let s:rega= @a
-
-"  call Dret("s:SaveUserSettings")
-endfun
-
-" ---------------------------------------------------------------------
-" s:RestoreUserSettings: restore register a and options {{{2
-fun! s:RestoreUserSettings()
-"  call Dfunc("s:RestoreUserSettings()")
-  let @a  = s:rega
-  let &lz = s:keep_lz
-  let &fen= s:keep_fen
-  let &fo = s:keep_fo
-  let &ic = s:keep_ic
-  let &sol= s:keep_sol
-  let &ve = s:keep_ve
-  let &ww = s:keep_ww
-"  call Dret("s:RestoreUserSettings")
 endfun
 
 let &cpo= s:keepcpo

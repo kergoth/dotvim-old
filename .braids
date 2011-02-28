@@ -222,6 +222,13 @@ bundle/taglist:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/taglist.vim
+bundle/vis: 
+  branch: master
+  remote: braid/bundle/vis
+  revision: 3a21d91737a8b4662b270f5e59af5e8da1020291
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/vis
 pathogen: 
   branch: master
   remote: braid/pathogen
