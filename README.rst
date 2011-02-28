@@ -75,6 +75,8 @@ Included Bundles
 TODO
 ----
 
+- snipmate-skeleton: rather than only going by extension, try to open a
+  template for the extension, and fall back to filetype.
 - Determine how to make the spell checking a bit smarter.  Specifically, I'd
   like to disable all checking in regular python strings, but have checking in
   *docstrings* and in comments.  Alternatively, don't consider "%s" a spelling
