@@ -1,14 +1,20 @@
-let $PATH = $MYVIMRUNTIME . "/bin:" . $PATH
+if !executable("gofmt")
+  finish
+endif
+
+let bindirs = split(globpath(&runtimepath, 'bin'), '\n')
+let $PATH = $PATH . ':' . join(bindirs, ':')
+if !executable("mygofmt")
+  finish
+endif
 
 function! Goformat()
-  if executable("mygofmt")
-    let regel=line(".")
-    silent %!mygofmt
-    call cursor(regel, 1)
-  endif
+  let regel=line(".")
+  silent %!mygofmt
+  call cursor(regel, 1)
 endfunction
 
-command! Fmt call Goformat()
+command! Gofmt call Goformat()
 
+au BufWrite *.go :Gofmt
 set equalprg=mygofmt
-au BufWrite *.go :Fmt
