@@ -417,13 +417,7 @@ set pastetoggle=<Leader>P
 set isk+=_,$,@,%,#,-
 set shortmess=atItToO
 
-"  lastline  When included, as much as possible of the last line
-"            in a window will be displayed.  When not included, a
-"            last line that doesn't fit is replaced with '@' lines.
-"  uhex      Show unprintable characters hexadecimal as <xx>
-"            instead of using ^C and ~C.
 set display+=lastline
-" set display+=uhex
 
 " Buffer switching behaviors
 " useopen   If included, jump to the first open window that
@@ -776,8 +770,6 @@ let g:c_math = 1
 let g:c_C99 = 1
 let g:c_C94 = 1
 let g:c_impl_defined = 1
-" let g:perl_fold = 1
-" let g:sh_minlines = 500
 " }}}
 
 " Plugin options {{{
@@ -854,6 +846,7 @@ let g:NERD_space_delim_filetype_regexp = '.*'
 let g:HL_HiCurLine = 'StatusLine'
 let g:Modeliner_format = 'fenc= sts= sw= ts= et'
 let b:super_sh_indent_echo = 0
+
 " rcsvers.vim {{{
 let g:rvTempDir = '/tmp'
 " Shared rcs save directory
