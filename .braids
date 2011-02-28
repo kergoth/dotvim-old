@@ -166,6 +166,13 @@ bundle/securemodelines:
   squashed: true
   type: git
   url: git://github.com/ciaranm/securemodelines.git
+bundle/smarttabs: 
+  branch: master
+  remote: braid/bundle/smarttabs
+  revision: e588ad3f2dc41c2dc0786ecd74c3c4d3fe4534ae
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/Smart-Tabs
 bundle/snipmate: 
   branch: master
   remote: braid/bundle/snipmate
