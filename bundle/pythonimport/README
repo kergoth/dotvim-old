@@ -1,0 +1,18 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1884
+
+This plugin defines a function for automatically cleaning up the imports
+in a python module or program. It does two things:
+
+ - removes unused imports
+ - sorts and formats the remaining imports
+
+This function is mapped to <LocalLeader>i (for "import") in two contexts.
+In Normal mode, it operates on the current paragraph.
+In Visual mode, it operates on the selected range.
+
+The python 'tokenize' module is used to determine which symbols are used
+in the current buffer, so the script is pretty good at identifying unused imports.
+
+The import formatting style was chosen to work well with grep - the name of
+the module and the symbols imported from it are guaranteed to always
+appear on the same line.
