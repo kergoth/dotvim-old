@@ -670,6 +670,10 @@ if &t_Co > 2 || has('gui_running')
   " Highlighting of Vim modelines, and hiding of fold markers
   hi def link vimModeline Special
   hi def link foldMarker SpecialKey
+
+  " The default coloring of concealed items is terrible
+  hi! def link Conceal SpecialKey
+
   if has('autocmd')
     augroup KergothMatches
       au!
