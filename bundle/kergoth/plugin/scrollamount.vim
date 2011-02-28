@@ -1,23 +1,21 @@
 " Title:        ScrollAmount
 " Description:  Adjust mouse wheel scroll amount based on window height.
 " Maintainer:   Chris Larson <clarson@kergoth.com>
-" Version:      2
+" Version:      3
 
 if exists("g:loaded_scrollamount") || &cp || !has('autocmd')
   finish
 endif
 let g:loaded_scrollamount = 1
 
-function! <SID>Max(a, b)
-  if a:a >= a:b
-    return a:a
-  else
-    return a:b
-  endif
-endfunction
+if !exists("g:scrollamount_factor")
+  " The number of lines for the mouse wheel jump is the window height divided
+  " by this factor.
+  let g:scrollamount_factor = 8
+endif
 
 function! <SID>MapMouseScroll()
-    let mousejump = <SID>Max(winheight(0)/8, 1)
+    let mousejump = max([winheight(0) / g:scrollamount_factor, 1])
     exe 'map <MouseDown> ' . mousejump . ''
     exe 'map <MouseUp> ' . mousejump . ''
 endfunction
