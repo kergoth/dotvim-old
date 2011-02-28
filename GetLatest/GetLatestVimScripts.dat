@@ -12,7 +12,6 @@ ScriptID SourceID Filename
 1477 8861 modeliner.vim
 1506 9277  LargeFile.vim
 1542 10872 pythoncomplete.vim
-1690 14665 IndentConsistencyCop.vim
 2043 7805 VimPdb.tar
 2142 8240 showmarks.zip
 2390 10336 CSApprox.vim
