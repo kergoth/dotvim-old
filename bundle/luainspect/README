@@ -1,0 +1,8 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3169
+
+This Vim plug-in uses the LuaInspect tool to (automatically) perform semantic highlighting of variables in Lua source code. It was inspired by lua2-mode (for Emacs) and the SciTE plug-in included with LuaInspect. For more information about the plug-in please refer to its homepage or the project page on GitHub:
+
+  http://peterodding.com/code/vim/lua-inspect/
+  http://github.com/xolox/vim-lua-inspect
+
+If you have questions, bug reports, suggestions, etc. the author can be contacted at peter@peterodding.com. If you like this plug-in please vote for it below!

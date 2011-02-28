@@ -166,6 +166,13 @@ bundle/largefile:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/LargeFile
+bundle/luainspect: 
+  branch: master
+  remote: braid/bundle/luainspect
+  revision: 050d0d560f2fdb1cca6ef89b67f18e285c625ae3
+  squashed: true
+  type: git
+  url: https://github.com/vim-scripts/luainspect.vim
 bundle/manpageview: 
   branch: master
   remote: braid/bundle/manpageview
