@@ -13,6 +13,13 @@ bundle/bufexplorer:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/bufexplorer.zip
+bundle/c-syntax/after: 
+  branch: master
+  remote: braid/bundle/c-syntax/after
+  revision: 25d2fdbe06e09a7ea6f8704121ef08db1972f050
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/aftersyntaxc.vim
 bundle/changesplugin: 
   branch: master
   remote: braid/bundle/changesplugin

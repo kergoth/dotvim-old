@@ -1,0 +1,7 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3064
+
+This file, instead of replacing the normal c.vim file, incorporates and improves upon some of the changes added in vimscript #1201, "Extended original c.vim." Because this file goes in $VIMRUNTIME/after/syntax, it appends these additional definitions to whatever c.vim file comes with the version of Vim you use.
+
+The main additions identify operators, delimiters, and user-defined functions/function calls. Also included is a wealth of standard ANSI C function names as keywords. This makes C files look significantly richer, especially if your colorscheme includes color variants for the additional syntax groups.
+
+The Match regexps for user-defined functions have been improved. The rest is mostly just selective porting from the c.vim in vimscript #1201.
