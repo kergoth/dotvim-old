@@ -23,7 +23,6 @@ Included Bundles
   - pythongotofile: allow jumping to an imported python module with 'gf'
   - snipmate-skeleton: Trivial implementation of skeleton files using snipmate
   - tips: Various snippets of vimscript pulled from the Vim tips site(s)
-  - vimorg-runtime: Updated files from the latest upstream vim runtime files
 
 - External
 
