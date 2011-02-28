@@ -118,7 +118,16 @@ TODO
     - winmanager: http://www.vim.org/scripts/script.php?script_id=95
     - project: http://www.vim.org/scripts/script.php?script_id=69
 
-- Test these out
+- To Test
+
+  - https://github.com/mbadran/headlights
+
+    - I tried this, but got an error (list index out of range).  Need to test
+      this under gtk+ to see if it's a MacVim specific problem.
+
+  - https://github.com/vim-scripts/AutoFold.vim
+  - http://majutsushi.github.com/tagbar/ (alternative to taglist)
+  - https://github.com/vim-scripts/easytags.vim
 
   - svndiff, gitdiff, etc
   - quiltdiff: http://www.vim.org/scripts/script.php?script_id=2148
@@ -128,7 +137,6 @@ TODO
   - unimpaired.vim: http://www.vim.org/scripts/script.php?script_id=1590
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
-  - lua-inspect: http://peterodding.com/code/vim/lua-inspect/
 
 Personal Notes / Reference:
 ---------------------------
