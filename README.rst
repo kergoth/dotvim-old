@@ -142,6 +142,12 @@ TODO
   - python_match.vim: http://www.vim.org/scripts/script.php?script_id=386
   - abolish.vim: http://www.vim.org/scripts/script.php?script_id=1545
 
+- Cute concept, but not useful and/or stable at this time
+
+  - css_folding.vim: http://www.vim.org/scripts/script.php?script_id=3153
+  - smartparen: http://www.vim.org/scripts/script.php?script_id=3210
+  - quotes: http://www.vim.org/scripts/script.php?script_id=3209
+
 Personal Notes / Reference:
 ---------------------------
 
@@ -207,3 +213,5 @@ Personal Notes / Reference:
 
 - A 'hidden' buffer is one which has been modified, and is not loaded in a
   window.
+
+..  vim: set et fenc=utf-8 sts=2 sw=2 :
