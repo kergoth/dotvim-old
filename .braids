@@ -229,6 +229,13 @@ bundle/vis:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/vis
+bundle/yankring: 
+  branch: master
+  remote: braid/bundle/yankring
+  revision: 5a379615c74b19e25fa71075bc1b5345b96c6e9f
+  squashed: true
+  type: git
+  url: git://github.com/vim-scripts/YankRing.vim
 pathogen: 
   branch: master
   remote: braid/pathogen
