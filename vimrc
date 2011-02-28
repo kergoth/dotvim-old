@@ -690,9 +690,6 @@ if has('autocmd')
       au BufReadPre $TEMP/* setlocal noundofile
     endif
 
-    " Smart cursor positioning for emails, courtesy tip#1240
-    au BufReadPost mutt* :Fip
-
     " Reload file with the correct encoding if fenc was set in the modeline
     au BufReadPost * let b:reloadcheck = 1
     au BufWinEnter *
@@ -738,6 +735,7 @@ if has('autocmd')
       endif
     endfun
     au BufEnter * call <SID>QuickFixClose()
+
     " Special less.sh and man modes {{{
     fun! <SID>check_pager_mode()
       if exists('g:loaded_less') && g:loaded_less
@@ -754,8 +752,8 @@ if has('autocmd')
     endfun
     au VimEnter * :call <SID>check_pager_mode()
     " }}}
-  augroup END " augroup Kergoth
-endif " has('autocmd')
+  augroup END
+endif
 " }}}
 
 " Syntax options {{{
