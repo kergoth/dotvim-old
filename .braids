@@ -285,6 +285,13 @@ bundle/securemodelines:
   squashed: true
   type: git
   url: git://github.com/ciaranm/securemodelines.git
+bundle/session: 
+  branch: master
+  remote: braid/bundle/session
+  revision: 3a1f6515c26f76f03069bdbe0a76a3381d9a41f1
+  squashed: true
+  type: git
+  url: https://github.com/vim-scripts/session.vim--Odding
 bundle/shell: 
   branch: master
   remote: braid/bundle/shell
