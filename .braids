@@ -264,6 +264,13 @@ bundle/pythonimport:
   squashed: true
   type: git
   url: git://github.com/vim-scripts/python_import.vim
+bundle/reload: 
+  branch: master
+  remote: braid/bundle/reload
+  revision: 80782b8838e21139505619a963a6eed3d4d5402f
+  squashed: true
+  type: git
+  url: https://github.com/vim-scripts/reload.vim
 bundle/repeat: 
   branch: master
   remote: braid/bundle/repeat
